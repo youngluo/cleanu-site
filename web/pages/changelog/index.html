@@ -7,8 +7,8 @@
 <meta name="description" content="CleanU 的发布记录：版本号、发布日期、说明文字和 DMG 文件，都取自 GitHub Releases。">
 <meta name="theme-color" content="#F5F4F1" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#121514" media="(prefers-color-scheme: dark)">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/styles.css">
 <script>
 /* 先落主题模式，避免手动选色后刷新闪一下 */
 try {
@@ -24,16 +24,16 @@ try {
 
 <header class="nav" data-nav>
   <div class="nav__inner shell">
-    <a class="brand" href="index.html">
-      <img class="brand__mark" src="assets/icon.webp" width="512" height="512" alt="">
+    <a class="brand" href="/index.html">
+      <img class="brand__mark" src="/assets/icon.webp" width="512" height="512" alt="">
       <span>CleanU</span>
     </a>
 
     <nav class="nav__links" id="primary-nav" aria-label="主导航">
       <ul>
-        <li><a href="index.html#features">主要功能</a></li>
-        <li><a href="index.html#how">安全边界</a></li>
-        <li><a href="index.html#faq">常见问题</a></li>
+        <li><a href="/index.html#features">主要功能</a></li>
+        <li><a href="/index.html#how">安全边界</a></li>
+        <li><a href="/index.html#faq">常见问题</a></li>
       </ul>
     </nav>
 
@@ -76,7 +76,7 @@ try {
   <div class="shell foot__inner">
     <div class="foot__brand">
       <span class="brand brand--foot">
-        <img class="brand__mark" src="assets/icon.webp" width="512" height="512" alt="">
+        <img class="brand__mark" src="/assets/icon.webp" width="512" height="512" alt="">
         <span>CleanU</span>
       </span>
       <p>安全、透明的 macOS 菜单栏清理工具。</p>
@@ -85,7 +85,7 @@ try {
       <h3>链接</h3>
       <ul>
         <li><a href="https://github.com/youngluo/cleanu-site">GitHub</a></li>
-        <li><a href="changelog.html" aria-current="page">更新日志</a></li>
+        <li><a href="/changelog.html" aria-current="page">更新日志</a></li>
         <li><a href="https://github.com/youngluo/cleanu-site/issues">问题反馈</a></li>
       </ul>
     </nav>
@@ -95,8 +95,7 @@ try {
   </div>
 </footer>
 
-<script src="config.js"></script>
-<script src="site.js"></script>
-<script src="changelog.js"></script>
+<script type="module" src="/site.js"></script>
+<script type="module" src="/pages/changelog/index.js"></script>
 </body>
 </html>

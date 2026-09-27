@@ -7,8 +7,8 @@
 <meta name="description" content="CleanU 是 macOS 菜单栏磁盘清理工具。扫描只读，覆盖缓存、临时文件、开发工具缓存、项目产物、应用残留、安装包、压缩包与大文件，逐项复核确认后才会清理。macOS 13+，Apple Silicon 与 Intel 各自提供 DMG。">
 <meta name="theme-color" content="#F5F4F1" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#121514" media="(prefers-color-scheme: dark)">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/styles.css">
 <noscript><style>
   [data-reveal] { opacity: 1; transform: none; }
   .faq__a { grid-template-rows: 1fr; visibility: visible; }
@@ -31,7 +31,7 @@ try {
 <header class="nav" data-nav>
   <div class="nav__inner shell">
     <a class="brand" href="#top">
-      <img class="brand__mark" src="assets/icon.webp" width="512" height="512" alt="">
+      <img class="brand__mark" src="/assets/icon.webp" width="512" height="512" alt="">
       <span>CleanU</span>
     </a>
 
@@ -103,19 +103,19 @@ try {
 
           <div class="show__stage">
             <figure class="shot-frame" id="state-idle" role="tabpanel" aria-labelledby="tab-idle" tabindex="0">
-              <img class="shot" src="assets/shot-idle.webp" width="2048" height="2116" loading="lazy" alt="桌面右上角的 CleanU 面板处于待命状态：顶部显示「启动磁盘 · 可用空间 15.2 GB」，中间是大圆按钮「一键清理」，下方提示「需要完全磁盘访问，开启后扫描结果会更完整」，右侧是「去设置」。">
+              <img class="shot" src="/assets/shot-idle.webp" width="2048" height="2116" loading="lazy" alt="一键清理">
             </figure>
             <figure class="shot-frame" id="state-scanning" role="tabpanel" aria-labelledby="tab-scanning" tabindex="0">
-              <img class="shot" src="assets/shot-scanning.webp" width="2048" height="2116" loading="lazy" alt="CleanU 面板正在扫描：大圆显示「正在扫描」，下方注明「正在扫描启动磁盘目录」，缓存清理 49 项 39 GB、项目清理 7 项 4.3 GB、应用残留 0 项，空间分析一行显示「已扫描 199,776 项」，底部是「取消」。">
+              <img class="shot" src="/assets/shot-scanning.webp" width="2048" height="2116" loading="lazy" alt="正在扫描">
             </figure>
             <figure class="shot-frame" id="state-review" role="tabpanel" aria-labelledby="tab-review" tabindex="0" data-pan="bottom">
-              <img class="shot" src="assets/shot-review.webp" width="2048" height="2116" loading="lazy" alt="扫描完成的 CleanU 面板：汇总四组之后是「可清理项目」清单，右上角显示「已选 0 / 74 · 0 KB / 43.6 GB」；缓存清理分组里逐条列出 Xcode 真机调试支持、iOS 模拟器、Chrome 缓存、Xcode DerivedData、npm 缓存，每条带体积和以波浪号开头的路径，底部「移到废纸篓」为置灰状态。">
+              <img class="shot" src="/assets/shot-review.webp" width="2048" height="2116" loading="lazy" alt="扫描完成">
             </figure>
             <figure class="shot-frame" id="state-selected" role="tabpanel" aria-labelledby="tab-selected" tabindex="0" data-pan="bottom">
-              <img class="shot" src="assets/shot-selected.webp" width="2048" height="2116" loading="lazy" alt="勾选待确认的 CleanU 面板：清单里 Xcode DerivedData 前面的圆圈变成绿色对勾，右上角计数变成「已选 1 / 74 · 650.5 MB / 43.6 GB」，底部「移到废纸篓」由置灰变为可点。">
+              <img class="shot" src="/assets/shot-selected.webp" width="2048" height="2116" loading="lazy" alt="勾选确认">
             </figure>
             <figure class="shot-frame" id="state-done" role="tabpanel" aria-labelledby="tab-done" tabindex="0" data-pan="bottom">
-              <img class="shot" src="assets/shot-done.webp" width="2048" height="2116" loading="lazy" alt="清理完成的 CleanU 面板：顶部大圆显示「清理完成」，清单仍在，底部「移到废纸篓」重新置灰，旁边是「完成」。">
+              <img class="shot" src="/assets/shot-done.webp" width="2048" height="2116" loading="lazy" alt="清理完成">
             </figure>
           </div>
 
@@ -231,7 +231,7 @@ try {
   <div class="shell foot__inner">
     <div class="foot__brand">
       <span class="brand brand--foot">
-        <img class="brand__mark" src="assets/icon.webp" width="512" height="512" alt="">
+        <img class="brand__mark" src="/assets/icon.webp" width="512" height="512" alt="">
         <span>CleanU</span>
       </span>
       <p>安全、透明的 macOS 菜单栏清理工具。</p>
@@ -240,7 +240,7 @@ try {
       <h3>链接</h3>
       <ul>
         <li><a href="https://github.com/youngluo/cleanu-site">GitHub</a></li>
-        <li><a href="changelog.html">更新日志</a></li>
+        <li><a href="/changelog.html">更新日志</a></li>
         <li><a href="https://github.com/youngluo/cleanu-site/issues">问题反馈</a></li>
       </ul>
     </nav>
@@ -250,8 +250,7 @@ try {
   </div>
 </footer>
 
-<script src="config.js"></script>
-<script src="site.js"></script>
-<script src="home.js"></script>
+<script type="module" src="/site.js"></script>
+<script type="module" src="/pages/index/index.js"></script>
 </body>
 </html>

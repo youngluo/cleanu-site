@@ -405,6 +405,8 @@ h3 { font-size: 1.06rem; letter-spacing: -0.01em; }
   overflow: hidden;
   opacity: 0;
   visibility: hidden;
+  /* 淡出要走完再收 visibility，否则两帧叠不到一起，交叠渐变就成了硬切 */
+  transition: opacity 0.32s ease-in-out, visibility 0s linear 0.32s;
 }
 html:not(.has-js) .shot-frame:first-child {
   opacity: 1;
@@ -413,6 +415,7 @@ html:not(.has-js) .shot-frame:first-child {
 .shot-frame.is-active {
   opacity: 1;
   visibility: visible;
+  transition: opacity 0.32s ease-in-out;
 }
 .shot-frame .shot {
   width: 100%;
@@ -763,6 +766,7 @@ html:not(.has-js) .shot-frame:first-child {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
   }
   [data-reveal] { opacity: 1; transform: none; }
 }
