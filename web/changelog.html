@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>更新日志 · CleanU</title>
+<meta name="description" content="CleanU 的发布记录：版本号、发布日期、说明文字和 DMG 文件，都取自 GitHub Releases。">
+<meta name="theme-color" content="#F5F4F1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121514" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+<script>
+/* 先落主题模式，避免手动选色后刷新闪一下 */
+try {
+  var mode = localStorage.getItem('cleanu:theme-mode');
+  if (mode === 'light' || mode === 'dark' || mode === 'auto') {
+    document.documentElement.dataset.themeMode = mode;
+  }
+} catch (e) { /* 读不到就用系统偏好 */ }
+</script>
+</head>
+<body id="top">
+<a class="skip-link" href="#main">跳到主要内容</a>
+
+<header class="nav" data-nav>
+  <div class="nav__inner shell">
+    <a class="brand" href="index.html">
+      <img class="brand__mark" src="assets/icon.webp" width="512" height="512" alt="">
+      <span>CleanU</span>
+    </a>
+
+    <nav class="nav__links" id="primary-nav" aria-label="主导航">
+      <ul>
+        <li><a href="index.html#features">主要功能</a></li>
+        <li><a href="index.html#how">安全边界</a></li>
+        <li><a href="index.html#faq">常见问题</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav__aside">
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="主题：跟随系统，点击切换">
+        <svg class="theme-icon theme-icon--auto" viewBox="0 0 18 18" aria-hidden="true">
+          <circle cx="9" cy="9" r="6.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M9 2.4a6.6 6.6 0 0 1 0 13.2z" fill="currentColor"/>
+        </svg>
+        <svg class="theme-icon theme-icon--light" viewBox="0 0 18 18" aria-hidden="true">
+          <circle cx="9" cy="9" r="3.4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+          <path d="M9 .9v1.7M9 15.4v1.7M.9 9h1.7M15.4 9h1.7M3.3 3.3l1.2 1.2M13.5 13.5l1.2 1.2M14.7 3.3l-1.2 1.2M4.5 13.5l-1.2 1.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <svg class="theme-icon theme-icon--dark" viewBox="0 0 18 18" aria-hidden="true">
+          <path d="M14.7 11.4A6.5 6.5 0 0 1 6.6 3.3a6.5 6.5 0 1 0 8.1 8.1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+        <span class="nav__toggle-bar" aria-hidden="true"></span>
+        <span class="nav__toggle-label">菜单</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="page" aria-labelledby="page-title">
+    <div class="shell">
+      <p class="eyebrow">CleanU</p>
+      <h1 id="page-title" class="page__title">更新日志</h1>
+      <p class="lede">每次发布的版本号、发布日期、说明文字和可下载的文件，都取自 GitHub 的 Release 列表。</p>
+      <p class="page__status" data-log-status role="status">正在读取 Release 列表…</p>
+      <ol class="log" data-log></ol>
+      <p class="page__foot"><a href="https://github.com/youngluo/cleanu/releases">在 GitHub Releases 查看</a></p>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="shell foot__inner">
+    <div class="foot__brand">
+      <span class="brand brand--foot">
+        <img class="brand__mark" src="assets/icon.webp" width="512" height="512" alt="">
+        <span>CleanU</span>
+      </span>
+      <p>安全、透明的 macOS 菜单栏清理工具。</p>
+    </div>
+    <nav class="foot__links" aria-label="页脚链接">
+      <h3>链接</h3>
+      <ul>
+        <li><a href="https://github.com/youngluo/cleanu-site">GitHub</a></li>
+        <li><a href="changelog.html" aria-current="page">更新日志</a></li>
+        <li><a href="https://github.com/youngluo/cleanu-site/issues">问题反馈</a></li>
+      </ul>
+    </nav>
+    <dl class="foot__meta">
+      <div><dt>平台</dt><dd>macOS 13+</dd></div>
+    </dl>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="site.js"></script>
+<script src="changelog.js"></script>
+</body>
+</html>
