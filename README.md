@@ -31,3 +31,11 @@ pnpm dev        # http://localhost:5173/
 pnpm build      # the artifact lands in dist/ — publish dist/ only
 pnpm preview    # static server to check the built artifact
 ```
+
+Both pages have Simplified Chinese and English versions. Chinese uses `/index.html` and `/changelog.html`; English uses `/index.en.html` and `/changelog.en.html`. `/` stays Chinese. Browser preferences never redirect visitors.
+
+Templates live in `web/pages/`, with text in `web/locales/{zh-CN,en}.json`. Editing either regenerates the HTML and reloads the development page. `web/.generated/` is ignored derived output: do not edit or commit it. Builds validate translation keys and parameters before passing four real HTML entries to Vite and flattening them into `dist/`.
+
+Local builds may omit `SITE_URL`, in which case SEO language alternates are omitted. To verify publication metadata, set `SITE_URL` to the real public HTTPS address, including its deployment subpath. The Pages workflow obtains it from `actions/configure-pages`'s `base_url` and sets `REQUIRE_SITE_URL=true` to reject missing or invalid configuration.
+
+Run `pnpm test` to check generation, escaping, translation contracts and invalid references. Screenshots remain the actual Chinese UI; GitHub Release content stays in its original language. SEO alternates do not change relative navigation.

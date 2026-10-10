@@ -1,4 +1,5 @@
 import CFG from '../../config.js'
+import { copy, locale } from '../../site.js'
 ;(function () {
   'use strict'
 
@@ -8,7 +9,7 @@ import CFG from '../../config.js'
   if (!listEl || !REL.owner || !REL.repo) return
 
   var api = 'https://api.github.com/repos/' + REL.owner + '/' + REL.repo + '/releases?per_page=30'
-  var dateFmt = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })
+  var dateFmt = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', day: 'numeric' })
 
   function setStatus(text, isError) {
     if (!statusEl) return
@@ -33,11 +34,11 @@ import CFG from '../../config.js'
     var item = el('li', 'log__item')
 
     var head = el('div', 'log__head')
-    head.appendChild(el('h2', 'log__ver', release.tag_name || '未标记版本'))
+    head.appendChild(el('h2', 'log__ver', release.tag_name || copy('log.untagged')))
     if (release.published_at) {
       head.appendChild(el('p', 'log__date', dateFmt.format(new Date(release.published_at))))
     }
-    if (release.prerelease) head.appendChild(el('p', 'log__flag', '预发布'))
+    if (release.prerelease) head.appendChild(el('p', 'log__flag', copy('log.prerelease')))
     item.appendChild(head)
 
     if (release.name && release.name !== release.tag_name) {
@@ -56,7 +57,7 @@ import CFG from '../../config.js'
       var ul = el('ul', 'log__assets')
       assets.forEach(function (asset) {
         var li = el('li')
-        var link = el('a', null, asset.name || '下载')
+        var link = el('a', null, asset.name || copy('log.download'))
         link.href = asset.browser_download_url
         li.appendChild(link)
         var size = fmtSize(asset.size)
@@ -87,7 +88,7 @@ import CFG from '../../config.js'
   }
 
   if (Array.isArray(cached)) {
-    setStatus(renderList(cached) ? '' : '这个仓库还没有公开 Release。', false)
+    setStatus(renderList(cached) ? '' : copy('log.empty'), false)
   } else {
     var ctrl = 'AbortController' in window ? new AbortController() : null
     var timer = ctrl
@@ -110,17 +111,19 @@ import CFG from '../../config.js'
         } catch (e) {
           /* 配额或隐私模式 */
         }
-        setStatus(renderList(releases) ? '' : '这个仓库还没有公开 Release。', false)
+        setStatus(renderList(releases) ? '' : copy('log.empty'), false)
       })
       .catch(function (err) {
         if (timer) clearTimeout(timer)
         var code = err && err.message
         if (code === '404') {
-          setStatus('这个仓库还没有公开 Release，或尚未设为公开。', true)
+          setStatus(copy('log.notFound'), true)
         } else if (code === '403') {
-          setStatus('GitHub 接口限流，暂时读不到 Release 列表。', true)
+          setStatus(copy('log.rateLimit'), true)
+        } else if (err && err.name === 'AbortError') {
+          setStatus(copy('log.timeout'), true)
         } else {
-          setStatus('暂时读不到 Release 列表。', true)
+          setStatus(copy('log.network'), true)
         }
       })
   }

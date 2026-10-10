@@ -1,3 +1,17 @@
+/** Current URL's document language; browser and storage preferences cannot override it. */
+export const locale = document.documentElement.lang;
+const runtimeCopy = JSON.parse(document.getElementById('site-copy').textContent);
+
+/** Read generated runtime text and substitute named, text-only parameters. */
+export function copy(key, params = {}) {
+  const value = key.split('.').reduce((part, name) => part && part[name], runtimeCopy);
+  if (typeof value !== 'string') throw new Error(`Missing runtime copy: ${locale}/${key}`);
+  return value.replace(/\{([a-zA-Z]\w*)\}/g, (_match, name) => {
+    if (!(name in params)) throw new Error(`Missing copy parameter: ${key}/${name}`);
+    return String(params[name]);
+  });
+}
+
 (function () {
   'use strict';
 
@@ -7,7 +21,6 @@
   /* ---------- 主题：跟随系统 / 亮 / 暗 ---------- */
   var THEME_KEY = 'cleanu:theme-mode';
   var MODES = ['auto', 'light', 'dark'];
-  var MODE_LABEL = { auto: '跟随系统', light: '亮色', dark: '暗色' };
   var schemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
   var themeBtn = document.querySelector('[data-theme-toggle]');
   var themeMetas = document.querySelectorAll('meta[name="theme-color"]');
@@ -26,7 +39,7 @@
     });
   }
   function paintTheme() {
-    var label = '主题：' + MODE_LABEL[themeMode()] + '，点击切换为' + MODE_LABEL[nextMode()];
+    var label = copy('theme.label', { current: copy('theme.' + themeMode()), next: copy('theme.' + nextMode()) });
     themeBtn.setAttribute('aria-label', label);
     themeBtn.title = label;
     syncThemeColor();
@@ -40,6 +53,20 @@
     if (schemeQuery.addEventListener) schemeQuery.addEventListener('change', syncThemeColor);
     else if (schemeQuery.addListener) schemeQuery.addListener(syncThemeColor);
     paintTheme();
+  }
+
+  /* ---------- 语言链接：渐进保留当前页面的有效锚点 ---------- */
+  var languageLink = document.querySelector('[data-language-link]');
+  if (languageLink) {
+    var languageTarget = languageLink.getAttribute('href');
+    function syncLanguageHash() {
+      var hash = location.hash;
+      var id;
+      try { id = decodeURIComponent(hash.slice(1)); } catch (e) { id = ''; }
+      languageLink.setAttribute('href', languageTarget + (id && document.getElementById(id) ? hash : ''));
+    }
+    syncLanguageHash();
+    window.addEventListener('hashchange', syncLanguageHash);
   }
 
   /* ---------- 导航抽屉 ---------- */

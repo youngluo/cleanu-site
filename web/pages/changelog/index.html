@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="{{locale}}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>更新日志 · CleanU</title>
-<meta name="description" content="CleanU 的发布记录：版本号、发布日期、说明文字和 DMG 文件，都取自 GitHub Releases。">
+<title>{{text:changelog.title}}</title>
+<meta name="description" content="{{text:changelog.description}}">
 <meta name="theme-color" content="#F5F4F1" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#121514" media="(prefers-color-scheme: dark)">
+{{alternates}}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/styles.css">
 <script>
+document.documentElement.classList.add('has-js');
 /* 先落主题模式，避免手动选色后刷新闪一下 */
 try {
   var mode = localStorage.getItem('cleanu:theme-mode');
@@ -20,25 +22,26 @@ try {
 </script>
 </head>
 <body id="top">
-<a class="skip-link" href="#main">跳到主要内容</a>
+<a class="skip-link" href="#main">{{text:common.skip}}</a>
 
 <header class="nav" data-nav>
   <div class="nav__inner shell">
-    <a class="brand" href="/index.html">
+    <a class="brand" href="{{route:index}}">
       <img class="brand__mark" src="/assets/icon.webp" width="512" height="512" alt="">
       <span>CleanU</span>
     </a>
 
-    <nav class="nav__links" id="primary-nav" aria-label="主导航">
+    <nav class="nav__links" id="primary-nav" aria-label="{{text:common.nav}}">
       <ul>
-        <li><a href="/index.html#features">主要功能</a></li>
-        <li><a href="/index.html#how">安全边界</a></li>
-        <li><a href="/index.html#faq">常见问题</a></li>
+        <li><a href="{{route:index}}#features">{{text:common.features}}</a></li>
+        <li><a href="{{route:index}}#how">{{text:common.safety}}</a></li>
+        <li><a href="{{route:index}}#faq">{{text:common.faq}}</a></li>
       </ul>
     </nav>
 
     <div class="nav__aside">
-      <button class="theme-toggle" type="button" data-theme-toggle aria-label="主题：跟随系统，点击切换">
+      <a class="language-link" data-language-link href="{{language:url}}" lang="{{language:lang}}" hreflang="{{language:lang}}" aria-label="{{text:common.switchLanguage}}">{{text:common.language}}</a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="{{text:common.themeLabel}}">
         <svg class="theme-icon theme-icon--auto" viewBox="0 0 18 18" aria-hidden="true">
           <circle cx="9" cy="9" r="6.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
           <path d="M9 2.4a6.6 6.6 0 0 1 0 13.2z" fill="currentColor"/>
@@ -51,9 +54,9 @@ try {
           <path d="M14.7 11.4A6.5 6.5 0 0 1 6.6 3.3a6.5 6.5 0 1 0 8.1 8.1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
         </svg>
       </button>
-      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+      <button class="nav__toggle" type="button" aria-label="{{text:common.menu}}" aria-expanded="false" aria-controls="primary-nav">
         <span class="nav__toggle-bar" aria-hidden="true"></span>
-        <span class="nav__toggle-label">菜单</span>
+        <span class="nav__toggle-label">{{text:common.menu}}</span>
       </button>
     </div>
   </div>
@@ -63,11 +66,11 @@ try {
   <section class="page" aria-labelledby="page-title">
     <div class="shell">
       <p class="eyebrow">CleanU</p>
-      <h1 id="page-title" class="page__title">更新日志</h1>
-      <p class="lede">每次发布的版本号、发布日期、说明文字和可下载的文件，都取自 GitHub 的 Release 列表。</p>
-      <p class="page__status" data-log-status role="status">正在读取 Release 列表…</p>
+      <h1 id="page-title" class="page__title">{{text:common.changelog}}</h1>
+      <p class="lede">{{text:changelog.intro}}</p>
+      <p class="page__status" data-log-status role="status">{{text:changelog.loading}}</p>
       <ol class="log" data-log></ol>
-      <p class="page__foot"><a href="https://github.com/youngluo/cleanu/releases">在 GitHub Releases 查看</a></p>
+      <p class="page__foot"><a href="https://github.com/youngluo/cleanu/releases">{{text:changelog.github}}</a></p>
     </div>
   </section>
 </main>
@@ -79,22 +82,23 @@ try {
         <img class="brand__mark" src="/assets/icon.webp" width="512" height="512" alt="">
         <span>CleanU</span>
       </span>
-      <p>安全、透明的 macOS 菜单栏清理工具。</p>
+      <p>{{text:common.tagline}}</p>
     </div>
-    <nav class="foot__links" aria-label="页脚链接">
-      <h3>链接</h3>
+    <nav class="foot__links" aria-label="{{text:common.footer}}">
+      <h3>{{text:common.links}}</h3>
       <ul>
         <li><a href="https://github.com/youngluo/cleanu-site">GitHub</a></li>
-        <li><a href="/changelog.html" aria-current="page">更新日志</a></li>
-        <li><a href="https://github.com/youngluo/cleanu-site/issues">问题反馈</a></li>
+        <li><a href="{{route:changelog}}" aria-current="page">{{text:common.changelog}}</a></li>
+        <li><a href="https://github.com/youngluo/cleanu-site/issues">{{text:common.feedback}}</a></li>
       </ul>
     </nav>
     <dl class="foot__meta">
-      <div><dt>平台</dt><dd>macOS 13+</dd></div>
+      <div><dt>{{text:common.platform}}</dt><dd>macOS 13+</dd></div>
     </dl>
   </div>
 </footer>
 
+<script type="application/json" id="site-copy">{{runtime}}</script>
 <script type="module" src="/site.js"></script>
 <script type="module" src="/pages/changelog/index.js"></script>
 </body>

@@ -319,6 +319,15 @@ h3 { font-size: 1.06rem; letter-spacing: -0.01em; }
 
 .nav__aside { display: flex; align-items: center; gap: var(--sp-3); margin-left: var(--sp-2); }
 
+.language-link {
+  flex: none;
+  padding: var(--sp-2);
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  color: var(--ink-2);
+}
+.language-link:hover { color: var(--accent-ink); }
+
 .nav__toggle {
   display: none;
   align-items: center;
@@ -435,7 +444,8 @@ html:not(.has-js) .shot-frame:first-child {
 /* ---------- screens ---------- */
 .screens__grid { display: grid; gap: var(--sp-6); }
 .tabs {
-  display: inline-flex;
+  display: inline-grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: var(--sp-1);
   padding: var(--sp-1);
   /* 用内描边代替 border：滑块的定位基准才和按钮一致 */
@@ -470,6 +480,8 @@ html:not(.has-js) .shot-frame:first-child {
   transition: transform 0.28s cubic-bezier(0.32, 0.72, 0, 1);
 }
 .tabs button {
+  min-width: 0;
+  overflow-wrap: anywhere;
   position: relative;
   z-index: 1;
   border: 0;
@@ -614,6 +626,12 @@ html:not(.has-js) .shot-frame:first-child {
   font-size: 0.86em;
 }
 
+/* 静态阅读不依赖 head 中样式与 Vite 打包后的 CSS 顺序。 */
+html:not(.has-js) [data-reveal] { opacity: 1; transform: none; }
+html:not(.has-js) .faq__a { grid-template-rows: 1fr; visibility: visible; }
+html:not(.has-js) .faq__q::after { display: none; }
+html:not(.has-js) [data-log-status] { display: none; }
+
 /* ---------- 子页面：更新日志 ---------- */
 .page { padding-block: var(--sp-section) var(--sp-section); }
 .page__title {
@@ -727,6 +745,12 @@ html:not(.has-js) .shot-frame:first-child {
   .nav__links ul { flex-direction: column; align-items: stretch; gap: var(--sp-1); }
   .nav__links a { padding: var(--sp-3); font-size: 1rem; }
   .section { padding-block: var(--sp-section); }
+  .nav__aside { margin-left: auto; }
+  html:not(.has-js) .nav { height: auto; }
+  html:not(.has-js) .nav__inner { height: auto; flex-wrap: wrap; padding-block: var(--sp-2); }
+  html:not(.has-js) .nav__links { position: static; display: block; width: 100%; order: 3; padding: 0; box-shadow: none; border: 0; }
+  html:not(.has-js) .nav__links ul { flex-direction: row; flex-wrap: wrap; }
+  html:not(.has-js) .nav__toggle { display: none; }
 }
 
 @media (max-width: 620px) {
@@ -734,7 +758,11 @@ html:not(.has-js) .shot-frame:first-child {
     .hero__actions .btn { flex: 1 1 100%; }
   .foot__inner { grid-template-columns: 1fr; gap: var(--sp-6); }
   .tabs { width: 100%; }
-  .tabs button { flex: 1 1 auto; padding: var(--sp-2) var(--sp-3); }
+  .tabs button { padding: var(--sp-2) 0; }
+  .nav__inner { gap: var(--sp-2); }
+  .nav__aside { gap: var(--sp-2); }
+  .nav__toggle { justify-content: center; width: 36px; height: 36px; padding: 0; }
+  .nav__toggle-label { display: none; }
 }
 
 /* ---------- 毛玻璃降级 ---------- */

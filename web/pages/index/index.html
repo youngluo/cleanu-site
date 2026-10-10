@@ -1,19 +1,15 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="{{locale}}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CleanU · 安全、透明的 macOS 菜单栏清理工具</title>
-<meta name="description" content="CleanU 是 macOS 菜单栏磁盘清理工具。扫描只读，覆盖缓存、临时文件、开发工具缓存、项目产物、应用残留、安装包、压缩包与大文件，逐项复核确认后才会清理。macOS 13+，Apple Silicon 与 Intel 各自提供 DMG。">
+<title>{{text:index.title}}</title>
+<meta name="description" content="{{text:index.description}}">
 <meta name="theme-color" content="#F5F4F1" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#121514" media="(prefers-color-scheme: dark)">
+{{alternates}}
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/styles.css">
-<noscript><style>
-  [data-reveal] { opacity: 1; transform: none; }
-  .faq__a { grid-template-rows: 1fr; visibility: visible; }
-  .faq__q::after { display: none; }
-</style></noscript>
 <script>
 document.documentElement.classList.add('has-js');
 /* 先落主题模式，避免手动选色后刷新闪一下 */
@@ -26,7 +22,7 @@ try {
 </script>
 </head>
 <body id="top">
-<a class="skip-link" href="#main">跳到主要内容</a>
+<a class="skip-link" href="#main">{{text:common.skip}}</a>
 
 <header class="nav" data-nav>
   <div class="nav__inner shell">
@@ -35,16 +31,17 @@ try {
       <span>CleanU</span>
     </a>
 
-    <nav class="nav__links" id="primary-nav" aria-label="主导航">
+    <nav class="nav__links" id="primary-nav" aria-label="{{text:common.nav}}">
       <ul>
-        <li><a href="#features">主要功能</a></li>
-        <li><a href="#how">安全边界</a></li>
-        <li><a href="#faq">常见问题</a></li>
+        <li><a href="#features">{{text:common.features}}</a></li>
+        <li><a href="#how">{{text:common.safety}}</a></li>
+        <li><a href="#faq">{{text:common.faq}}</a></li>
       </ul>
     </nav>
 
     <div class="nav__aside">
-      <button class="theme-toggle" type="button" data-theme-toggle aria-label="主题：跟随系统，点击切换">
+      <a class="language-link" data-language-link href="{{language:url}}" lang="{{language:lang}}" hreflang="{{language:lang}}" aria-label="{{text:common.switchLanguage}}">{{text:common.language}}</a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="{{text:common.themeLabel}}">
         <svg class="theme-icon theme-icon--auto" viewBox="0 0 18 18" aria-hidden="true">
           <circle cx="9" cy="9" r="6.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
           <path d="M9 2.4a6.6 6.6 0 0 1 0 13.2z" fill="currentColor"/>
@@ -57,9 +54,9 @@ try {
           <path d="M14.7 11.4A6.5 6.5 0 0 1 6.6 3.3a6.5 6.5 0 1 0 8.1 8.1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
         </svg>
       </button>
-      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="primary-nav">
+      <button class="nav__toggle" type="button" aria-label="{{text:common.menu}}" aria-expanded="false" aria-controls="primary-nav">
         <span class="nav__toggle-bar" aria-hidden="true"></span>
-        <span class="nav__toggle-label">菜单</span>
+        <span class="nav__toggle-label">{{text:common.menu}}</span>
       </button>
     </div>
   </div>
@@ -71,51 +68,51 @@ try {
   <section class="hero" id="download" aria-labelledby="hero-title">
     <div class="shell hero__grid">
       <div class="hero__copy">
-        <p class="eyebrow">macOS 菜单栏 · 磁盘清理</p>
-        <h1 id="hero-title" class="lede">深度扫描并清理安全项目</h1>
-        <p class="hero__desc">扫描覆盖缓存、临时文件、开发工具缓存、项目产物、应用残留、安装包、压缩包与大文件，结果按缓存清理、项目清理、应用残留、空间分析分为四组。每一项都会列出路径和体积，你确认之后才会清理。</p>
+        <p class="eyebrow">{{text:index.eyebrow}}</p>
+        <h1 id="hero-title" class="lede">{{text:index.heading}}</h1>
+        <p class="hero__desc">{{text:index.intro}}</p>
         <div class="hero__actions">
-          <a class="btn btn--primary" href="https://github.com/youngluo/cleanu/releases/latest" data-download hidden>下载</a>
-          <a class="btn btn--primary" href="https://github.com/youngluo/cleanu/releases/latest" data-asset="arm64">下载 · Apple Silicon</a>
-          <a class="btn btn--ghost" href="https://github.com/youngluo/cleanu/releases/latest" data-asset="x86_64">下载 · Intel</a>
+          <a class="btn btn--primary" href="https://github.com/youngluo/cleanu/releases/latest" data-download hidden>{{text:index.download}}</a>
+          <a class="btn btn--primary" href="https://github.com/youngluo/cleanu/releases/latest" data-asset="arm64">{{text:index.downloadArm}}</a>
+          <a class="btn btn--ghost" href="https://github.com/youngluo/cleanu/releases/latest" data-asset="x86_64">{{text:index.downloadIntel}}</a>
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- 产品界面预览 -->
-  <section id="screens" class="section" aria-label="产品界面预览">
+  <!-- {{text:index.previewRegion}} -->
+  <section id="screens" class="section" aria-label="{{text:index.previewRegion}}">
     <div class="shell">
       <div class="screens__grid">
         <div class="show" data-show>
           <div class="show__bar">
-            <p class="show__label" id="screens-label">界面预览</p>
+            <p class="show__label" id="screens-label">{{text:index.previewLabel}}</p>
             <div role="tablist" aria-labelledby="screens-label" class="tabs" data-tabs>
               <span class="tabs__thumb" aria-hidden="true"></span>
-              <button type="button" role="tab" id="tab-idle" aria-controls="state-idle" aria-selected="true" tabindex="0">一键清理</button>
-              <button type="button" role="tab" id="tab-scanning" aria-controls="state-scanning" aria-selected="false" tabindex="-1">正在扫描</button>
-              <button type="button" role="tab" id="tab-review" aria-controls="state-review" aria-selected="false" tabindex="-1">扫描完成</button>
-              <button type="button" role="tab" id="tab-selected" aria-controls="state-selected" aria-selected="false" tabindex="-1">勾选确认</button>
-              <button type="button" role="tab" id="tab-done" aria-controls="state-done" aria-selected="false" tabindex="-1">清理完成</button>
+              <button type="button" role="tab" id="tab-idle" aria-controls="state-idle" aria-selected="true" tabindex="0">{{text:index.tabIdle}}</button>
+              <button type="button" role="tab" id="tab-scanning" aria-controls="state-scanning" aria-selected="false" tabindex="-1">{{text:index.tabScanning}}</button>
+              <button type="button" role="tab" id="tab-review" aria-controls="state-review" aria-selected="false" tabindex="-1">{{text:index.tabReview}}</button>
+              <button type="button" role="tab" id="tab-selected" aria-controls="state-selected" aria-selected="false" tabindex="-1">{{text:index.tabSelected}}</button>
+              <button type="button" role="tab" id="tab-done" aria-controls="state-done" aria-selected="false" tabindex="-1">{{text:index.tabDone}}</button>
             </div>
           </div>
 
           <div class="show__stage">
             <figure class="shot-frame" id="state-idle" role="tabpanel" aria-labelledby="tab-idle" tabindex="0">
-              <img class="shot" src="/assets/shot-idle.webp" width="2048" height="2116" loading="lazy" alt="一键清理">
+              <img class="shot" src="/assets/shot-idle.webp" width="2048" height="2116" loading="lazy" alt="{{text:index.altIdle}}">
             </figure>
             <figure class="shot-frame" id="state-scanning" role="tabpanel" aria-labelledby="tab-scanning" tabindex="0">
-              <img class="shot" src="/assets/shot-scanning.webp" width="2048" height="2116" loading="lazy" alt="正在扫描">
+              <img class="shot" src="/assets/shot-scanning.webp" width="2048" height="2116" loading="lazy" alt="{{text:index.altScanning}}">
             </figure>
             <figure class="shot-frame" id="state-review" role="tabpanel" aria-labelledby="tab-review" tabindex="0" data-pan="bottom">
-              <img class="shot" src="/assets/shot-review.webp" width="2048" height="2116" loading="lazy" alt="扫描完成">
+              <img class="shot" src="/assets/shot-review.webp" width="2048" height="2116" loading="lazy" alt="{{text:index.altReview}}">
             </figure>
             <figure class="shot-frame" id="state-selected" role="tabpanel" aria-labelledby="tab-selected" tabindex="0" data-pan="bottom">
-              <img class="shot" src="/assets/shot-selected.webp" width="2048" height="2116" loading="lazy" alt="勾选确认">
+              <img class="shot" src="/assets/shot-selected.webp" width="2048" height="2116" loading="lazy" alt="{{text:index.altSelected}}">
             </figure>
             <figure class="shot-frame" id="state-done" role="tabpanel" aria-labelledby="tab-done" tabindex="0" data-pan="bottom">
-              <img class="shot" src="/assets/shot-done.webp" width="2048" height="2116" loading="lazy" alt="清理完成">
+              <img class="shot" src="/assets/shot-done.webp" width="2048" height="2116" loading="lazy" alt="{{text:index.altDone}}">
             </figure>
           </div>
 
@@ -128,97 +125,97 @@ try {
   <section id="features" class="section" aria-labelledby="features-title">
     <div class="shell">
       <div class="section__head" data-reveal>
-        <h2 id="features-title">主要功能</h2>
-        <p>一次扫描，把可清理项和启动磁盘占用一起列出来。</p>
+        <h2 id="features-title">{{text:common.features}}</h2>
+        <p>{{text:index.featureIntro}}</p>
       </div>
       <div class="cards">
         <article class="card" data-reveal>
-          <h3><span class="card__idx">01</span>一次扫全</h3>
-          <p>一次深度扫描，结果汇总在同一块面板里。每一项都带条目数和体积，缓存、项目和残留分开列出。</p>
-          <p class="card__foot">常见条目：iOS 模拟器、Xcode 真机调试支持、DerivedData、npm 与 Homebrew 缓存。</p>
+          <h3><span class="card__idx">01</span>{{text:index.featureScan}}</h3>
+          <p>{{text:index.featureScanBody}}</p>
+          <p class="card__foot">{{text:index.featureScanFoot}}</p>
         </article>
         <article class="card" data-reveal>
-          <h3><span class="card__idx">02</span>安全扫描</h3>
-          <p>扫描阶段只读，不写入也不移动，扫描中随时可以「取消」。想要结果更完整，按提示条里的「去设置」开启完全磁盘访问。</p>
-          <p class="card__foot">扫描范围以当前用户的可读权限为限，不需要管理员密码。</p>
+          <h3><span class="card__idx">02</span>{{text:index.featureSafe}}</h3>
+          <p>{{text:index.featureSafeBody}}</p>
+          <p class="card__foot">{{text:index.featureSafeFoot}}</p>
         </article>
         <article class="card" data-reveal>
-          <h3><span class="card__idx">03</span>逐项复核再决定</h3>
-          <p>列表里每一项都带完整路径和实际体积，可以单独勾选或取消，按下「移到废纸篓」才算确认。</p>
-          <p class="card__foot">流程：按「一键清理」开始深度扫描 → 逐项复核 → 按「移到废纸篓」确认。</p>
+          <h3><span class="card__idx">03</span>{{text:index.featureReview}}</h3>
+          <p>{{text:index.featureReviewBody}}</p>
+          <p class="card__foot">{{text:index.featureReviewFoot}}</p>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- 安全边界 -->
+  <!-- {{text:common.safety}} -->
   <section id="how" class="section" aria-labelledby="how-title">
     <div class="shell">
       <div class="section__head" data-reveal>
-        <h2 id="how-title">安全边界</h2>
-        <p>五条边界，限定 CleanU 在这台 Mac 上能做的事。</p>
+        <h2 id="how-title">{{text:common.safety}}</h2>
+        <p>{{text:index.safetyIntro}}</p>
       </div>
       <ol class="rules" data-reveal>
         <li class="rule">
-          <h3>扫描只读</h3>
-          <p>扫描阶段只读取目录和文件属性，不写入、不移动、不删除任何东西。</p>
+          <h3>{{text:index.safetyRead}}</h3>
+          <p>{{text:index.safetyReadBody}}</p>
         </li>
         <li class="rule">
-          <h3>清理需要明确确认</h3>
-          <p>候选项只有你点下确认之后才会被处理，没有后台自动清理。</p>
+          <h3>{{text:index.safetyConfirm}}</h3>
+          <p>{{text:index.safetyConfirmBody}}</p>
         </li>
         <li class="rule">
-          <h3>执行前二次校验</h3>
-          <p>动手之前重新核对一遍候选项，路径或体积对不上的会被排除。</p>
+          <h3>{{text:index.safetyCheck}}</h3>
+          <p>{{text:index.safetyCheckBody}}</p>
         </li>
         <li class="rule">
-          <h3>只进废纸篓</h3>
-          <p>确认后的文件移入废纸篓，可以随时放回；Time Machine 快照单独处理，按系统方式精简，不进废纸篓。</p>
+          <h3>{{text:index.safetyTrash}}</h3>
+          <p>{{text:index.safetyTrashBody}}</p>
         </li>
         <li class="rule">
-          <h3>无需提权</h3>
-          <p>以当前用户权限运行，不需要管理员密码；读不到的路径就不出现在结果里。</p>
+          <h3>{{text:index.safetyPermissions}}</h3>
+          <p>{{text:index.safetyPermissionsBody}}</p>
         </li>
       </ol>
     </div>
   </section>
 
-  <!-- 常见问题 -->
+  <!-- {{text:common.faq}} -->
   <section id="faq" class="section" aria-labelledby="faq-title">
     <div class="shell">
       <div class="section__head" data-reveal>
-        <h2 id="faq-title">常见问题</h2>
+        <h2 id="faq-title">{{text:common.faq}}</h2>
       </div>
       <div class="faq" data-faq>
         <div class="faq__item">
-          <h3><button type="button" class="faq__q" aria-expanded="false" aria-controls="a1" id="q1">和「系统设置 → 储存空间」有什么区别？</button></h3>
+          <h3><button type="button" class="faq__q" aria-expanded="true" aria-controls="a1" id="q1">{{text:index.faqStorage}}</button></h3>
           <div class="faq__a" id="a1" role="region" aria-labelledby="q1">
             <div class="faq__a-inner">
-              <p>系统设置给你的是分类占用视图，能看到大块占用，但很难逐项处理，能动手的范围也有限。CleanU 把缓存、临时文件、开发工具缓存、项目产物、应用残留、安装包、压缩包和大文件这八类来源列成一张带完整路径和体积的清单，你逐项勾选后才移入废纸篓。</p>
+              <p>{{text:index.faqStorageBody}}</p>
             </div>
           </div>
         </div>
         <div class="faq__item">
-          <h3><button type="button" class="faq__q" aria-expanded="false" aria-controls="a3" id="q3">为什么需要「完全磁盘访问」权限？</button></h3>
+          <h3><button type="button" class="faq__q" aria-expanded="true" aria-controls="a3" id="q3">{{text:index.faqAccess}}</button></h3>
           <div class="faq__a" id="a3" role="region" aria-labelledby="q3">
             <div class="faq__a-inner">
-              <p>没有这项权限时，macOS 会挡住部分目录，扫描结果就不完整——你会看到某些来源是空的。授权之后 CleanU 才能读到那些路径下的缓存与产物。权限只用于「读到」：扫描本身是只读操作，CleanU 仍以当前用户权限运行，不需要管理员密码。</p>
+              <p>{{text:index.faqAccessBody}}</p>
             </div>
           </div>
         </div>
         <div class="faq__item">
-          <h3><button type="button" class="faq__q" aria-expanded="false" aria-controls="a2" id="q2">会不会误删正在用的东西？</button></h3>
+          <h3><button type="button" class="faq__q" aria-expanded="true" aria-controls="a2" id="q2">{{text:index.faqDeletion}}</button></h3>
           <div class="faq__a" id="a2" role="region" aria-labelledby="q2">
             <div class="faq__a-inner">
-              <p>清理动作只发生在你明确确认之后，而且每一项都由你在列表里勾选过；执行前还会对候选做二次校验，对不上的会被排除。文件也只是移进废纸篓，不是永久删除，发现删错了打开废纸篓放回即可。另外，项目产物（例如 <code>node_modules</code>）被移走后，对应项目要重新安装依赖才能运行。</p>
+              <p>{{text:index.faqDeletionBefore}}<code>node_modules</code>{{text:index.faqDeletionAfter}}</p>
             </div>
           </div>
         </div>
         <div class="faq__item">
-          <h3><button type="button" class="faq__q" aria-expanded="false" aria-controls="a4" id="q4">会上传我的文件或数据吗？</button></h3>
+          <h3><button type="button" class="faq__q" aria-expanded="true" aria-controls="a4" id="q4">{{text:index.faqUpload}}</button></h3>
           <div class="faq__a" id="a4" role="region" aria-labelledby="q4">
             <div class="faq__a-inner">
-              <p>扫描、复核和清理都是这台 Mac 上的本地文件操作，面板里的每一行都对应本机一个真实路径，Time Machine 快照也是在本地读取。清理结果进入本机废纸篓，快照类除外（按系统方式精简）。</p>
+              <p>{{text:index.faqUploadBody}}</p>
             </div>
           </div>
         </div>
@@ -234,22 +231,23 @@ try {
         <img class="brand__mark" src="/assets/icon.webp" width="512" height="512" alt="">
         <span>CleanU</span>
       </span>
-      <p>安全、透明的 macOS 菜单栏清理工具。</p>
+      <p>{{text:common.tagline}}</p>
     </div>
-    <nav class="foot__links" aria-label="页脚链接">
-      <h3>链接</h3>
+    <nav class="foot__links" aria-label="{{text:common.footer}}">
+      <h3>{{text:common.links}}</h3>
       <ul>
         <li><a href="https://github.com/youngluo/cleanu-site">GitHub</a></li>
-        <li><a href="/changelog.html">更新日志</a></li>
-        <li><a href="https://github.com/youngluo/cleanu-site/issues">问题反馈</a></li>
+        <li><a href="{{route:changelog}}">{{text:common.changelog}}</a></li>
+        <li><a href="https://github.com/youngluo/cleanu-site/issues">{{text:common.feedback}}</a></li>
       </ul>
     </nav>
     <dl class="foot__meta">
-      <div><dt>平台</dt><dd>macOS 13+</dd></div>
+      <div><dt>{{text:common.platform}}</dt><dd>macOS 13+</dd></div>
     </dl>
   </div>
 </footer>
 
+<script type="application/json" id="site-copy">{{runtime}}</script>
 <script type="module" src="/site.js"></script>
 <script type="module" src="/pages/index/index.js"></script>
 </body>

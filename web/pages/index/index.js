@@ -1,4 +1,5 @@
 import CFG from '../../config.js'
+import { copy } from '../../site.js'
 
 ;(function () {
   'use strict'
@@ -264,7 +265,7 @@ import CFG from '../../config.js'
     })
     if (!resolved) return
     downloadBtn.href = asset.browser_download_url
-    downloadBtn.textContent = '下载 · ' + (detected === 'arm64' ? 'Apple Silicon' : 'Intel')
+    downloadBtn.textContent = copy('download.label', { arch: detected === 'arm64' ? 'Apple Silicon' : 'Intel' })
   }
 
   function classify(name) {
