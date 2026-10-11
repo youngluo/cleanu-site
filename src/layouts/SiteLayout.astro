@@ -1,0 +1,46 @@
+---
+import '../styles/site.css';
+import { getAbsoluteLocaleUrl } from 'astro:i18n';
+import SiteHeader from '../components/SiteHeader/index.astro';
+import SiteFooter from '../components/SiteFooter/index.astro';
+import { assetHref, pageRoute, runtimeCopy } from '../i18n/copy.js';
+
+const { page, locale, copy } = Astro.props;
+const pageCopy = copy[page];
+const alternateLocales = ['zh-CN', 'en'];
+const alternates = Astro.site
+  ? alternateLocales.map((alternateLocale) => ({
+      locale: alternateLocale,
+      href: getAbsoluteLocaleUrl(alternateLocale, pageRoute(page)),
+    }))
+  : [];
+const runtime = runtimeCopy(page, copy);
+---
+
+<!DOCTYPE html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{pageCopy.title}</title>
+    <meta name="description" content={pageCopy.description}>
+    <meta name="theme-color" content="#F5F4F1" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#121514" media="(prefers-color-scheme: dark)">
+    {alternates.map(({ locale: alternateLocale, href }) => <link rel="alternate" hreflang={alternateLocale} href={href} />)}
+    <link rel="icon" href={assetHref('favicon.svg')} type="image/svg+xml">
+    <script is:inline>
+      document.documentElement.classList.add('has-js');
+      try {
+        var mode = localStorage.getItem('cleanu:theme-mode');
+        if (mode === 'light' || mode === 'dark' || mode === 'auto') document.documentElement.dataset.themeMode = mode;
+      } catch (e) { /* use system preference */ }
+    </script>
+  </head>
+  <body id="top">
+    <SiteHeader page={page} locale={locale} copy={copy.common} />
+    <slot />
+    <SiteFooter page={page} locale={locale} copy={copy.common} />
+    <script type="application/json" id="site-copy" set:html={runtime}></script>
+    <script src="../scripts/site.js"></script>
+  </body>
+</html>

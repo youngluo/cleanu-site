@@ -33,5 +33,25 @@
 
 - 截图保持实际中文界面；Release 标题、正文、版本和附件名保持远端原文，不增加翻译服务或运行时数据源。
 - 默认页面仍为中文，语言不写入浏览器存储，主题持久化保持原样。
-- Pages 工作流已在构建前取得 `base_url`；本次未执行工作流、提交、线上发布或 OpenSpec 归档。
+- 发布工作流读取仓库变量 `SITE_URL`；本次未执行工作流、提交、线上发布或 OpenSpec 归档。
 - 部署包只包含 `dist/` 的四个根 HTML 和资源，不发布模板与派生目录。开发命令和发布地址配置见两份 README。
+
+## Astro 迁移初始复验（历史路由）
+
+验收日期为 2026-10-11。此节记录 Astro 初次迁移、仍采用扁平 `.html` 路径时的历史检查；后续采用 Astro 原生目录式路由后的最终状态见下一节。
+
+- Astro 7.3.8，Node.js 22.21.0；`pnpm test` 的 6 项翻译和路由检查通过，`pnpm build` 成功生成八个根级 `.html` 页面。
+- 在 `/`、`changelog.html`、`privacy.html`、`support.html` 检查中文页面；检查英文首页直接访问、语言切换、主题切换、预览状态切换与 FAQ 展开。
+- 用 `SITE_URL=https://youngluo.github.io/cleanu-site/` 构建并检查八页的双向 `hreflang`、语言链接、图标与截图资源路径和站内目标均包含 `/cleanu-site/`。没有把该测试地址当成实际线上部署确认。
+- `REQUIRE_SITE_URL=true` 且缺少 `SITE_URL` 时构建失败；本地不设置 `SITE_URL` 时构建成功且不输出虚构的绝对语言地址。静态 HTML 已包含页面正文和 Release 备用链接。
+- 四个页面的外观延续现有共享与页面 CSS；Astro 开发工具栏已关闭，避免在开发预览中遮挡原有页面。工作流、线上发布与 OpenSpec 归档未执行。
+
+## Astro 原生路由复验
+
+- 将默认语言保留在 `/`，中文子页面改为 `/changelog/`、`/privacy/`、`/support/`；英文页面使用 `/en/`、`/en/changelog/`、`/en/privacy/`、`/en/support/`。根路径和子路径 Astro 构建均成功生成八个目录式页面。
+- 生成的导航、页脚、语言切换链接均按当前 locale 指向对应页面；英文页面的品牌、区块导航回到 `/en/`，语言切换回到对应中文页。
+- 通过 `SITE_URL=https://youngluo.github.io/cleanu-site/ REQUIRE_SITE_URL=true` 构建，确认 `hreflang` 绝对链接、页面链接、favicon、截图和 `_astro` 资源都带 `/cleanu-site/` 子路径。
+- 原有页面样式由共享 CSS 与各页面 CSS 继续加载；移除 Astro 迁移时新增的 body/main 弹性布局规则，恢复短页面原有的文档流。路由调整没有改动页面专属 CSS；本轮未运行 `pnpm test`。
+- 复验时发现 4179 端口的旧 `astro preview` 进程仍持有 `trailingSlash: 'never'` 配置，访问 `/en/` 因缺少旧配置要求的无尾斜杠路径而返回 404。重新构建并重启预览后，`/en/#features` 正常显示英文首页；切换中文、再切回英文均保留 `#features`，英文更新日志、支持和隐私页也分别在 `/en/changelog/`、`/en/support/`、`/en/privacy/` 正常打开。
+- 按 Astro 默认目录整理源码：路由入口只留在 `src/pages/`，组件、布局、语言文案、脚本和样式分别归入 `src/components/`、`src/layouts/`、`src/locales/`、`src/scripts/` 和 `src/styles/`，静态资源放在根级 `public/`；移除旧 `web/`。重建无路由冲突并生成八个页面；浏览器刷新后英文直达页保持英文，语言双向切换和四个英文页面链接正常，现有视觉样式与截图保持一致。
+- 目录命名复核后，将页面源码复用的路径辅助移入 `src/i18n/routes.js`，将构建期本地化校验及其测试移入根级 `scripts/`，同步更新导入、`pnpm test` 脚本和项目架构文档，并移除空的根级 `build/`。Astro 构建成功生成八个页面，`git diff --check` 通过；本次未运行测试套件。

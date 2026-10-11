@@ -1,5 +1,5 @@
-import CFG from '../../config.js'
-import { copy, locale } from '../../site.js'
+import CFG from './config.js'
+import { copy, locale } from './site.js'
 ;(function () {
   'use strict'
 

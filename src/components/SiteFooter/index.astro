@@ -1,0 +1,32 @@
+---
+import { assetHref, pageHref } from '../../i18n/copy.js';
+
+const { page, locale, copy } = Astro.props;
+---
+
+<footer class="foot">
+  <div class="shell foot__inner">
+    <div class="foot__brand">
+      <span class="brand brand--foot">
+        <img class="brand__mark" src={assetHref('assets/icon.webp')} width="512" height="512" alt="">
+        <span>CleanU</span>
+      </span>
+      <p>{copy.tagline}</p>
+    </div>
+    <nav class="foot__links" aria-label={copy.footer}>
+      <h3>{copy.links}</h3>
+      <ul>
+        <li><a href="https://github.com/youngluo/cleanu-site">GitHub</a></li>
+        <li><a href={pageHref('changelog', locale)} aria-current={page === 'changelog' ? 'page' : undefined}>{copy.changelog}</a></li>
+        <li><a href={pageHref('support', locale)} aria-current={page === 'support' ? 'page' : undefined}>{copy.support}</a></li>
+        <li><a href={pageHref('privacy', locale)} aria-current={page === 'privacy' ? 'page' : undefined}>{copy.privacy}</a></li>
+      </ul>
+    </nav>
+    <dl class="foot__meta">
+      <div>
+        <dt>{copy.platform}</dt>
+        <dd>macOS 13+</dd>
+      </div>
+    </dl>
+  </div>
+</footer>

@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="web/assets/icon.webp" width="128" height="128" alt="CleanU">
+  <img src="public/assets/icon.webp" width="128" height="128" alt="CleanU">
   <h1>CleanU</h1>
   <p>安全、透明的 macOS 菜单栏清理工具。</p>
   <p>简体中文&nbsp;&nbsp;|&nbsp;&nbsp;<a href="README.md">English</a></p>
@@ -27,15 +27,15 @@ CleanU 是 macOS 菜单栏上的磁盘清理工具：一次深度扫描把可清
 
 ```bash
 pnpm install
-pnpm dev        # http://localhost:5173/
+pnpm dev        # http://localhost:4321/
 pnpm build      # 产物在 dist/，发布只传 dist/
 pnpm preview    # 起静态服务验产物
 ```
 
-首页和更新日志均有简体中文与英文版本。中文路径是 `/index.html`、`/changelog.html`，英文路径是 `/index.en.html`、`/changelog.en.html`；`/` 保持中文，不根据浏览器偏好跳转。
+首页、更新日志、隐私政策和支持页均有简体中文与英文版本。简体中文是默认语言，使用 `/`、`/changelog/`、`/privacy/`、`/support/`；英文使用 `/en/`、`/en/changelog/`、`/en/privacy/`、`/en/support/`。站点不根据浏览器偏好跳转。
 
-页面模板在 `web/pages/`，文本在 `web/locales/{zh-CN,en}.json`。编辑任一源文件后，开发服务重新生成页面并刷新；`web/.generated/` 是自动派生目录，不需要手工编辑或提交。`pnpm build` 会先校验语言键和插值参数，再生成四个 HTML 入口交给 Vite 打包、压平到 `dist/`。
+Astro 使用默认的根级 `src/` 和 `public/` 目录。页面入口位于 `src/pages/`，英文入口放在 `src/pages/en/`，简体中文默认路由不带语言前缀。共享页面组件和布局位于 `src/components/`、`src/layouts/`。文本统一放在 `src/locales/{zh-CN,en}.json`，脚本放在 `src/scripts/`，样式放在 `src/styles/`，静态资源放在 `public/`。Astro 原生 i18n helper 生成语言链接，构建会校验语言键和插值参数，并按目录路由写入 `dist/`。
 
-普通本地构建可不设置 `SITE_URL`，此时不输出 SEO 语言关联。验证正式元信息时，设置包含部署子路径的真实 HTTPS 地址，例如 `SITE_URL=https://你的公开域名/站点路径/ pnpm build`。发布工作流自动从 `actions/configure-pages` 的 `base_url` 获取地址，并用 `REQUIRE_SITE_URL=true` 拒绝缺失或无效配置。
+普通本地构建可不设置 `SITE_URL`，此时不输出 SEO 语言关联。验证正式元信息时，设置包含部署子路径的真实 HTTPS 地址，例如 `SITE_URL=https://你的公开域名/站点路径/ pnpm build`。发布工作流读取仓库变量 `SITE_URL`，并用 `REQUIRE_SITE_URL=true` 拒绝缺失或无效配置。
 
-运行 `pnpm test` 检查生成、转义、翻译契约与引用失败条件。首版截图仍为实际中文界面，GitHub Release 内容保留原文；语言关联不会改变站内相对链接。
+运行 `pnpm test` 检查翻译契约、公开站点地址校验以及页面/资源路径映射。截图仍为实际中文界面，GitHub Release 内容保留原文；语言关联不会改变站内导航。

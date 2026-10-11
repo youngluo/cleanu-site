@@ -13,7 +13,8 @@
     "footer": "Footer links",
     "links": "Links",
     "changelog": "Changelog",
-    "feedback": "Report an issue",
+    "privacy": "Privacy",
+    "support": "Support",
     "platform": "Platform"
   },
   "index": {
@@ -74,6 +75,43 @@
     "intro": "Versions, publication dates, release notes and downloads come directly from GitHub Releases.",
     "loading": "Loading releases…",
     "github": "View on GitHub Releases"
+  },
+  "privacy": {
+    "title": "Privacy Policy · CleanU",
+    "description": "Learn how the CleanU macOS app and website handle local data, update requests and website browsing data.",
+    "updated": "Last updated: October 11, 2026",
+    "intro": "This policy applies to the CleanU macOS app and the CleanU website. Scanning and cleanup run locally on your Mac; scan results and cleanup history are not uploaded to a server.",
+    "scopeTitle": "Information the app processes",
+    "scopeBody": "During a scan, CleanU reads directories, file paths and file attributes on your Mac to identify candidates and calculate their sizes. Scanning, review and cleanup happen locally; the app does not upload file contents, scan results or cleanup history. CleanU does not require an account and does not include in-app advertising or analytics SDKs.",
+    "storedTitle": "Data stored on your Mac",
+    "storedBody": "To show recent activity and identify app ownership, CleanU may store up to 50 cleanup-operation summaries and up to 2,000 ownership records linking app identifiers to related directories. Operation summaries may include file paths, display names, sizes, categories, outcomes and timestamps; ownership records may also include local directory paths and app identifiers. Preferences are stored locally too.",
+    "locationBefore": "App data is stored at ",
+    "locationAfter": ". To remove it, quit CleanU, choose “Go → Go to Folder…” in Finder, enter this path and delete the CleanU folder.",
+    "networkTitle": "Network requests and website data",
+    "updateBody": "The app contacts GitHub for the public version manifest only when you manually check for updates. This request does not include scan results, file paths, cleanup history or a device identifier. GitHub may still receive connection information such as your IP address and request headers in the normal course of serving the request. Download buttons open GitHub Releases.",
+    "websiteBody": "The website is hosted on Cloudflare Pages and reads public release information from the GitHub API. Your browser's local storage keeps your theme choice; session storage temporarily caches Release data for the current browser tab, and is usually cleared when the tab closes. You can also clear this website's browser data. The website does not include advertising or third-party analytics scripts. Hosting and GitHub services may process ordinary access logs and connection information under their own policies.",
+    "thirdPartyTitle": "Third-party services",
+    "thirdPartyBody": "When you use GitHub or Cloudflare services, their privacy policies govern their handling of data:",
+    "githubPrivacy": "GitHub Privacy Statement",
+    "cloudflarePrivacy": "Cloudflare Privacy Policy",
+    "contactTitle": "Contact and feedback",
+    "contactBody": "For product help or questions about this policy, visit the support page. GitHub Issues are public; do not post personal information, full file paths, sensitive screenshots or unchecked logs.",
+    "changesTitle": "Policy changes",
+    "changesBody": "If the app's data practices change, we will update the date and information on this page."
+  },
+  "support": {
+    "title": "Support · CleanU",
+    "description": "Get help with CleanU, report a problem or read the release history.",
+    "intro": "Need help or have a feature suggestion? Contact the maintainers through CleanU's GitHub Issues.",
+    "issueTitle": "Report a problem",
+    "issueBody": "Please include the CleanU version, macOS version, steps to reproduce, expected result and actual result when possible. This helps us investigate.",
+    "issueLink": "Open CleanU GitHub Issues",
+    "privacyTitle": "Protect your privacy before posting",
+    "privacyBody": "GitHub Issues are public by default. Before posting, review the text, screenshots and logs, and remove usernames, personal file paths, filenames and anything else you do not want to make public. CleanU does not upload diagnostic logs automatically; attach them yourself only after checking that they are safe to share.",
+    "updatesTitle": "Downloads and updates",
+    "updatesBody": "Visit the home page to download the version for Apple Silicon or Intel, or read the release history.",
+    "downloadLink": "Go to downloads",
+    "changelogLink": "Read the changelog"
   },
   "runtime": {
     "theme": {

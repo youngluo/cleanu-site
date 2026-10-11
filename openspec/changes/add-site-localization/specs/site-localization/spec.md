@@ -6,27 +6,26 @@
 
 ### Requirement: Independently addressable language versions
 
-站点 SHALL 提供中文首页 `index.html`、中文更新日志 `changelog.html`、英文首页 `index.en.html` 和英文更新日志 `changelog.en.html`。直接访问任意语言页面时，返回的 HTML MUST 已包含对应语言的静态正文。站点默认首页 SHALL 保持中文，现有中文 URL MUST 继续可用。
+站点 SHALL 使用 Astro 原生 i18n 路由提供首页、更新日志、隐私政策和支持页的简体中文与英文静态版本。简体中文为默认语言，路由为 `/`、`/changelog/`、`/privacy/`、`/support/`；英文路由为 `/en/`、`/en/changelog/`、`/en/privacy/`、`/en/support/`。直接访问任意页面时，返回的 HTML MUST 已包含 URL 对应语言的正文。站点默认首页 SHALL 保持中文。
 
 #### Scenario: Directly opening a language-specific page
 
-- **WHEN** 访问者直接打开四个页面 URL 中的任意一个
+- **WHEN** 访问者直接打开八个页面 URL 中的任意一个
 - **THEN** 页面显示该 URL 对应的内容和语言，无需先访问首页或执行文案替换脚本
 
-#### Scenario: Keeping existing Chinese addresses
+#### Scenario: Keeping the default locale at the root
 
-- **WHEN** 访问者打开站点根地址、`index.html` 或 `changelog.html`
+- **WHEN** 访问者打开站点根地址或任一中文页面 URL
 - **THEN** 站点显示对应的中文页面，已有页面锚点保持可访问
 
 ### Requirement: Complete static localization
 
-每个页面 SHALL 为站点维护的正文、导航、页脚、标题、描述、图片替代文本及辅助技术标签提供对应语言的文案。中文页面的文档语言 MUST 为 `zh-CN`，英文页面 MUST 为 `en`。品牌名、技术标识、平台和架构名称不要求翻译。
+四类页面 SHALL 为站点维护的正文、导航、页脚、标题、描述、图片替代文本及辅助技术标签提供对应语言的文案。中文页面的文档语言 MUST 为 `zh-CN`，英文页面 MUST 为 `en`。品牌名、技术标识、平台和架构名称不要求翻译。
 
 #### Scenario: Reading an English page without JavaScript
 
-- **WHEN** 访问者禁用 JavaScript 后打开英文首页或英文更新日志
-- **THEN** 页面标题、静态正文、导航、页脚及相应的辅助技术标签使用英文，首页 FAQ 的静态答案仍可阅读
-- **THEN** 更新日志提供指向 GitHub Releases 的可用链接，不要求在无 JavaScript 时加载远端发布列表
+- **WHEN** 访问者禁用 JavaScript 后打开任一英文页面
+- **THEN** 页面标题、静态正文、导航、页脚及相应辅助技术标签使用英文；首页 FAQ 答案可阅读，更新日志提供可用的 GitHub Releases 链接
 
 #### Scenario: Exposing the language to assistive technology
 
@@ -35,21 +34,21 @@
 
 ### Requirement: Accessible language switching and consistent navigation
 
-两页 SHALL 提供可用键盘访问的普通语言切换链接，指向当前逻辑页面的另一种语言版本。站内跨页导航 MUST 保持当前页面语言。在 JavaScript 可用时，语言切换 MUST 保留当前有效锚点；禁用 JavaScript 时，语言切换 MUST 仍能到达对应逻辑页面。
+四类页面 SHALL 提供可用键盘访问的普通语言切换链接，指向当前逻辑页面的另一种语言版本。站内跨页导航 MUST 保持当前页面语言。在 JavaScript 可用时，语言切换 MUST 保留当前有效锚点；禁用 JavaScript 时，语言切换 MUST 仍能到达对应逻辑页面。
 
 #### Scenario: Switching the current page language
 
-- **WHEN** 访问者在英文更新日志中选择中文
-- **THEN** 浏览器打开中文更新日志，而不是跳回首页
+- **WHEN** 访问者在英文更新日志、隐私政策或支持页中选择中文
+- **THEN** 浏览器打开相同逻辑页面的中文版本，而不是跳回首页
 
 #### Scenario: Preserving the current section
 
-- **WHEN** JavaScript 可用，访问者在 `index.html#faq` 选择英文
-- **THEN** 浏览器打开 `index.en.html#faq`，并定位到对应 FAQ 区块
+- **WHEN** JavaScript 可用，访问者在 `/#faq` 选择英文
+- **THEN** 浏览器打开 `/en/#faq`，并定位到对应 FAQ 区块
 
 #### Scenario: Navigating within the English site
 
-- **WHEN** 访问者从英文首页打开更新日志，再通过导航返回首页的功能或安全边界区块
+- **WHEN** 访问者从任一英文页面打开另一站内页面，再通过导航返回首页的功能或安全边界区块
 - **THEN** 所有目标页面保持英文，并保留链接所指定的区块锚点
 
 #### Scenario: Switching without JavaScript
@@ -63,7 +62,7 @@
 
 #### Scenario: Opening English with Chinese browser preferences
 
-- **WHEN** 浏览器首选语言为中文，访问者打开或刷新 `index.en.html`
+- **WHEN** 浏览器首选语言为中文，访问者打开或刷新 `/en/`
 - **THEN** 页面保持英文，不跳转到中文页面
 
 #### Scenario: Storage is unavailable
@@ -106,12 +105,12 @@ Release 标题、说明正文、版本标识和附件名称 SHALL 保持远端�
 
 ### Requirement: Discoverable published language variants
 
-正式发布的每个页面 SHALL 提供自身语言和对应另一种语言页面的 `hreflang` 链接。链接 MUST 使用实际部署站点的完整公开 URL，包含部署子路径。发布流程 MUST 在无法确定有效公开站点 URL 时失败，不能发布指向示例域名或本机地址的语言关联。
+正式发布的八个页面 SHALL 提供自身语言和对应另一种语言页面的 `hreflang` 链接。链接 MUST 使用实际部署站点的完整公开 URL，包含部署子路径。发布流程 MUST 在无法确定有效公开站点 URL 时失败，不能发布指向示例域名或本机地址的语言关联。
 
 #### Scenario: Publishing under a repository subpath
 
 - **WHEN** 站点发布到一个带子路径的公开地址
-- **THEN** 各页面的语言关联包含该子路径，并将首页与首页、更新日志与更新日志正确配对
+- **THEN** 各页面的语言关联包含该子路径，并将每种逻辑页面与另一种语言的同页版本正确配对
 
 #### Scenario: Rejecting missing publication metadata
 
@@ -120,7 +119,7 @@ Release 标题、说明正文、版本标识和附件名称 SHALL 保持远端�
 
 ### Requirement: Development and build consistency
 
-开发环境与构建后的静态产物 SHALL 提供相同的四种页面路径、静态文案和站内语言导航行为。编辑模板或语言资源后，开发页面 SHALL 更新到新内容。缺失必需翻译、残留模板占位符、未知站内引用或缺失页面产物 MUST 导致构建失败，并指出相关页面、键或引用。产物 SHALL 在根目录或部署子路径下正确解析页面链接和资源。
+开发环境与构建后的静态产物 SHALL 提供相同的八种页面路径、静态文案和站内语言导航行为。编辑页面组件或语言资源后，开发页面 SHALL 更新到新内容。缺失必需翻译或缺失页面产物 MUST 导致构建失败，并指出相关页面或文案键。产物 SHALL 在根目录或部署子路径下正确解析页面链接和资源。
 
 #### Scenario: Comparing development and preview
 
@@ -139,7 +138,7 @@ Release 标题、说明正文、版本标识和附件名称 SHALL 保持远端�
 
 #### Scenario: Failing on invalid local references
 
-- **WHEN** 构建发现不存在的站内页面、无法识别的站内引用形态或缺少预期页面产物
+- **WHEN** 构建发现缺少预期页面、站内链接目标或静态资源
 - **THEN** 构建失败并报告问题目标，不生成看似成功但无法导航的发布包
 
 ### Requirement: Responsive localized controls
@@ -155,3 +154,17 @@ Release 标题、说明正文、版本标识和附件名称 SHALL 保持远端�
 
 - **WHEN** 访问者在窄屏中英文页面打开导航并使用语言切换入口
 - **THEN** 导航和语言入口可见且可操作，目标语言页面保持对应的逻辑页面
+
+### Requirement: Existing visual design and interactions are preserved
+
+Astro 重构 MUST 保留现有页面的视觉风格、布局、排版、颜色令牌、页面专属样式和控件外观。中英文版本 MUST 共用对应页面的视觉规则；路由和组件组织按 Astro 约定实现，现有页面功能仍须可用。项目 MUST 使用根级默认 `src/` 和 `public/` 目录；`src/pages/` 只存放 Astro 路由入口，脚本与样式分别放在 `src/scripts/` 和 `src/styles/`。页面源码使用的路由与资源路径辅助 MUST 放在 `src/i18n/`；构建期文案与发布地址校验及其测试 MUST 放在根级 `scripts/`，不得混入生成产物目录。旧 `web/` 目录及 Vite 专用配置和入口生成器 MUST 移除。
+
+#### Scenario: Viewing pages after the framework migration
+
+- **WHEN** 访问者打开首页、更新日志、隐私政策或支持页的任一语言版本
+- **THEN** 页面继续使用迁移前对应页面的布局、配色、排版、截图和控件样式
+
+#### Scenario: Using existing interactive controls
+
+- **WHEN** 访问者使用主题切换、移动导航、首页预览与 FAQ，或查看动态 Release 列表
+- **THEN** 控件的键盘与减动效行为保持可用，页面行为与迁移前一致

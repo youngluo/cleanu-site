@@ -1,0 +1,51 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { copyFor } from '../../i18n/copy.js';
+import '../../styles/privacy.css';
+
+const { locale } = Astro.props;
+const copy = copyFor(locale);
+---
+<SiteLayout page="privacy" locale={locale} copy={copy}>
+<main id="main">
+  <section class="page" aria-labelledby="page-title">
+    <div class="shell">
+      <p class="eyebrow">CleanU</p>
+      <h1 id="page-title" class="page__title">{copy.common.privacy}</h1>
+      <p class="lede">{copy.privacy.intro}</p>
+      <p class="page__status"><time datetime="2026-10-11">{copy.privacy.updated}</time></p>
+      <div class="reading">
+        <section class="reading__section">
+          <h2>{copy.privacy.scopeTitle}</h2>
+          <p>{copy.privacy.scopeBody}</p>
+        </section>
+        <section class="reading__section">
+          <h2>{copy.privacy.storedTitle}</h2>
+          <p>{copy.privacy.storedBody}</p>
+          <p>{copy.privacy.locationBefore}<code>~/Library/Application Support/CleanU</code>{copy.privacy.locationAfter}</p>
+        </section>
+        <section class="reading__section">
+          <h2>{copy.privacy.networkTitle}</h2>
+          <p>{copy.privacy.updateBody}</p>
+          <p>{copy.privacy.websiteBody}</p>
+        </section>
+        <section class="reading__section">
+          <h2>{copy.privacy.thirdPartyTitle}</h2>
+          <p>{copy.privacy.thirdPartyBody}</p>
+          <ul>
+            <li><a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener noreferrer">{copy.privacy.githubPrivacy}</a></li>
+            <li><a href="https://www.cloudflare.com/privacypolicy/" rel="noopener noreferrer">{copy.privacy.cloudflarePrivacy}</a></li>
+          </ul>
+        </section>
+        <section class="reading__section">
+          <h2>{copy.privacy.contactTitle}</h2>
+          <p>{copy.privacy.contactBody}</p>
+        </section>
+        <section class="reading__section">
+          <h2>{copy.privacy.changesTitle}</h2>
+          <p>{copy.privacy.changesBody}</p>
+        </section>
+      </div>
+    </div>
+  </section>
+</main></SiteLayout>

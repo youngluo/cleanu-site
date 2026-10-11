@@ -1,5 +1,5 @@
-import CFG from '../../config.js'
-import { copy } from '../../site.js'
+import CFG from './config.js'
+import { copy } from './site.js'
 
 ;(function () {
   'use strict'

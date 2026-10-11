@@ -5,29 +5,26 @@
 ## 架构
 
 ```
-web/
-├── pages/
-│   ├── index/{index.html, index.js}      首页模板与交互
-│   └── changelog/{index.html, index.js}  更新日志模板与交互
-├── locales/{zh-CN,en}.json              唯一文案源（静态 + 运行时）
-├── .generated/pages/<stem>/index.html   启动 / 构建派生入口，不提交
-├── site.js         语言 / 文案 / 主题 / 抽屉 / 区块高亮 / 淡入（两页共用）
-├── styles.css      令牌 + 组件（两页共用）
-├── config.js       唯一外部数据源：运行时只请求 api.github.com 上 cleanu 的 Release
-├── favicon.svg
-└── assets/*.webp   预览图 + 品牌图标（由 gitignore 的 shots/ 原图经 cwebp 派生）
+src/
+├── pages/                     # Astro 文件路由；默认 zh-CN + en/ 下的英文路由
+├── layouts/SiteLayout.astro
+├── components/                # 共享导航、页脚及四种页面内容
+├── i18n/{copy,routes}.js      # 文案、页面标识与资源 URL
+├── locales/{zh-CN,en}.json   # 唯一文案源（静态 + 运行时）
+├── scripts/                   # 主题、导航、预览和 Release 交互
+└── styles/                    # 全局及页面专属 CSS
+public/                        # favicon 与截图、品牌图标等静态资源
+scripts/                       # 构建期文案与发布地址校验及测试
 ```
 
-- 页面、语言与产物映射只在 `vite.config.js` 定义；两页共用各自一份 HTML 模板。中文输出 `index.html` / `changelog.html`，英文输出 `index.en.html` / `changelog.en.html`，根地址保持中文。
-- 生成入口目录名等于输出文件去掉 `.html` 的名称；`build/localization.js` 在 Vite 读取入口之前生成真实 HTML，开发监听只读模板与语言资源，不监听派生目录。
-- 模板只用受限的 `{{text:key}}`、`{{route:page}}` 和元信息占位符；文案只保存文本，HTML 插值转义，运行时 JSON 转义 `<`。缺失键、参数不一致或未知占位符必须失败，不能跨语言回退。
+- Astro 负责静态构建和原生国际化路由。`zh-CN` 是无前缀默认语言，英文路由位于 `/en/`；文件系统路由与 `astro:i18n` URL helper 共同生成语言地址，根地址保持中文。
+- 页面标识和资源 URL 辅助放在 `src/i18n/routes.js`，由应用源码复用；构建期文案与发布地址校验及其测试放在根级 `scripts/`，根级 `build/` 不存放源码。
+- 每个页面和语言各有一个薄 Astro 入口，共用页面组件、布局和导航/页脚。文案保存在 `src/locales/{zh-CN,en}.json`，构建配置会校验两种语言的键、类型和插值参数；缺失键不能回退到另一种语言。
 - 语言以 URL 为准，普通链接切换；JS 只增强有效锚点保留。GitHub Release 缓存保存原始数据，标题 / 正文 / 附件名不翻译，正文只用 `textContent`。
-- 正式发布从 Pages `base_url` 取得 `SITE_URL`（含子路径），启用 `REQUIRE_SITE_URL=true`；本地可省略但不生成 `hreflang`，不得猜公开域名。
-- 横切逻辑一律进 `site.js`，别复制到各页。
-- 只发布 `dist/`：整目录传 `web/` 会得到 `/pages/<name>/index.html` 这种 URL。
-- 平台关闭了目录索引，所以产物里两页互链是 `./changelog.html` 同目录形式，不是 `/changelog/`；URL 形状只在 `vite.config.js` 改（`base`、`pages`、`flatten-pages`）。
-- 模板 HTML 的本地 `src`/`href` 一律根绝对，跨页用 `{{route:page}}`；JS 的 `import` 走相对路径，压平插件不改写它。
-- 改 `flatten-pages` 三条不可回退：单次遍历改写每条 `src`/`href`；认不出的引用形态直接让构建失败并打出那条引用；重新落名走 `this.emitFile`。
+- 正式发布设置包含部署子路径的 `SITE_URL`，并启用 `REQUIRE_SITE_URL=true`；本地可省略，省略时不生成 `hreflang`，不得猜公开域名。
+- 横切逻辑放在 `src/scripts/site.js`，别复制到各页；运行时 Release 配置放在 `src/scripts/config.js`。页面交互脚本和样式分别放在 `src/scripts/`、`src/styles/`，不要放入 `src/pages/`，避免 Astro 将它们识别为路由。公共令牌、基础排版、导航 / 页脚和跨页共用的长文排版统一放在 `src/styles/site.css`。
+- 静态资源置于 `public/`；资源地址通过 `src/i18n/copy.js` 的 `BASE_URL` helper 生成，页面地址由 `astro:i18n` helper 生成，确保 Pages 子路径部署正确。
+- 使用 Astro 默认的根级 `src/` 与 `public/` 目录，只发布 `dist/`。Astro 使用目录式静态输出，首页与子页面都遵循文件系统路由结构。
 
 ## 样式规范
 

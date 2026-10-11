@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="web/assets/icon.webp" width="128" height="128" alt="CleanU">
+  <img src="public/assets/icon.webp" width="128" height="128" alt="CleanU">
   <h1>CleanU</h1>
   <p>A safe and transparent macOS menu bar cleanup app.</p>
   <p>English&nbsp;&nbsp;|&nbsp;&nbsp;<a href="README-zh_CN.md">简体中文</a></p>
@@ -27,15 +27,15 @@ Five boundaries on the homepage spell out what CleanU does on this Mac:
 
 ```bash
 pnpm install
-pnpm dev        # http://localhost:5173/
+pnpm dev        # http://localhost:4321/
 pnpm build      # the artifact lands in dist/ — publish dist/ only
 pnpm preview    # static server to check the built artifact
 ```
 
-Both pages have Simplified Chinese and English versions. Chinese uses `/index.html` and `/changelog.html`; English uses `/index.en.html` and `/changelog.en.html`. `/` stays Chinese. Browser preferences never redirect visitors.
+All four pages have Simplified Chinese and English versions. Simplified Chinese is the default locale at `/`, `/changelog/`, `/privacy/` and `/support/`; English uses `/en/`, `/en/changelog/`, `/en/privacy/` and `/en/support/`. Browser preferences never redirect visitors.
 
-Templates live in `web/pages/`, with text in `web/locales/{zh-CN,en}.json`. Editing either regenerates the HTML and reloads the development page. `web/.generated/` is ignored derived output: do not edit or commit it. Builds validate translation keys and parameters before passing four real HTML entries to Vite and flattening them into `dist/`.
+Astro uses its default root-level `src/` and `public/` directories. Routes live in `src/pages/`; default-locale pages stay at the root and English pages live under `src/pages/en/`. Shared page components and the layout are under `src/components/` and `src/layouts/`. Text lives in `src/locales/{zh-CN,en}.json`, scripts in `src/scripts/`, styles in `src/styles/`, and static assets in `public/`. Astro's i18n helpers generate language-aware links, while the build validates translation keys and interpolation parameters and writes directory-based static pages to `dist/`.
 
-Local builds may omit `SITE_URL`, in which case SEO language alternates are omitted. To verify publication metadata, set `SITE_URL` to the real public HTTPS address, including its deployment subpath. The Pages workflow obtains it from `actions/configure-pages`'s `base_url` and sets `REQUIRE_SITE_URL=true` to reject missing or invalid configuration.
+Local builds may omit `SITE_URL`, in which case SEO language alternates are omitted. To verify publication metadata, set `SITE_URL` to the real public HTTPS address, including its deployment subpath. The publish workflow reads the repository variable `SITE_URL` and sets `REQUIRE_SITE_URL=true` to reject missing or invalid configuration.
 
-Run `pnpm test` to check generation, escaping, translation contracts and invalid references. Screenshots remain the actual Chinese UI; GitHub Release content stays in its original language. SEO alternates do not change relative navigation.
+Run `pnpm test` to check translation contracts, public URL validation and page/asset path mapping. Screenshots remain the actual Chinese UI; GitHub Release content stays in its original language. SEO alternates do not change relative navigation.
