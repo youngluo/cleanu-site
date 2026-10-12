@@ -1,10 +1,9 @@
-import CFG from './config.js'
-import { copy } from './site.js'
+import { releaseConfig } from '../../common/index.js'
 
 ;(function () {
   'use strict'
 
-  var REL = CFG.release || {}
+  var REL = releaseConfig.release || {}
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   /* ---------- 界面状态：标签 + 幻灯片 ---------- */
@@ -230,84 +229,15 @@ import { copy } from './site.js'
 
   /* ---------- 下载：把按钮换成真实 DMG 直链 ---------- */
   var releasesUrl = 'https://github.com/' + REL.owner + '/' + REL.repo + '/releases'
-  var assetLinks = document.querySelectorAll('[data-asset]')
   var downloadBtn = document.querySelector('[data-download]')
-  var byArch = {}
-  var detected = null
 
-  assetLinks.forEach(function (link) {
-    link.href = releasesUrl + '/latest'
-  })
   if (downloadBtn) downloadBtn.href = releasesUrl + '/latest'
 
-  /* 先看显卡型号（真实硬件，Rosetta 下也不骗人），再看客户端提示 */
-  function detectArch() {
-    try {
-      var gl = document.createElement('canvas').getContext('webgl')
-      var ext = gl && gl.getExtension('WEBGL_debug_renderer_info')
-      var renderer = ext ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)).toLowerCase() : ''
-      if (/apple m\d|apple silicon/.test(renderer)) return 'arm64'
-      if (/intel|amd/.test(renderer)) return 'x86_64'
-    } catch (e) {
-      /* 拿不到就当我不知道 */
-    }
-    return null
-  }
-
-  /* 认得出架构、且那个架构有直链时才合并成一个按钮，否则保持两个 */
-  function applyDownload() {
-    if (!downloadBtn) return
-    var asset = detected ? byArch[detected] : null
-    var resolved = !!(asset && asset.browser_download_url)
-    downloadBtn.hidden = !resolved
-    assetLinks.forEach(function (link) {
-      link.hidden = resolved
-    })
-    if (!resolved) return
-    downloadBtn.href = asset.browser_download_url
-    downloadBtn.textContent = copy('download.label', { arch: detected === 'arm64' ? 'Apple Silicon' : 'Intel' })
-  }
-
-  function classify(name) {
-    var n = name.toLowerCase()
-    if (/(arm[-_ ]?64|aarch64|apple[\s-]?silicon)/.test(n)) return 'arm64'
-    if (/(x86[-_ ]?64|amd64|intel)/.test(n)) return 'x86_64'
-    return 'universal'
-  }
-
   function applyRelease(release) {
-    ;(release.assets || []).forEach(function (asset) {
-      if (!/\.dmg$/i.test(asset.name || '')) return
-      var arch = classify(asset.name)
-      if (arch === 'universal') {
-        if (!byArch.arm64) byArch.arm64 = asset
-        if (!byArch.x86_64) byArch.x86_64 = asset
-      } else if (!byArch[arch]) {
-        byArch[arch] = asset
-      }
+    var universal = (release.assets || []).find(function (asset) {
+      return /-universal\.dmg$/i.test(asset.name || '') && asset.browser_download_url
     })
-    assetLinks.forEach(function (link) {
-      var found = byArch[link.dataset.asset]
-      if (found && found.browser_download_url) link.href = found.browser_download_url
-    })
-    applyDownload()
-  }
-
-  detected = detectArch()
-  if (!detected && navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
-    navigator.userAgentData
-      .getHighEntropyValues(['architecture'])
-      .then(function (hints) {
-        var arch =
-          hints && hints.architecture === 'arm' ? 'arm64' : hints && hints.architecture === 'x86' ? 'x86_64' : null
-        if (arch) {
-          detected = arch
-          applyDownload()
-        }
-      })
-      .catch(function () {
-        /* 识别不到就保留兜底链接 */
-      })
+    if (downloadBtn && universal) downloadBtn.href = universal.browser_download_url
   }
 
   if (REL.owner && REL.repo) {

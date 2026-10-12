@@ -3,12 +3,12 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { resolveSiteUrl, validateCopy } from './localization.js';
+import { resolveSiteUrl, validateTranslations } from './localization.js';
 import { assetHref, normalizeBasePath, pageRoute, pageNames } from '../src/i18n/routes.js';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
-async function loadDictionaries() {
+async function loadTranslations() {
   const locales = ['zh-CN', 'en'];
   const entries = await Promise.all(locales.map(async (locale) => {
     const source = await readFile(resolve(root, 'src/locales', `${locale}.json`), 'utf8');
@@ -17,17 +17,17 @@ async function loadDictionaries() {
   return Object.fromEntries(entries);
 }
 
-test('Chinese and English copy have matching keys and interpolation parameters', async () => {
-  validateCopy(await loadDictionaries());
+test('translations have matching keys and interpolation parameters', async () => {
+  validateTranslations(await loadTranslations());
 });
 
-test('copy validation rejects missing keys and mismatched interpolation parameters', () => {
-  assert.throws(() => validateCopy({
+test('translation validation rejects missing keys and mismatched interpolation parameters', () => {
+  assert.throws(() => validateTranslations({
     zh: { section: { first: '你好 {name}', second: '保留' } },
     en: { section: { first: 'Hello {person}', second: 'Keep' } },
   }), /interpolation parameters differ at section\.first/);
 
-  assert.throws(() => validateCopy({
+  assert.throws(() => validateTranslations({
     zh: { section: { first: '保留' } },
     en: { section: { second: 'Keep' } },
   }), /missing translation/);

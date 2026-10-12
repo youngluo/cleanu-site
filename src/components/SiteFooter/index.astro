@@ -1,7 +1,7 @@
 ---
-import { assetHref, pageHref } from '../../i18n/copy.js';
+import { assetHref, pageHref } from '../../i18n/translations.js';
 
-const { page, locale, copy } = Astro.props;
+const { page, locale, translations } = Astro.props;
 ---
 
 <footer class="foot">
@@ -11,22 +11,21 @@ const { page, locale, copy } = Astro.props;
         <img class="brand__mark" src={assetHref('assets/icon.webp')} width="512" height="512" alt="">
         <span>CleanU</span>
       </span>
-      <p>{copy.tagline}</p>
+      <p>{translations.tagline}</p>
     </div>
-    <nav class="foot__links" aria-label={copy.footer}>
-      <h3>{copy.links}</h3>
+    <nav class="foot__links" aria-label={translations.support}>
+      <h3>{translations.support}</h3>
       <ul>
         <li><a href="https://github.com/youngluo/cleanu-site">GitHub</a></li>
-        <li><a href={pageHref('changelog', locale)} aria-current={page === 'changelog' ? 'page' : undefined}>{copy.changelog}</a></li>
-        <li><a href={pageHref('support', locale)} aria-current={page === 'support' ? 'page' : undefined}>{copy.support}</a></li>
-        <li><a href={pageHref('privacy', locale)} aria-current={page === 'privacy' ? 'page' : undefined}>{copy.privacy}</a></li>
+        <li><a href={pageHref('changelog', locale)} aria-current={page === 'changelog' ? 'page' : undefined}>{translations.changelog}</a></li>
+        <li><a href={pageHref('support', locale)} aria-current={page === 'support' ? 'page' : undefined}>{translations.support}</a></li>
       </ul>
     </nav>
-    <dl class="foot__meta">
-      <div>
-        <dt>{copy.platform}</dt>
-        <dd>macOS 13+</dd>
-      </div>
-    </dl>
+    <nav class="foot__links" aria-label={translations.legal}>
+      <h3>{translations.legal}</h3>
+      <ul>
+        <li><a href={pageHref('privacy', locale)} aria-current={page === 'privacy' ? 'page' : undefined}>{translations.privacy}</a></li>
+      </ul>
+    </nav>
   </div>
 </footer>

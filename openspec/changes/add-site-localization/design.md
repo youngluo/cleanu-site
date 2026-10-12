@@ -37,11 +37,15 @@ Astro 按静态站点构建；页面不需要服务器，也不以客户端路�
 
 语言文案由 `src/locales/{zh-CN,en}.json` 提供。构建前校验两种语言的文案键、非空文本和插值参数集合；运行时字典只包含当前页面实际使用的必要类别。HTML 内容由 Astro 正常转义，运行时 JSON 嵌入前额外转义 `<`，避免文案中的结束标签截断脚本数据块。
 
+页面使用 `translationsFor()` 获取当前语言文案；布局属性和运行时文案数据统一称为 `translations`，浏览器端通过 `translate()` 读取单条运行时文案。
+
+运行时文案读取与全站交互初始化分别放在 `src/common/translations.js` 和 `src/common/site.js`；页面模块通过 `src/common/index.js` 使用共享的配置与翻译接口，避免依赖初始化脚本的副作用。
+
 构建期的文案和 `SITE_URL` 校验实现及其 Node 测试放在根级 `scripts/`。页面源码会调用的路由与资源路径辅助放在 `src/i18n/`；根级 `build/` 不作为源码目录，避免与生成产物 `dist/` 混淆。
 
 ### 3. 将现有 CSS 和交互原样接入 Astro
 
-公共 `src/styles/site.css` 和四个页面的专属样式保持声明值不变，统一放入 `src/styles/` 并由组件导入。共享和页面交互脚本放入 `src/scripts/`，仍以普通模块脚本加载；无需将交互改写成 Vue、React 或客户端水合组件。`src/pages/` 只放 Astro 文件路由，避免脚本被识别为页面入口。静态资源使用 Astro 默认的根级 `public/` 目录。
+公共 `src/styles/site.css` 保留全站令牌、基础排版和跨组件规则；四个页面组件各自的 CSS 与所属 Astro 组件放在同一目录，CSS 声明值保持不变。页面私有交互脚本也与所属组件并置；跨页共享浏览器逻辑与 Release 配置放在 `src/common/`，仍以普通模块脚本加载，无需改写成 Vue、React 或客户端水合组件。构建期校验与测试留在根级 `scripts/`；`src/pages/` 只放 Astro 文件路由。静态资源使用 Astro 默认的根级 `public/` 目录。
 
 静态图标、截图与 favicon 放入 Astro `public` 资源目录，构建路径通过 `BASE_URL` 生成，以兼容仓库子路径。页面专属样式继续使用既有类名，特别保留首页预览标签的等宽布局、单一滑块尺寸计算、减动效、键盘操作与窄屏规则。
 
@@ -60,6 +64,8 @@ Astro 按静态站点构建；页面不需要服务器，也不以客户端路�
 除了截图对照，还检查八个 locale URL、英语/中文切换、无 JavaScript 的静态正文、`hreflang`、默认中文根路径及 Pages 子路径资源加载。不得以修改样式值来适配路由或组件结构。
 
 ## Risks / Trade-offs
+
+首页下载入口按用户后续确认调整为单个静态本地化按钮。浏览器端只选择文件名以 `-universal.dmg` 结尾且提供真实下载地址的 Release 产物，不再读取 WebGL 或 UA architecture。中文与英文按钮分别保持「下载」与「Download」，请求成功只更新 href。若尚无通用包、API 失败或限流，按钮仍可访问最新发布页；不把旧的单架构 DMG 当作通用包。移除不再使用的架构文案和运行时下载标签，更新相关安装说明。
 
 - [静态输出的路由名或子路径与 Astro 配置不同] → 使用 Astro locale URL helper，并核验根路径与部署子路径的最终 `dist/`。
 - [Astro 改写 HTML 结构后样式选择器失效] → 保留 class/ID/ARIA/data 属性和 CSS 声明；逐页浏览器对比。

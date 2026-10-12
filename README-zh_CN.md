@@ -34,7 +34,7 @@ pnpm preview    # 起静态服务验产物
 
 首页、更新日志、隐私政策和支持页均有简体中文与英文版本。简体中文是默认语言，使用 `/`、`/changelog/`、`/privacy/`、`/support/`；英文使用 `/en/`、`/en/changelog/`、`/en/privacy/`、`/en/support/`。站点不根据浏览器偏好跳转。
 
-Astro 使用默认的根级 `src/` 和 `public/` 目录。页面入口位于 `src/pages/`，英文入口放在 `src/pages/en/`，简体中文默认路由不带语言前缀。共享页面组件和布局位于 `src/components/`、`src/layouts/`。文本统一放在 `src/locales/{zh-CN,en}.json`，脚本放在 `src/scripts/`，样式放在 `src/styles/`，静态资源放在 `public/`。Astro 原生 i18n helper 生成语言链接，构建会校验语言键和插值参数，并按目录路由写入 `dist/`。
+Astro 使用默认的根级 `src/` 和 `public/` 目录。页面入口位于 `src/pages/`，英文入口放在 `src/pages/en/`，简体中文默认路由不带语言前缀。共享页面组件和布局位于 `src/components/`、`src/layouts/`。文本统一放在 `src/locales/{zh-CN,en}.json`，页面专属脚本和样式与对应组件并置，全站共享浏览器脚本放在 `src/common/`，构建期校验和测试放在根级 `scripts/`。全站共享样式放在 `src/styles/site.css`，静态资源放在 `public/`。Astro 原生 i18n helper 生成语言链接，构建会校验语言键和插值参数，并按目录路由写入 `dist/`。
 
 普通本地构建可不设置 `SITE_URL`，此时不输出 SEO 语言关联。验证正式元信息时，设置包含部署子路径的真实 HTTPS 地址，例如 `SITE_URL=https://你的公开域名/站点路径/ pnpm build`。发布工作流读取仓库变量 `SITE_URL`，并用 `REQUIRE_SITE_URL=true` 拒绝缺失或无效配置。
 

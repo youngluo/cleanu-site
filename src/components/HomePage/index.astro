@@ -1,63 +1,64 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
-import { assetHref, copyFor } from '../../i18n/copy.js';
-import '../../styles/home.css';
+import { assetHref, translationsFor } from '../../i18n/translations.js';
+import './home.css';
 
 const { locale } = Astro.props;
-const copy = copyFor(locale);
+const translations = translationsFor(locale);
 ---
-<SiteLayout page="index" locale={locale} copy={copy}>
+<SiteLayout page="index" locale={locale} translations={translations}>
 <main id="main">
 
   <!-- 首屏 -->
   <section class="hero" id="download" aria-labelledby="hero-title">
     <div class="shell hero__grid">
       <div class="hero__copy">
-        <p class="eyebrow">{copy.index.eyebrow}</p>
-        <h1 id="hero-title" class="lede">{copy.index.heading}</h1>
-        <p class="hero__desc">{copy.index.intro}</p>
-        <div class="hero__actions">
-          <a class="btn btn--primary" href="https://github.com/youngluo/cleanu/releases/latest" data-download hidden>{copy.index.download}</a>
-          <a class="btn btn--primary" href="https://github.com/youngluo/cleanu/releases/latest" data-asset="arm64">{copy.index.downloadArm}</a>
-          <a class="btn btn--ghost" href="https://github.com/youngluo/cleanu/releases/latest" data-asset="x86_64">{copy.index.downloadIntel}</a>
+        <div class="hero__brand">
+          <h1 id="hero-title" class="hero__brand-name">CleanU</h1>
+          <p class="eyebrow">{translations.index.eyebrow}</p>
         </div>
+        <p class="hero__desc">{translations.index.intro}</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="https://github.com/youngluo/cleanu/releases/latest" data-download>{translations.index.download}</a>
+        </div>
+        <p class="hero__meta"><span>macOS 13+</span><span>{translations.index.lifetimeUpdates}</span></p>
       </div>
 
     </div>
   </section>
 
 
-  <section id="screens" class="section" aria-label={copy.index.previewRegion}>
+  <section id="screens" class="section" aria-label={translations.index.previewRegion}>
     <div class="shell">
       <div class="screens__grid">
         <div class="show" data-show>
           <div class="show__bar">
-            <p class="show__label" id="screens-label">{copy.index.previewLabel}</p>
+            <p class="show__label" id="screens-label">{translations.index.previewLabel}</p>
             <div role="tablist" aria-labelledby="screens-label" class="tabs" data-tabs>
               <span class="tabs__thumb" aria-hidden="true"></span>
-              <button type="button" role="tab" id="tab-idle" aria-controls="state-idle" aria-selected="true" tabindex="0">{copy.index.tabIdle}</button>
-              <button type="button" role="tab" id="tab-scanning" aria-controls="state-scanning" aria-selected="false" tabindex="-1">{copy.index.tabScanning}</button>
-              <button type="button" role="tab" id="tab-review" aria-controls="state-review" aria-selected="false" tabindex="-1">{copy.index.tabReview}</button>
-              <button type="button" role="tab" id="tab-selected" aria-controls="state-selected" aria-selected="false" tabindex="-1">{copy.index.tabSelected}</button>
-              <button type="button" role="tab" id="tab-done" aria-controls="state-done" aria-selected="false" tabindex="-1">{copy.index.tabDone}</button>
+              <button type="button" role="tab" id="tab-idle" aria-controls="state-idle" aria-selected="true" tabindex="0">{translations.index.tabIdle}</button>
+              <button type="button" role="tab" id="tab-scanning" aria-controls="state-scanning" aria-selected="false" tabindex="-1">{translations.index.tabScanning}</button>
+              <button type="button" role="tab" id="tab-review" aria-controls="state-review" aria-selected="false" tabindex="-1">{translations.index.tabReview}</button>
+              <button type="button" role="tab" id="tab-selected" aria-controls="state-selected" aria-selected="false" tabindex="-1">{translations.index.tabSelected}</button>
+              <button type="button" role="tab" id="tab-done" aria-controls="state-done" aria-selected="false" tabindex="-1">{translations.index.tabDone}</button>
             </div>
           </div>
 
           <div class="show__stage">
             <figure class="shot-frame" id="state-idle" role="tabpanel" aria-labelledby="tab-idle" tabindex="0">
-              <img class="shot" src={assetHref('assets/shot-idle.webp')} width="2048" height="2116" loading="lazy" alt={copy.index.altIdle}>
+              <img class="shot" src={assetHref('assets/shot-idle.webp')} width="2048" height="2116" loading="lazy" alt={translations.index.altIdle}>
             </figure>
             <figure class="shot-frame" id="state-scanning" role="tabpanel" aria-labelledby="tab-scanning" tabindex="0">
-              <img class="shot" src={assetHref('assets/shot-scanning.webp')} width="2048" height="2116" loading="lazy" alt={copy.index.altScanning}>
+              <img class="shot" src={assetHref('assets/shot-scanning.webp')} width="2048" height="2116" loading="lazy" alt={translations.index.altScanning}>
             </figure>
             <figure class="shot-frame" id="state-review" role="tabpanel" aria-labelledby="tab-review" tabindex="0" data-pan="bottom">
-              <img class="shot" src={assetHref('assets/shot-review.webp')} width="2048" height="2116" loading="lazy" alt={copy.index.altReview}>
+              <img class="shot" src={assetHref('assets/shot-review.webp')} width="2048" height="2116" loading="lazy" alt={translations.index.altReview}>
             </figure>
             <figure class="shot-frame" id="state-selected" role="tabpanel" aria-labelledby="tab-selected" tabindex="0" data-pan="bottom">
-              <img class="shot" src={assetHref('assets/shot-selected.webp')} width="2048" height="2116" loading="lazy" alt={copy.index.altSelected}>
+              <img class="shot" src={assetHref('assets/shot-selected.webp')} width="2048" height="2116" loading="lazy" alt={translations.index.altSelected}>
             </figure>
             <figure class="shot-frame" id="state-done" role="tabpanel" aria-labelledby="tab-done" tabindex="0" data-pan="bottom">
-              <img class="shot" src={assetHref('assets/shot-done.webp')} width="2048" height="2116" loading="lazy" alt={copy.index.altDone}>
+              <img class="shot" src={assetHref('assets/shot-done.webp')} width="2048" height="2116" loading="lazy" alt={translations.index.altDone}>
             </figure>
           </div>
 
@@ -70,24 +71,24 @@ const copy = copyFor(locale);
   <section id="features" class="section" aria-labelledby="features-title">
     <div class="shell">
       <div class="section__head" data-reveal>
-        <h2 id="features-title">{copy.common.features}</h2>
-        <p>{copy.index.featureIntro}</p>
+        <h2 id="features-title">{translations.common.features}</h2>
+        <p>{translations.index.featureIntro}</p>
       </div>
       <div class="cards">
         <article class="card" data-reveal>
-          <h3><span class="card__idx">01</span>{copy.index.featureScan}</h3>
-          <p>{copy.index.featureScanBody}</p>
-          <p class="card__foot">{copy.index.featureScanFoot}</p>
+          <h3>{translations.index.featureScan}</h3>
+          <p>{translations.index.featureScanBody}</p>
+          <p class="card__foot">{translations.index.featureScanFoot}</p>
         </article>
         <article class="card" data-reveal>
-          <h3><span class="card__idx">02</span>{copy.index.featureSafe}</h3>
-          <p>{copy.index.featureSafeBody}</p>
-          <p class="card__foot">{copy.index.featureSafeFoot}</p>
+          <h3>{translations.index.featureSafe}</h3>
+          <p>{translations.index.featureSafeBody}</p>
+          <p class="card__foot">{translations.index.featureSafeFoot}</p>
         </article>
         <article class="card" data-reveal>
-          <h3><span class="card__idx">03</span>{copy.index.featureReview}</h3>
-          <p>{copy.index.featureReviewBody}</p>
-          <p class="card__foot">{copy.index.featureReviewFoot}</p>
+          <h3>{translations.index.featureReview}</h3>
+          <p>{translations.index.featureReviewBody}</p>
+          <p class="card__foot">{translations.index.featureReviewFoot}</p>
         </article>
       </div>
     </div>
@@ -97,31 +98,31 @@ const copy = copyFor(locale);
   <section id="how" class="section" aria-labelledby="how-title">
     <div class="shell">
       <div class="section__head" data-reveal>
-        <h2 id="how-title">{copy.common.safety}</h2>
-        <p>{copy.index.safetyIntro}</p>
+        <h2 id="how-title">{translations.common.safety}</h2>
+        <p>{translations.index.safetyIntro}</p>
       </div>
-      <ol class="rules" data-reveal>
+      <ul class="rules" data-reveal>
         <li class="rule">
-          <h3>{copy.index.safetyRead}</h3>
-          <p>{copy.index.safetyReadBody}</p>
+          <h3>{translations.index.safetyRead}</h3>
+          <p>{translations.index.safetyReadBody}</p>
         </li>
         <li class="rule">
-          <h3>{copy.index.safetyConfirm}</h3>
-          <p>{copy.index.safetyConfirmBody}</p>
+          <h3>{translations.index.safetyConfirm}</h3>
+          <p>{translations.index.safetyConfirmBody}</p>
         </li>
         <li class="rule">
-          <h3>{copy.index.safetyCheck}</h3>
-          <p>{copy.index.safetyCheckBody}</p>
+          <h3>{translations.index.safetyCheck}</h3>
+          <p>{translations.index.safetyCheckBody}</p>
         </li>
         <li class="rule">
-          <h3>{copy.index.safetyTrash}</h3>
-          <p>{copy.index.safetyTrashBody}</p>
+          <h3>{translations.index.safetyTrash}</h3>
+          <p>{translations.index.safetyTrashBody}</p>
         </li>
         <li class="rule">
-          <h3>{copy.index.safetyPermissions}</h3>
-          <p>{copy.index.safetyPermissionsBody}</p>
+          <h3>{translations.index.safetyPermissions}</h3>
+          <p>{translations.index.safetyPermissionsBody}</p>
         </li>
-      </ol>
+      </ul>
     </div>
   </section>
 
@@ -129,38 +130,38 @@ const copy = copyFor(locale);
   <section id="faq" class="section" aria-labelledby="faq-title">
     <div class="shell">
       <div class="section__head" data-reveal>
-        <h2 id="faq-title">{copy.common.faq}</h2>
+        <h2 id="faq-title">{translations.common.faq}</h2>
       </div>
       <div class="faq" data-faq>
         <div class="faq__item">
-          <h3><button type="button" class="faq__q" aria-expanded="true" aria-controls="a1" id="q1">{copy.index.faqStorage}</button></h3>
+          <h3><button type="button" class="faq__q" aria-expanded="true" aria-controls="a1" id="q1">{translations.index.faqStorage}</button></h3>
           <div class="faq__a" id="a1" role="region" aria-labelledby="q1">
             <div class="faq__a-inner">
-              <p>{copy.index.faqStorageBody}</p>
+              <p>{translations.index.faqStorageBody}</p>
             </div>
           </div>
         </div>
         <div class="faq__item">
-          <h3><button type="button" class="faq__q" aria-expanded="true" aria-controls="a3" id="q3">{copy.index.faqAccess}</button></h3>
+          <h3><button type="button" class="faq__q" aria-expanded="true" aria-controls="a3" id="q3">{translations.index.faqAccess}</button></h3>
           <div class="faq__a" id="a3" role="region" aria-labelledby="q3">
             <div class="faq__a-inner">
-              <p>{copy.index.faqAccessBody}</p>
+              <p>{translations.index.faqAccessBody}</p>
             </div>
           </div>
         </div>
         <div class="faq__item">
-          <h3><button type="button" class="faq__q" aria-expanded="true" aria-controls="a2" id="q2">{copy.index.faqDeletion}</button></h3>
+          <h3><button type="button" class="faq__q" aria-expanded="true" aria-controls="a2" id="q2">{translations.index.faqDeletion}</button></h3>
           <div class="faq__a" id="a2" role="region" aria-labelledby="q2">
             <div class="faq__a-inner">
-              <p>{copy.index.faqDeletionBefore}<code>node_modules</code>{copy.index.faqDeletionAfter}</p>
+              <p>{translations.index.faqDeletionBefore}<code>node_modules</code>{translations.index.faqDeletionAfter}</p>
             </div>
           </div>
         </div>
         <div class="faq__item">
-          <h3><button type="button" class="faq__q" aria-expanded="true" aria-controls="a4" id="q4">{copy.index.faqUpload}</button></h3>
+          <h3><button type="button" class="faq__q" aria-expanded="true" aria-controls="a4" id="q4">{translations.index.faqUpload}</button></h3>
           <div class="faq__a" id="a4" role="region" aria-labelledby="q4">
             <div class="faq__a-inner">
-              <p>{copy.index.faqUploadBody}</p>
+              <p>{translations.index.faqUploadBody}</p>
             </div>
           </div>
         </div>
@@ -168,5 +169,5 @@ const copy = copyFor(locale);
     </div>
   </section>
 </main>
-<script src="../../scripts/home.js"></script>
+<script src="./home.js"></script>
 </SiteLayout>

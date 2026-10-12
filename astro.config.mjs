@@ -1,16 +1,16 @@
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { defineConfig } from 'astro/config';
-import { resolveSiteUrl, validateCopy } from './scripts/localization.js';
+import { resolveSiteUrl, validateTranslations } from './scripts/localization.js';
 
 const root = import.meta.dirname;
 const siteUrl = resolveSiteUrl(process.env.SITE_URL, process.env.REQUIRE_SITE_URL === 'true');
 const locales = ['zh-CN', 'en'];
-const dictionaries = Object.fromEntries(await Promise.all(locales.map(async (locale) => {
+const translationsByLocale = Object.fromEntries(await Promise.all(locales.map(async (locale) => {
   const file = resolve(root, 'src/locales', `${locale}.json`);
   return [locale, JSON.parse(await readFile(file, 'utf8'))];
 })));
-validateCopy(dictionaries);
+validateTranslations(translationsByLocale);
 
 const base = siteUrl ? siteUrl.pathname.replace(/\/+$/, '') || '/' : '/';
 

@@ -1,22 +1,19 @@
-/** Current URL's document language; browser and storage preferences cannot override it. */
-export const locale = document.documentElement.lang;
-const runtimeCopy = JSON.parse(document.getElementById('site-copy').textContent);
-
-/** Read generated runtime text and substitute named, text-only parameters. */
-export function copy(key, params = {}) {
-  const value = key.split('.').reduce((part, name) => part && part[name], runtimeCopy);
-  if (typeof value !== 'string') throw new Error(`Missing runtime copy: ${locale}/${key}`);
-  return value.replace(/\{([a-zA-Z]\w*)\}/g, (_match, name) => {
-    if (!(name in params)) throw new Error(`Missing copy parameter: ${key}/${name}`);
-    return String(params[name]);
-  });
-}
+import { translate } from './translations.js';
 
 (function () {
   'use strict';
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var root = document.documentElement;
+
+  /* 返回顶部后移除地址栏片段，其它区块锚点保持原有行为。 */
+  function hideTopHash() {
+    if (location.hash !== '#top') return;
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    history.replaceState(history.state, '', location.pathname + location.search);
+  }
+  hideTopHash();
+  window.addEventListener('hashchange', hideTopHash);
 
   /* ---------- 主题：跟随系统 / 亮 / 暗 ---------- */
   var THEME_KEY = 'cleanu:theme-mode';
@@ -39,7 +36,7 @@ export function copy(key, params = {}) {
     });
   }
   function paintTheme() {
-    var label = copy('theme.label', { current: copy('theme.' + themeMode()), next: copy('theme.' + nextMode()) });
+    var label = translate('theme.label', { current: translate('theme.' + themeMode()), next: translate('theme.' + nextMode()) });
     themeBtn.setAttribute('aria-label', label);
     themeBtn.title = label;
     syncThemeColor();

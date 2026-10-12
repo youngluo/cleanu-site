@@ -1,34 +1,34 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
-import { copyFor, pageHref } from '../../i18n/copy.js';
-import '../../styles/support.css';
+import { translationsFor, pageHref } from '../../i18n/translations.js';
+import './support.css';
 
 const { locale } = Astro.props;
-const copy = copyFor(locale);
+const translations = translationsFor(locale);
 ---
-<SiteLayout page="support" locale={locale} copy={copy}>
+<SiteLayout page="support" locale={locale} translations={translations}>
 <main id="main">
   <section class="page" aria-labelledby="page-title">
     <div class="shell">
       <p class="eyebrow">CleanU</p>
-      <h1 id="page-title" class="page__title">{copy.common.support}</h1>
-      <p class="lede">{copy.support.intro}</p>
+      <h1 id="page-title" class="page__title">{translations.common.support}</h1>
+      <p class="lede">{translations.support.intro}</p>
       <div class="reading">
         <section class="reading__section">
-          <h2>{copy.support.issueTitle}</h2>
-          <p>{copy.support.issueBody}</p>
-          <p class="page__foot"><a href="https://github.com/youngluo/cleanu-site/issues">{copy.support.issueLink}</a></p>
+          <h2>{translations.support.issueTitle}</h2>
+          <p>{translations.support.issueBody}</p>
+          <p class="page__foot"><a href="https://github.com/youngluo/cleanu-site/issues">{translations.support.issueLink}</a></p>
         </section>
         <section class="reading__section">
-          <h2>{copy.support.privacyTitle}</h2>
-          <p>{copy.support.privacyBody}</p>
+          <h2>{translations.support.privacyTitle}</h2>
+          <p>{translations.support.privacyBody}</p>
         </section>
         <section class="reading__section">
-          <h2>{copy.support.updatesTitle}</h2>
-          <p>{copy.support.updatesBody}</p>
+          <h2>{translations.support.updatesTitle}</h2>
+          <p>{translations.support.updatesBody}</p>
           <ul>
-            <li><a href={`${pageHref('index', locale)}#download`}>{copy.support.downloadLink}</a></li>
-            <li><a href={pageHref('changelog', locale)}>{copy.support.changelogLink}</a></li>
+            <li><a href={`${pageHref('index', locale)}#download`}>{translations.support.downloadLink}</a></li>
+            <li><a href={pageHref('changelog', locale)}>{translations.support.changelogLink}</a></li>
           </ul>
         </section>
       </div>

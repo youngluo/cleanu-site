@@ -11,21 +11,18 @@
     "menu": "Menu",
     "tagline": "A safe and transparent macOS menu bar cleanup app.",
     "footer": "Footer links",
-    "links": "Links",
     "changelog": "Changelog",
     "privacy": "Privacy",
     "support": "Support",
-    "platform": "Platform"
+    "legal": "Legal"
   },
   "index": {
     "title": "CleanU · Safe, transparent cleanup for macOS",
-    "description": "CleanU is a macOS menu bar disk cleanup app. Read-only scans cover caches, temporary files, developer-tool caches, project artifacts, app leftovers, installers, archives and large files. Review and confirm before cleanup. macOS 13+, with DMGs for Apple Silicon and Intel.",
+    "description": "CleanU is a macOS menu bar disk cleanup app. Read-only scans cover caches, temporary files, developer-tool caches, project artifacts, app leftovers, installers, archives and large files. Review and confirm before cleanup. macOS 13+, with one universal DMG for Apple Silicon and Intel.",
     "eyebrow": "macOS menu bar · Disk cleanup",
-    "heading": "Deep scan. Review. Clean up safely.",
     "intro": "Scan caches, temporary files, developer-tool caches, project artifacts, app leftovers, installers, archives and large files. Results are grouped into cache cleanup, project cleanup, app leftovers and storage analysis. Every item shows its path and size. Nothing is cleaned up until you confirm.",
-    "downloadArm": "Download · Apple Silicon",
-    "downloadIntel": "Download · Intel",
     "download": "Download",
+    "lifetimeUpdates": "Lifetime updates",
     "previewRegion": "Product preview",
     "previewLabel": "App preview",
     "tabIdle": "Start",
@@ -109,7 +106,7 @@
     "privacyTitle": "Protect your privacy before posting",
     "privacyBody": "GitHub Issues are public by default. Before posting, review the text, screenshots and logs, and remove usernames, personal file paths, filenames and anything else you do not want to make public. CleanU does not upload diagnostic logs automatically; attach them yourself only after checking that they are safe to share.",
     "updatesTitle": "Downloads and updates",
-    "updatesBody": "Visit the home page to download the version for Apple Silicon or Intel, or read the release history.",
+    "updatesBody": "Visit the home page to download the universal version for Apple Silicon and Intel, or read the release history.",
     "downloadLink": "Go to downloads",
     "changelogLink": "Read the changelog"
   },
@@ -119,9 +116,6 @@
       "light": "light",
       "dark": "dark",
       "label": "Theme: {current}, click to switch to {next}"
-    },
-    "download": {
-      "label": "Download · {arch}"
     },
     "log": {
       "empty": "There are no public releases yet.",

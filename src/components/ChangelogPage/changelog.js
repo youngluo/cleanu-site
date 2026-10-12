@@ -1,9 +1,8 @@
-import CFG from './config.js'
-import { copy, locale } from './site.js'
+import { locale, releaseConfig, translate } from '../../common/index.js'
 ;(function () {
   'use strict'
 
-  var REL = CFG.release || {}
+  var REL = releaseConfig.release || {}
   var listEl = document.querySelector('[data-log]')
   var statusEl = document.querySelector('[data-log-status]')
   if (!listEl || !REL.owner || !REL.repo) return
@@ -34,11 +33,11 @@ import { copy, locale } from './site.js'
     var item = el('li', 'log__item')
 
     var head = el('div', 'log__head')
-    head.appendChild(el('h2', 'log__ver', release.tag_name || copy('log.untagged')))
+    head.appendChild(el('h2', 'log__ver', release.tag_name || translate('log.untagged')))
     if (release.published_at) {
       head.appendChild(el('p', 'log__date', dateFmt.format(new Date(release.published_at))))
     }
-    if (release.prerelease) head.appendChild(el('p', 'log__flag', copy('log.prerelease')))
+    if (release.prerelease) head.appendChild(el('p', 'log__flag', translate('log.prerelease')))
     item.appendChild(head)
 
     if (release.name && release.name !== release.tag_name) {
@@ -57,7 +56,7 @@ import { copy, locale } from './site.js'
       var ul = el('ul', 'log__assets')
       assets.forEach(function (asset) {
         var li = el('li')
-        var link = el('a', null, asset.name || copy('log.download'))
+        var link = el('a', null, asset.name || translate('log.download'))
         link.href = asset.browser_download_url
         li.appendChild(link)
         var size = fmtSize(asset.size)
@@ -88,7 +87,7 @@ import { copy, locale } from './site.js'
   }
 
   if (Array.isArray(cached)) {
-    setStatus(renderList(cached) ? '' : copy('log.empty'), false)
+    setStatus(renderList(cached) ? '' : translate('log.empty'), false)
   } else {
     var ctrl = 'AbortController' in window ? new AbortController() : null
     var timer = ctrl
@@ -111,19 +110,19 @@ import { copy, locale } from './site.js'
         } catch (e) {
           /* 配额或隐私模式 */
         }
-        setStatus(renderList(releases) ? '' : copy('log.empty'), false)
+        setStatus(renderList(releases) ? '' : translate('log.empty'), false)
       })
       .catch(function (err) {
         if (timer) clearTimeout(timer)
         var code = err && err.message
         if (code === '404') {
-          setStatus(copy('log.notFound'), true)
+          setStatus(translate('log.notFound'), true)
         } else if (code === '403') {
-          setStatus(copy('log.rateLimit'), true)
+          setStatus(translate('log.rateLimit'), true)
         } else if (err && err.name === 'AbortError') {
-          setStatus(copy('log.timeout'), true)
+          setStatus(translate('log.timeout'), true)
         } else {
-          setStatus(copy('log.network'), true)
+          setStatus(translate('log.network'), true)
         }
       })
   }

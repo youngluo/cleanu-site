@@ -3,10 +3,10 @@ import '../styles/site.css';
 import { getAbsoluteLocaleUrl } from 'astro:i18n';
 import SiteHeader from '../components/SiteHeader/index.astro';
 import SiteFooter from '../components/SiteFooter/index.astro';
-import { assetHref, pageRoute, runtimeCopy } from '../i18n/copy.js';
+import { assetHref, pageRoute, runtimeTranslationsFor } from '../i18n/translations.js';
 
-const { page, locale, copy } = Astro.props;
-const pageCopy = copy[page];
+const { page, locale, translations } = Astro.props;
+const pageTranslations = translations[page];
 const alternateLocales = ['zh-CN', 'en'];
 const alternates = Astro.site
   ? alternateLocales.map((alternateLocale) => ({
@@ -14,7 +14,7 @@ const alternates = Astro.site
       href: getAbsoluteLocaleUrl(alternateLocale, pageRoute(page)),
     }))
   : [];
-const runtime = runtimeCopy(page, copy);
+const runtimeTranslations = runtimeTranslationsFor(page, translations);
 ---
 
 <!DOCTYPE html>
@@ -22,8 +22,8 @@ const runtime = runtimeCopy(page, copy);
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{pageCopy.title}</title>
-    <meta name="description" content={pageCopy.description}>
+    <title>{pageTranslations.title}</title>
+    <meta name="description" content={pageTranslations.description}>
     <meta name="theme-color" content="#F5F4F1" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#121514" media="(prefers-color-scheme: dark)">
     {alternates.map(({ locale: alternateLocale, href }) => <link rel="alternate" hreflang={alternateLocale} href={href} />)}
@@ -37,10 +37,10 @@ const runtime = runtimeCopy(page, copy);
     </script>
   </head>
   <body id="top">
-    <SiteHeader page={page} locale={locale} copy={copy.common} />
+    <SiteHeader page={page} locale={locale} translations={translations.common} />
     <slot />
-    <SiteFooter page={page} locale={locale} copy={copy.common} />
-    <script type="application/json" id="site-copy" set:html={runtime}></script>
-    <script src="../scripts/site.js"></script>
+    <SiteFooter page={page} locale={locale} translations={translations.common} />
+    <script type="application/json" id="site-translations" set:html={runtimeTranslations}></script>
+    <script src="../common/site.js"></script>
   </body>
 </html>

@@ -23,18 +23,18 @@
   --l-glass-brd: rgba(22, 26, 25, 0.1);
   --l-glass-hi: rgba(255, 255, 255, 0.65);
 
-  --d-bg: #121514;
-  --d-surface: rgba(255, 255, 255, 0.045);
-  --d-surface-solid: #1b201f;
-  --d-ink: #e9edec;
-  --d-ink-2: #a3adaa;
-  --d-ink-3: #8b9693;
+  --d-bg: #121212;
+  --d-surface: #1d1d1d;
+  --d-surface-solid: #1f1f1f;
+  --d-ink: #ededed;
+  --d-ink-2: #adadad;
+  --d-ink-3: #969696;
   --d-line: rgba(255, 255, 255, 0.1);
   --d-line-2: rgba(255, 255, 255, 0.19);
-  --d-accent: #e9edec;
-  --d-accent-ink: #e9edec;
-  --d-btn-bg: #e9edec;
-  --d-btn-ink: #0d1614;
+  --d-accent: #ededed;
+  --d-accent-ink: #ededed;
+  --d-btn-bg: #ededed;
+  --d-btn-ink: #161616;
   --d-btn-bg-hover: #ffffff;
   --d-warn: #dd9a94;
   --d-warn-bg: rgba(221, 154, 148, 0.08);
@@ -148,7 +148,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 body {
@@ -377,14 +377,6 @@ h3 { font-size: 1.06rem; letter-spacing: -0.01em; }
 .foot__links ul { margin-top: var(--sp-4); display: grid; gap: var(--sp-2); }
 .foot__links a { font-size: 0.9rem; color: var(--ink-2); }
 .foot__links a:hover { color: var(--accent-ink); }
-.foot__meta > div { margin-bottom: var(--sp-3); }
-.foot__meta dt {
-  font-size: 0.74rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-.foot__meta dd { margin: var(--sp-1) 0 0; font-size: 0.88rem; color: var(--ink-2); }
 /* ---------- responsive ---------- */
 @media (max-width: 1000px) {
   .foot__inner { grid-template-columns: 1fr 1fr; }

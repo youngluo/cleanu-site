@@ -70,13 +70,13 @@
 - **WHEN** 浏览器禁止本地存储，访问者切换语言并继续跨页导航
 - **THEN** 页面语言与导航目标仍由 URL 正确确定
 
-### Requirement: Localized runtime copy and dates
+### Requirement: Localized runtime translations and dates
 
-动态主题提示、架构识别后的下载按钮、发布列表加载提示、空状态、错误提示、预发布标签和备用下载文字 SHALL 使用当前页面语言。发布日期 SHALL 按当前页面语言格式化。同一份远端数据在不同语言页面使用时 MUST 重新按当前页面语言呈现。
+动态主题提示、发布列表加载提示、空状态、错误提示、预发布标签和备用下载文字 SHALL 使用当前页面语言。首页 SHALL 只显示一个当前语言的下载按钮，不探测访问者硬件架构；Release 提供通用 DMG 时使用其真实直链，尚无通用产物或加载失败时保留发布页入口。发布日期 SHALL 按当前页面语言格式化。同一份远端数据在不同语言页面使用时 MUST 重新按当前页面语言呈现。
 
 #### Scenario: Theme and download labels remain English
 
-- **WHEN** 英文首页初始化、访问者切换主题，或异步请求取得匹配当前架构的 DMG
+- **WHEN** 英文首页初始化、访问者切换主题，或异步请求取得通用 DMG
 - **THEN** 主题控件的说明与下载按钮标签保持英文，下载目标继续指向正确附件
 
 #### Scenario: Release status messages are localized
@@ -157,7 +157,7 @@ Release 标题、说明正文、版本标识和附件名称 SHALL 保持远端�
 
 ### Requirement: Existing visual design and interactions are preserved
 
-Astro 重构 MUST 保留现有页面的视觉风格、布局、排版、颜色令牌、页面专属样式和控件外观。中英文版本 MUST 共用对应页面的视觉规则；路由和组件组织按 Astro 约定实现，现有页面功能仍须可用。项目 MUST 使用根级默认 `src/` 和 `public/` 目录；`src/pages/` 只存放 Astro 路由入口，脚本与样式分别放在 `src/scripts/` 和 `src/styles/`。页面源码使用的路由与资源路径辅助 MUST 放在 `src/i18n/`；构建期文案与发布地址校验及其测试 MUST 放在根级 `scripts/`，不得混入生成产物目录。旧 `web/` 目录及 Vite 专用配置和入口生成器 MUST 移除。
+Astro 重构 MUST 保留现有页面的视觉风格、布局、排版、颜色令牌、页面专属样式和控件外观。中英文版本 MUST 共用对应页面的视觉规则；路由和组件组织按 Astro 约定实现，现有页面功能仍须可用。项目 MUST 使用根级默认 `src/` 和 `public/` 目录；`src/pages/` 只存放 Astro 路由入口，页面专属脚本和样式与对应组件同目录，共享浏览器模块放在 `src/common/`，并通过 `src/common/index.js` 暴露页面可复用的接口；运行时翻译读取与全站交互初始化 MUST 分离。全站共享样式放在 `src/styles/site.css`。页面源码使用的路由与资源路径辅助 MUST 放在 `src/i18n/`；构建期文案与发布地址校验及其测试 MUST 放在根级 `scripts/`，不得混入生成产物目录。旧 `web/` 目录及 Vite 专用配置和入口生成器 MUST 移除。
 
 #### Scenario: Viewing pages after the framework migration
 

@@ -1,7 +1,7 @@
 ---
-import { assetHref, pageHref } from '../../i18n/copy.js';
+import { assetHref, pageHref } from '../../i18n/translations.js';
 
-const { page, locale, copy } = Astro.props;
+const { page, locale, translations } = Astro.props;
 const home = page === 'index';
 const indexHref = pageHref('index', locale);
 const otherLocale = locale === 'en' ? 'zh-CN' : 'en';
@@ -9,7 +9,7 @@ const languageHref = pageHref(page, otherLocale);
 const homeHref = (section) => home ? section : `${indexHref}${section}`;
 ---
 
-<a class="skip-link" href="#main">{copy.skip}</a>
+<a class="skip-link" href="#main">{translations.skip}</a>
 
 <header class="nav" data-nav>
   <div class="nav__inner shell">
@@ -17,16 +17,16 @@ const homeHref = (section) => home ? section : `${indexHref}${section}`;
       <img class="brand__mark" src={assetHref('assets/icon.webp')} width="512" height="512" alt="">
       <span>CleanU</span>
     </a>
-    <nav class="nav__links" id="primary-nav" aria-label={copy.nav}>
+    <nav class="nav__links" id="primary-nav" aria-label={translations.nav}>
       <ul>
-        <li><a href={homeHref('#features')}>{copy.features}</a></li>
-        <li><a href={homeHref('#how')}>{copy.safety}</a></li>
-        <li><a href={homeHref('#faq')}>{copy.faq}</a></li>
+        <li><a href={homeHref('#features')}>{translations.features}</a></li>
+        <li><a href={homeHref('#how')}>{translations.safety}</a></li>
+        <li><a href={homeHref('#faq')}>{translations.faq}</a></li>
       </ul>
     </nav>
     <div class="nav__aside">
-      <a class="language-link" data-language-link href={languageHref} lang={otherLocale} hreflang={otherLocale} aria-label={copy.switchLanguage}>{copy.language}</a>
-      <button class="theme-toggle" type="button" data-theme-toggle aria-label={copy.themeLabel}>
+      <a class="language-link" data-language-link href={languageHref} lang={otherLocale} hreflang={otherLocale} aria-label={translations.switchLanguage}>{translations.language}</a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label={translations.themeLabel}>
         <svg class="theme-icon theme-icon--auto" viewBox="0 0 18 18" aria-hidden="true">
           <circle cx="9" cy="9" r="6.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
           <path d="M9 2.4a6.6 6.6 0 0 1 0 13.2z" fill="currentColor"/>
@@ -39,9 +39,9 @@ const homeHref = (section) => home ? section : `${indexHref}${section}`;
           <path d="M14.7 11.4A6.5 6.5 0 0 1 6.6 3.3a6.5 6.5 0 1 0 8.1 8.1z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
         </svg>
       </button>
-      <button class="nav__toggle" type="button" aria-label={copy.menu} aria-expanded="false" aria-controls="primary-nav">
+      <button class="nav__toggle" type="button" aria-label={translations.menu} aria-expanded="false" aria-controls="primary-nav">
         <span class="nav__toggle-bar" aria-hidden="true"></span>
-        <span class="nav__toggle-label">{copy.menu}</span>
+        <span class="nav__toggle-label">{translations.menu}</span>
       </button>
     </div>
   </div>

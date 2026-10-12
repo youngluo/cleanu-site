@@ -17,7 +17,7 @@
 | Complete static localization | 浏览器禁用 JavaScript 后阅读四个页面；正文、元信息、导航、辅助文本、FAQ 答案及 Release 备用入口可用，`node_modules` 保留为 `code` |
 | Accessible language switching and consistent navigation | 普通链接可通过 Enter 激活；首页与更新日志保持当前语言，`#faq` 和跨页 `#features` 保留，后退与刷新正常 |
 | URL is the language authority | 中文浏览器偏好下英文 URL 不跳转；禁用 localStorage / sessionStorage 仍可切换语言和跨页导航；无效片段不追加到语言链接 |
-| Localized runtime copy and dates | 两种语言循环三种主题并刷新验证持久化；Apple Silicon、Intel、未知架构、异步 UA hints 和 API 失败备用下载均正确；加载、空列表、403、404、网络失败及超时提示逐项验证 |
+| Localized runtime translations and dates | 两种语言循环三种主题并刷新验证持久化；Apple Silicon、Intel、未知架构、异步 UA hints 和 API 失败备用下载均正确；加载、空列表、403、404、网络失败及超时提示逐项验证 |
 | External content and screenshot boundaries | 中文到英文复用原始 Release 缓存，仅重绘日期与站点提示；远端标题、说明、附件名不翻译，含 HTML 的说明仍为纯文本，未执行注入；真实截图资产未修改 |
 | Discoverable published language variants | 用测试地址 `https://youngluo.github.io/cleanu-site/` 验证四页的两个绝对 hreflang 目标；它不是对实际部署地址的确认。缺失 SITE_URL 或使用 localhost 时，发布模式构建失败；普通本地构建成功且不伪造 SEO 地址 |
 | Development and build consistency | 清空派生入口后分别启动开发和构建，四入口自动生成且被 Git 忽略；修改翻译和模板触发刷新，无循环；缺失翻译出现错误提示，恢复到相同有效内容也能清除提示；失败条件单元测试覆盖缺失键、参数不一致、未知占位符、未知引用、缺失页面 / 资源及残留嵌套目录 |
@@ -55,3 +55,8 @@
 - 复验时发现 4179 端口的旧 `astro preview` 进程仍持有 `trailingSlash: 'never'` 配置，访问 `/en/` 因缺少旧配置要求的无尾斜杠路径而返回 404。重新构建并重启预览后，`/en/#features` 正常显示英文首页；切换中文、再切回英文均保留 `#features`，英文更新日志、支持和隐私页也分别在 `/en/changelog/`、`/en/support/`、`/en/privacy/` 正常打开。
 - 按 Astro 默认目录整理源码：路由入口只留在 `src/pages/`，组件、布局、语言文案、脚本和样式分别归入 `src/components/`、`src/layouts/`、`src/locales/`、`src/scripts/` 和 `src/styles/`，静态资源放在根级 `public/`；移除旧 `web/`。重建无路由冲突并生成八个页面；浏览器刷新后英文直达页保持英文，语言双向切换和四个英文页面链接正常，现有视觉样式与截图保持一致。
 - 目录命名复核后，将页面源码复用的路径辅助移入 `src/i18n/routes.js`，将构建期本地化校验及其测试移入根级 `scripts/`，同步更新导入、`pnpm test` 脚本和项目架构文档，并移除空的根级 `build/`。Astro 构建成功生成八个页面，`git diff --check` 通过；本次未运行测试套件。
+- 按组件样式就近组织约定，将四个页面专属 CSS 移入各自的 `src/components/*Page/`，全站共享 CSS 仍位于 `src/styles/site.css`；CSS 声明未改，Astro 构建生成八个页面，strict OpenSpec 校验和 `git diff --check` 通过。
+- 将首页和更新日志专属脚本移入各自的 `src/components/*Page/`，共享浏览器脚本留在 `src/scripts/`，构建期脚本留在根级 `scripts/`；更新导入和目录规则。Astro 构建生成八个页面，strict OpenSpec 校验、旧路径引用扫描和 `git diff --check` 通过；本次未运行测试。
+- 按目录约定将跨页面共享浏览器逻辑与 Release 配置由 `src/scripts/` 移至 `src/common/`，同步更新组件和布局导入及项目文档。Astro 构建生成八个页面，strict OpenSpec 校验、当前源码与规范中的旧路径扫描和 `git diff --check` 通过；本次未运行测试。
+- 将本地化数据从 `copy` 命名统一为 `translations`：重命名 `src/i18n/translations.js` 及其 API，更新布局 / 组件属性、运行时 `translate()` helper 与数据节点标识。Astro 构建生成八个页面，旧命名扫描、strict OpenSpec 校验和 `git diff --check` 通过；本次未运行测试。
+- 将运行时翻译读取从全站交互初始化中拆出，页面脚本通过 `src/common/index.js` 导入共享配置和翻译接口；构建期校验及测试 helper 统一为 `validateTranslations` / `loadTranslations`。Astro 构建生成八个页面，strict OpenSpec 校验、旧标识扫描和 `git diff --check` 通过；本次未运行测试。

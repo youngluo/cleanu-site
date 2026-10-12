@@ -1,23 +1,23 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
-import { copyFor } from '../../i18n/copy.js';
-import '../../styles/changelog.css';
+import { translationsFor } from '../../i18n/translations.js';
+import './changelog.css';
 
 const { locale } = Astro.props;
-const copy = copyFor(locale);
+const translations = translationsFor(locale);
 ---
-<SiteLayout page="changelog" locale={locale} copy={copy}>
+<SiteLayout page="changelog" locale={locale} translations={translations}>
 <main id="main">
   <section class="page" aria-labelledby="page-title">
     <div class="shell">
       <p class="eyebrow">CleanU</p>
-      <h1 id="page-title" class="page__title">{copy.common.changelog}</h1>
-      <p class="lede">{copy.changelog.intro}</p>
-      <p class="page__status" data-log-status role="status">{copy.changelog.loading}</p>
+      <h1 id="page-title" class="page__title">{translations.common.changelog}</h1>
+      <p class="lede">{translations.changelog.intro}</p>
+      <p class="page__status" data-log-status role="status">{translations.changelog.loading}</p>
       <ol class="log" data-log></ol>
-      <p class="page__foot"><a href="https://github.com/youngluo/cleanu/releases">{copy.changelog.github}</a></p>
+      <p class="page__foot"><a href="https://github.com/youngluo/cleanu/releases">{translations.changelog.github}</a></p>
     </div>
   </section>
 </main>
-<script src="../../scripts/changelog.js"></script>
+<script src="./changelog.js"></script>
 </SiteLayout>
