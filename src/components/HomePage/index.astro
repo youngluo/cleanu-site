@@ -1,10 +1,13 @@
 ---
+import { loadReleases, downloadPath } from '../../data/releases.js';
 import SiteLayout from '../../layouts/SiteLayout.astro';
-import { assetHref, translationsFor } from '../../i18n/translations.js';
+import { assetHref, pageHref, translationsFor } from '../../i18n/translations.js';
 import './home.css';
 
 const { locale } = Astro.props;
 const translations = translationsFor(locale);
+const latestRelease = (await loadReleases())[0];
+const downloadHref = latestRelease ? assetHref(downloadPath(latestRelease)) : pageHref('changelog', locale);
 ---
 <SiteLayout page="index" locale={locale} translations={translations}>
 <main id="main">
@@ -19,9 +22,9 @@ const translations = translationsFor(locale);
         </div>
         <p class="hero__desc">{translations.index.intro}</p>
         <div class="hero__actions">
-          <a class="btn btn--primary" href="https://github.com/youngluo/cleanu/releases/latest" data-download>{translations.index.download}</a>
+          <a class="btn btn--primary" href={downloadHref} data-download>{translations.index.download}</a>
         </div>
-        <p class="hero__meta"><span>macOS 13+</span><span>{translations.index.lifetimeUpdates}</span></p>
+        <p class="hero__meta"><span>macOS 13+</span><span aria-hidden="true">·</span><span>{translations.index.lifetimeUpdates}</span></p>
       </div>
 
     </div>
@@ -67,7 +70,7 @@ const translations = translationsFor(locale);
     </div>
   </section>
 
-  <!-- 核心能力 -->
+  <!-- 功能与安全边界 -->
   <section id="features" class="section" aria-labelledby="features-title">
     <div class="shell">
       <div class="section__head" data-reveal>
@@ -78,51 +81,73 @@ const translations = translationsFor(locale);
         <article class="card" data-reveal>
           <h3>{translations.index.featureScan}</h3>
           <p>{translations.index.featureScanBody}</p>
-          <p class="card__foot">{translations.index.featureScanFoot}</p>
-        </article>
-        <article class="card" data-reveal>
-          <h3>{translations.index.featureSafe}</h3>
-          <p>{translations.index.featureSafeBody}</p>
-          <p class="card__foot">{translations.index.featureSafeFoot}</p>
         </article>
         <article class="card" data-reveal>
           <h3>{translations.index.featureReview}</h3>
           <p>{translations.index.featureReviewBody}</p>
-          <p class="card__foot">{translations.index.featureReviewFoot}</p>
         </article>
+      </div>
+      <div id="how" class="safety-summary" aria-labelledby="how-title">
+        <div class="safety-summary__head" data-reveal>
+          <h3 id="how-title">{translations.common.safety}</h3>
+        </div>
+        <ul class="rules" data-reveal>
+          <li class="rule">
+            <h4>{translations.index.safetyRead}</h4>
+            <p>{translations.index.safetyReadBody}</p>
+          </li>
+          <li class="rule">
+            <h4>{translations.index.safetyConfirm}</h4>
+            <p>{translations.index.safetyConfirmBody}</p>
+          </li>
+          <li class="rule">
+            <h4>{translations.index.safetyCheck}</h4>
+            <p>{translations.index.safetyCheckBody}</p>
+          </li>
+          <li class="rule">
+            <h4>{translations.index.safetyTrash}</h4>
+            <p>{translations.index.safetyTrashBody}</p>
+          </li>
+          <li class="rule">
+            <h4>{translations.index.safetyPermissions}</h4>
+            <p>{translations.index.safetyPermissionsBody}</p>
+          </li>
+        </ul>
       </div>
     </div>
   </section>
 
 
-  <section id="how" class="section" aria-labelledby="how-title">
+  <section id="pricing" class="section" aria-labelledby="pricing-title">
     <div class="shell">
-      <div class="section__head" data-reveal>
-        <h2 id="how-title">{translations.common.safety}</h2>
-        <p>{translations.index.safetyIntro}</p>
+      <div class="section__head">
+        <h2 id="pricing-title">{translations.common.pricing}</h2>
+        <p>{translations.index.pricingIntro}</p>
       </div>
-      <ul class="rules" data-reveal>
-        <li class="rule">
-          <h3>{translations.index.safetyRead}</h3>
-          <p>{translations.index.safetyReadBody}</p>
-        </li>
-        <li class="rule">
-          <h3>{translations.index.safetyConfirm}</h3>
-          <p>{translations.index.safetyConfirmBody}</p>
-        </li>
-        <li class="rule">
-          <h3>{translations.index.safetyCheck}</h3>
-          <p>{translations.index.safetyCheckBody}</p>
-        </li>
-        <li class="rule">
-          <h3>{translations.index.safetyTrash}</h3>
-          <p>{translations.index.safetyTrashBody}</p>
-        </li>
-        <li class="rule">
-          <h3>{translations.index.safetyPermissions}</h3>
-          <p>{translations.index.safetyPermissionsBody}</p>
-        </li>
-      </ul>
+      <div class="pricing">
+        <div class="pricing__purchase">
+          <p class="pricing__amount">
+            <span class="pricing__value">{translations.index.pricingPrice}</span>
+          </p>
+          <p class="pricing__note">{translations.index.pricingPayment}</p>
+          <div class="pricing__actions">
+            <button class="btn btn--primary" type="button" disabled>{translations.index.pricingBuy}</button>
+          </div>
+        </div>
+        <ul class="pricing__terms">
+          <li>
+            <h3>{translations.index.pricingTrial}</h3>
+          </li>
+          <li>
+            <h3>{translations.index.pricingUpdates}</h3>
+            <p>{translations.index.pricingUpdatesBody}</p>
+          </li>
+          <li>
+            <h3>{translations.index.pricingDevices}</h3>
+            <p>{translations.index.pricingDevicesBody}</p>
+          </li>
+        </ul>
+      </div>
     </div>
   </section>
 

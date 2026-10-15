@@ -1,6 +1,8 @@
 name: Publish
 
 on:
+  repository_dispatch:
+    types: [cleanu-release]
   workflow_dispatch:
     inputs:
       version_type:
@@ -8,16 +10,14 @@ on:
         required: true
         default: patch
         type: choice
-        options:
-          - patch
-          - minor
-          - major
+        options: [patch, minor, major]
 
 permissions:
   contents: write
 
 concurrency:
   group: release
+  cancel-in-progress: false
 
 jobs:
   build-and-publish:
@@ -43,22 +43,35 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Read the latest published Release and tagged JSON
+        env:
+          CLEANU_RELEASES_TOKEN: ${{ secrets.CLEANU_RELEASES_TOKEN }}
+          CLEANU_RELEASE_TAG: ${{ github.event.client_payload.tag }}
+        run: pnpm release:sync
+
+      - name: Test
+        run: pnpm test
+
       - name: Build project
         env:
           SITE_URL: ${{ vars.SITE_URL }}
           REQUIRE_SITE_URL: 'true'
         run: pnpm build
 
-      - name: Configure Git
-        run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
+      - name: Restore and verify the latest DMG
+        env:
+          CLEANU_RELEASES_TOKEN: ${{ secrets.CLEANU_RELEASES_TOKEN }}
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: pnpm release:assets
 
-      - name: Bump version and create tag
+      - name: Prepare website version
+        if: github.event_name == 'workflow_dispatch'
         env:
           VERSION_TYPE: ${{ github.event.inputs.version_type }}
         run: |
           set -eu
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
           pnpm version "$VERSION_TYPE" --no-git-tag-version
           NEW_VERSION=$(node -p "require('./package.json').version")
           echo "NEW_VERSION=$NEW_VERSION" >> "$GITHUB_ENV"
@@ -66,19 +79,23 @@ jobs:
           git commit -m "chore(release): v$NEW_VERSION"
           git tag "v$NEW_VERSION"
 
+      - name: Check release revision and production version
+        env:
+          CLEANU_RELEASES_TOKEN: ${{ secrets.CLEANU_RELEASES_TOKEN }}
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: pnpm release:check
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=cleanu
+          command: pages deploy dist --project-name=cleanu --branch=main
 
-      - name: Push changes and tags
-        run: |
-          git push origin main
-          git push origin "v$NEW_VERSION"
-
-      - name: Create GitHub Release
+      - name: Publish website version
+        if: github.event_name == 'workflow_dispatch'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "v$NEW_VERSION" --title "v$NEW_VERSION" --generate-notes
+        run: |
+          git push --atomic origin HEAD:main "refs/tags/v$NEW_VERSION"
+          gh release create "v$NEW_VERSION" --title "v$NEW_VERSION" --generate-notes

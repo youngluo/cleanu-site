@@ -18,7 +18,7 @@ const { page, locale, translations } = Astro.props;
       <ul>
         <li><a href="https://github.com/youngluo/cleanu-site">GitHub</a></li>
         <li><a href={pageHref('changelog', locale)} aria-current={page === 'changelog' ? 'page' : undefined}>{translations.changelog}</a></li>
-        <li><a href={pageHref('support', locale)} aria-current={page === 'support' ? 'page' : undefined}>{translations.support}</a></li>
+        <li><a href={pageHref('support', locale)} aria-current={page === 'support' ? 'page' : undefined}>{translations.helpFeedback}</a></li>
       </ul>
     </nav>
     <nav class="foot__links" aria-label={translations.legal}>

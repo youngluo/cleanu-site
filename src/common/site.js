@@ -6,7 +6,7 @@ import { translate } from './translations.js';
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var root = document.documentElement;
 
-  /* 返回顶部后移除地址栏片段，其它区块锚点保持原有行为。 */
+  /* 返回顶部后移除地址栏片段；滚动区块锚点由下方的导航同步维护。 */
   function hideTopHash() {
     if (location.hash !== '#top') return;
     window.scrollTo({ top: 0, behavior: 'instant' });
@@ -54,14 +54,15 @@ import { translate } from './translations.js';
 
   /* ---------- 语言链接：渐进保留当前页面的有效锚点 ---------- */
   var languageLink = document.querySelector('[data-language-link]');
+  var languageTarget = languageLink ? languageLink.getAttribute('href') : '';
+  function syncLanguageHash() {
+    if (!languageLink) return;
+    var hash = location.hash;
+    var id;
+    try { id = decodeURIComponent(hash.slice(1)); } catch (e) { id = ''; }
+    languageLink.setAttribute('href', languageTarget + (id && document.getElementById(id) ? hash : ''));
+  }
   if (languageLink) {
-    var languageTarget = languageLink.getAttribute('href');
-    function syncLanguageHash() {
-      var hash = location.hash;
-      var id;
-      try { id = decodeURIComponent(hash.slice(1)); } catch (e) { id = ''; }
-      languageLink.setAttribute('href', languageTarget + (id && document.getElementById(id) ? hash : ''));
-    }
     syncLanguageHash();
     window.addEventListener('hashchange', syncLanguageHash);
   }
@@ -97,14 +98,21 @@ import { translate } from './translations.js';
     });
   }
 
-  /* ---------- 当前区块高亮（只看本页面上的锚点） ---------- */
+  /* ---------- 当前区块与地址栏锚点（只看本页面上的导航目标） ---------- */
   var navLinks = {};
+  var pendingSectionId = null;
   document.querySelectorAll('#primary-nav a').forEach(function (link) {
     var href = link.getAttribute('href') || '';
     if (href.charAt(0) !== '#') return;
     var section = document.getElementById(href.slice(1));
-    if (section) navLinks[section.id] = { link: link, section: section };
+    if (section) {
+      navLinks[section.id] = { link: link, section: section };
+      link.addEventListener('click', function () { pendingSectionId = section.id; });
+    }
   });
+
+  var navSectionIds = Object.keys(navLinks);
+  var currentSectionId = null;
 
   function clearCurrent() {
     Object.keys(navLinks).forEach(function (id) {
@@ -112,19 +120,76 @@ import { translate } from './translations.js';
     });
   }
 
-  if ('IntersectionObserver' in window && Object.keys(navLinks).length) {
-    var spy = new IntersectionObserver(function (entries) {
-      var visible = entries.filter(function (entry) { return entry.isIntersecting; });
-      if (!visible.length) return;
-      var top = visible.reduce(function (a, b) {
-        return a.boundingClientRect.top < b.boundingClientRect.top ? a : b;
-      });
+  function setCurrentSection(id) {
+    var changed = currentSectionId !== id;
+    currentSectionId = id;
+    if (changed) {
       clearCurrent();
-      var id = top.target.id;
-      if (navLinks[id]) navLinks[id].link.setAttribute('aria-current', 'true');
-    }, { rootMargin: '-72px 0px -55% 0px', threshold: 0 });
+      if (id) navLinks[id].link.setAttribute('aria-current', 'location');
+    }
 
-    Object.keys(navLinks).forEach(function (id) { spy.observe(navLinks[id].section); });
+    var sectionHash = id ? '#' + encodeURIComponent(id) : '';
+    var currentHashId;
+    try { currentHashId = decodeURIComponent(location.hash.slice(1)); } catch (e) { currentHashId = ''; }
+    var currentHashIsSection = Object.prototype.hasOwnProperty.call(navLinks, currentHashId);
+    if (id && location.hash !== sectionHash) {
+      history.replaceState(history.state, '', location.pathname + location.search + sectionHash);
+    } else if (!id && currentHashIsSection) {
+      history.replaceState(history.state, '', location.pathname + location.search);
+    }
+    syncLanguageHash();
+  }
+
+  function updateCurrentSection() {
+    var activeId = null;
+    var activationLine = Math.max((nav ? nav.offsetHeight : 0) + 40, window.innerHeight * 0.5);
+    if (pendingSectionId) {
+      var requestedId = pendingSectionId;
+      var requestedRect = navLinks[requestedId].section.getBoundingClientRect();
+      if (requestedRect.top < window.innerHeight && requestedRect.bottom > 0) {
+        setCurrentSection(requestedId);
+        return;
+      }
+      pendingSectionId = null;
+    }
+    navSectionIds.forEach(function (id) {
+      if (navLinks[id].section.getBoundingClientRect().top <= activationLine) activeId = id;
+    });
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+      activeId = navSectionIds[navSectionIds.length - 1];
+    }
+    setCurrentSection(activeId);
+  }
+
+  if (navSectionIds.length) {
+    var initialHashId;
+    try { initialHashId = decodeURIComponent(location.hash.slice(1)); } catch (e) { initialHashId = ''; }
+    if (navLinks[initialHashId]) {
+      currentSectionId = initialHashId;
+      pendingSectionId = initialHashId;
+      navLinks[initialHashId].link.setAttribute('aria-current', 'location');
+    }
+
+    var scrollSpyFrame = 0;
+    function scheduleCurrentSectionUpdate() {
+      if (scrollSpyFrame) return;
+      scrollSpyFrame = window.requestAnimationFrame(function () {
+        scrollSpyFrame = 0;
+        updateCurrentSection();
+      });
+    }
+    function clearPendingSection() { pendingSectionId = null; }
+    window.addEventListener('wheel', clearPendingSection, { passive: true });
+    window.addEventListener('touchstart', clearPendingSection, { passive: true });
+    window.addEventListener('pointerdown', clearPendingSection, { passive: true });
+    window.addEventListener('keydown', function (e) {
+      if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '].indexOf(e.key) !== -1) clearPendingSection();
+    });
+    window.addEventListener('scroll', scheduleCurrentSectionUpdate, { passive: true });
+    window.addEventListener('resize', scheduleCurrentSectionUpdate);
+    window.addEventListener('pageshow', scheduleCurrentSectionUpdate);
+    if (document.readyState === 'complete') scheduleCurrentSectionUpdate();
+    else window.addEventListener('load', scheduleCurrentSectionUpdate, { once: true });
   }
 
   /* ---------- 区块淡入上移 ---------- */

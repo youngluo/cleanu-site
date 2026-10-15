@@ -25,7 +25,7 @@
 #### Scenario: Reading an English page without JavaScript
 
 - **WHEN** 访问者禁用 JavaScript 后打开任一英文页面
-- **THEN** 页面标题、静态正文、导航、页脚及相应辅助技术标签使用英文；首页 FAQ 答案可阅读，更新日志提供可用的 GitHub Releases 链接
+- **THEN** 页面标题、静态正文、导航、页脚及相应辅助技术标签使用英文；首页 FAQ 答案与完整更新日志均可阅读
 
 #### Scenario: Exposing the language to assistive technology
 
@@ -72,36 +72,21 @@
 
 ### Requirement: Localized runtime translations and dates
 
-动态主题提示、发布列表加载提示、空状态、错误提示、预发布标签和备用下载文字 SHALL 使用当前页面语言。首页 SHALL 只显示一个当前语言的下载按钮，不探测访问者硬件架构；Release 提供通用 DMG 时使用其真实直链，尚无通用产物或加载失败时保留发布页入口。发布日期 SHALL 按当前页面语言格式化。同一份远端数据在不同语言页面使用时 MUST 重新按当前页面语言呈现。
+主题提示、日志空状态和最新版本标签 SHALL 使用当前页面语言。发布日期 SHALL 在构建时按 locale 与 UTC 格式化。首页 SHALL 提供唯一的静态最新通用包链接，支持部署子路径，不探测硬件或请求 GitHub API。尚无本地记录时，开发页面 SHALL 使用站内日志入口；正式部署 SHALL 拒绝空记录。
 
-#### Scenario: Theme and download labels remain English
+#### Scenario: Reading localized release notes
 
-- **WHEN** 英文首页初始化、访问者切换主题，或异步请求取得通用 DMG
-- **THEN** 主题控件的说明与下载按钮标签保持英文，下载目标继续指向正确附件
-
-#### Scenario: Release status messages are localized
-
-- **WHEN** 英文更新日志正在加载、没有公开 Release，或请求遇到 403、404、网络错误或超时
-- **THEN** 页面显示与该状态对应的英文提示，并保留可用的 GitHub Releases 链接
-
-#### Scenario: Reusing cached release data across languages
-
-- **WHEN** 访问者先查看中文更新日志，再切换到英文更新日志并复用同一批已缓存的 Release 数据
-- **THEN** 日期、预发布标签与站点状态提示使用英文，不沿用中文格式化结果
+- **WHEN** 访问者打开中文或英文更新日志
+- **THEN** 同一版本分别显示已确认的 zh-CN 或 en 说明，无客户端翻译或跨语言回退
 
 ### Requirement: External content and screenshot boundaries
 
-Release 标题、说明正文、版本标识和附件名称 SHALL 保持远端原文；Release 正文 MUST 按纯文本展示。国际化 SHALL 不引入翻译服务或新增运行时外部数据源。首版 SHALL 复用现有真实中文界面截图，其替代文本使用当前页面语言。
+发布数据 SHALL 同时提供非空 zh-CN 与 en 条目。说明 MUST 按纯文本经 HTML 转义输出；版本标识及文件名无需翻译。站点 SHALL NOT 引入运行时翻译服务。首版截图继续使用真实中文界面截图，替代文本使用页面语言。
 
-#### Scenario: Rendering remote release notes
+#### Scenario: Escaping release content
 
-- **WHEN** 英文更新日志收到中文 Release 正文或包含 HTML 片段的说明
-- **THEN** 页面按原文和纯文本呈现这些内容，不翻译、不将其中的 HTML 作为页面标记执行
-
-#### Scenario: Previewing the product in English
-
-- **WHEN** 访问者查看英文首页的产品预览
-- **THEN** 预览使用现有真实截图，标签与图片替代文本使用英文
+- **WHEN** 说明中包含 HTML 片段
+- **THEN** 片段作为文字显示，不作为页面标记执行
 
 ### Requirement: Discoverable published language variants
 
@@ -157,7 +142,7 @@ Release 标题、说明正文、版本标识和附件名称 SHALL 保持远端�
 
 ### Requirement: Existing visual design and interactions are preserved
 
-Astro 重构 MUST 保留现有页面的视觉风格、布局、排版、颜色令牌、页面专属样式和控件外观。中英文版本 MUST 共用对应页面的视觉规则；路由和组件组织按 Astro 约定实现，现有页面功能仍须可用。项目 MUST 使用根级默认 `src/` 和 `public/` 目录；`src/pages/` 只存放 Astro 路由入口，页面专属脚本和样式与对应组件同目录，共享浏览器模块放在 `src/common/`，并通过 `src/common/index.js` 暴露页面可复用的接口；运行时翻译读取与全站交互初始化 MUST 分离。全站共享样式放在 `src/styles/site.css`。页面源码使用的路由与资源路径辅助 MUST 放在 `src/i18n/`；构建期文案与发布地址校验及其测试 MUST 放在根级 `scripts/`，不得混入生成产物目录。旧 `web/` 目录及 Vite 专用配置和入口生成器 MUST 移除。
+Astro 重构 MUST 保留现有页面的视觉风格、布局、排版、颜色令牌、页面专属样式和控件外观。中英文版本 MUST 共用对应页面的视觉规则；路由和组件组织按 Astro 约定实现，现有页面功能仍须可用。项目 MUST 使用根级默认 `src/` 和 `public/` 目录；`src/pages/` 只存放 Astro 路由入口，页面专属脚本和样式与对应组件同目录，共享浏览器模块放在 `src/common/`，使用方直接引用所需模块；运行时翻译读取与全站交互初始化 MUST 分离，不保留没有调用方的转发入口。全站共享样式放在 `src/styles/site.css`。页面源码使用的路由与资源路径辅助 MUST 放在 `src/i18n/`；构建期文案与发布地址校验及其测试 MUST 放在根级 `scripts/`，不得混入生成产物目录。旧 `web/` 目录及 Vite 专用配置和入口生成器 MUST 移除。
 
 #### Scenario: Viewing pages after the framework migration
 
@@ -166,5 +151,51 @@ Astro 重构 MUST 保留现有页面的视觉风格、布局、排版、颜色�
 
 #### Scenario: Using existing interactive controls
 
-- **WHEN** 访问者使用主题切换、移动导航、首页预览与 FAQ，或查看动态 Release 列表
-- **THEN** 控件的键盘与减动效行为保持可用，页面行为与迁移前一致
+- **WHEN** 访问者使用主题切换、移动导航、首页预览与 FAQ，或查看静态 Release 列表
+- **THEN** 控件的键盘与减动效行为保持可用，更新日志可直接阅读
+
+### Requirement: Static private release synchronization
+
+页面构建 SHALL 通过本地数据模块读取快照，不包含网络请求。同步、安装包恢复和部署检查 SHALL 使用同一个发布 CLI 的独立阶段，减少包装入口且保留每阶段失败停止后续部署的行为。
+
+CleanU 发布成功后 SHALL 发送仅包含 tag 的 cleanu-release 事件。官网构建 SHALL 使用私有仓库只读凭据查询最新稳定 Release，按其 tag 读取 CleanU 根目录全量 changelogs.json，并从同一 Release 解析最新 DMG 附件 ID。SHALL NOT 使用 main 中未发布数据、release-data 分支、事件日志或 Actions 缓存作为来源。JSON 保留全部双语历史；Release 正文仅英文。重复通知 MUST 幂等，同版本产物变化 MUST 拒绝。自动同步 SHALL NOT 递增官网版本或创建官网 Release。需要手动刷新时 SHALL 运行官网 Publish，执行同一完整同步、构建和部署；手动 Publish 保留官网自身版本/tag/Release 流程。
+
+#### Scenario: Rebuilding only website code
+
+- **WHEN** 官网更新代码或重新构建
+- **THEN** 读取最新已发布 Release 的 tag JSON 并恢复同一版本 DMG，不因主分支快照为空而丢失下载
+
+#### Scenario: Receiving an older notification
+
+- **WHEN** 旧版本事件晚于新版本事件到达
+- **THEN** 按语义版本选择最高稳定版本，保留所有双语日志，不回退下载与 appcast
+
+### Requirement: Latest-only Pages distribution
+
+每次正式部署 SHALL 在 Astro 构建后从私有 GitHub Release 恢复并校验最新稳定版本的唯一 DMG，输出 downloads/{version}/{filename} 与 updates/appcast.json。首页与 appcast MUST 引用相同文件，兼容 universal/arm64/x86_64 键。Pages SHALL 仅保留最新 DMG，历史日志 SHALL NOT 提供过期下载链接。凭据及私有附件 URL MUST NOT 进入静态产物。生产部署 SHALL 串行执行并在部署前检查数据修订，拒绝版本降级或同版本校验值变化。
+
+新包文件名 SHALL 为 CleanU-{version}.dmg。读取和恢复时 SHALL 使用已发布 JSON 的实际文件名，并继续接受此前的 CleanU-{version}-universal.dmg；SHALL NOT 因官网重建而重命名已发布包或改写其下载地址。
+
+#### Scenario: Deploying a new app version
+
+- **WHEN** 新版本的完整站点与 DMG 校验通过并部署成功
+- **THEN** 首页和 appcast 指向新 DMG，旧 DMG 不进入本次部署，历史日志仍可阅读
+
+#### Scenario: Blocking incomplete deployment
+
+- **WHEN** 凭据缺失、持久化数据缺失、文件恢复失败、校验不符、单文件超过 25 MiB，或构建数据已过期
+- **THEN** 不执行 Pages 部署，线上上一份完整站点与下载保持可用
+
+### Requirement: 官网手动发布收尾
+
+手动 Publish SHALL 按所选升级类型在部署前本地准备官网版本 commit/tag，并在完整校验与 Pages 部署成功后推送 main/tag、创建 GitHub Release。main 与 tag SHALL 原子推送。自动应用通知 SHALL 执行同一同步与部署链路，并跳过官网版本准备和发布步骤。
+
+#### Scenario: 手动官网发版
+
+- **WHEN** 维护者运行手动 Publish 且 Pages 部署成功
+- **THEN** 按所选 patch/minor/major 发布官网版本；任一部署前步骤或部署失败均不推送官网版本提交
+
+#### Scenario: 自动同步不写官网版本
+
+- **WHEN** 应用通知触发 Publish
+- **THEN** 同步、构建、校验并部署最新应用数据，不创建官网版本提交、tag 或 Release

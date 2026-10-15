@@ -1,9 +1,6 @@
-import { releaseConfig } from '../../common/index.js'
-
 ;(function () {
   'use strict'
 
-  var REL = releaseConfig.release || {}
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   /* ---------- 界面状态：标签 + 幻灯片 ---------- */
@@ -227,58 +224,4 @@ import { releaseConfig } from '../../common/index.js'
     })
   })
 
-  /* ---------- 下载：把按钮换成真实 DMG 直链 ---------- */
-  var releasesUrl = 'https://github.com/' + REL.owner + '/' + REL.repo + '/releases'
-  var downloadBtn = document.querySelector('[data-download]')
-
-  if (downloadBtn) downloadBtn.href = releasesUrl + '/latest'
-
-  function applyRelease(release) {
-    var universal = (release.assets || []).find(function (asset) {
-      return /-universal\.dmg$/i.test(asset.name || '') && asset.browser_download_url
-    })
-    if (downloadBtn && universal) downloadBtn.href = universal.browser_download_url
-  }
-
-  if (REL.owner && REL.repo) {
-    var cacheKey = 'cleanu:release:' + REL.owner + '/' + REL.repo
-    var cached = null
-    try {
-      cached = JSON.parse(sessionStorage.getItem(cacheKey) || 'null')
-    } catch (e) {
-      cached = null
-    }
-
-    if (cached && cached.tag_name) {
-      applyRelease(cached)
-    } else {
-      var ctrl = 'AbortController' in window ? new AbortController() : null
-      var timer = ctrl
-        ? setTimeout(function () {
-            ctrl.abort()
-          }, 7000)
-        : null
-      fetch('https://api.github.com/repos/' + REL.owner + '/' + REL.repo + '/releases/latest', {
-        headers: { Accept: 'application/vnd.github+json' },
-        signal: ctrl ? ctrl.signal : undefined,
-      })
-        .then(function (res) {
-          if (!res.ok) throw new Error(String(res.status))
-          return res.json()
-        })
-        .then(function (release) {
-          if (timer) clearTimeout(timer)
-          try {
-            sessionStorage.setItem(cacheKey, JSON.stringify(release))
-          } catch (e) {
-            /* 配额或隐私模式 */
-          }
-          applyRelease(release)
-        })
-        .catch(function () {
-          /* 读不到就保留指向 Releases 页的默认链接 */
-          if (timer) clearTimeout(timer)
-        })
-    }
-  }
 })()

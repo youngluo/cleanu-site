@@ -60,3 +60,33 @@
 - 按目录约定将跨页面共享浏览器逻辑与 Release 配置由 `src/scripts/` 移至 `src/common/`，同步更新组件和布局导入及项目文档。Astro 构建生成八个页面，strict OpenSpec 校验、当前源码与规范中的旧路径扫描和 `git diff --check` 通过；本次未运行测试。
 - 将本地化数据从 `copy` 命名统一为 `translations`：重命名 `src/i18n/translations.js` 及其 API，更新布局 / 组件属性、运行时 `translate()` helper 与数据节点标识。Astro 构建生成八个页面，旧命名扫描、strict OpenSpec 校验和 `git diff --check` 通过；本次未运行测试。
 - 将运行时翻译读取从全站交互初始化中拆出，页面脚本通过 `src/common/index.js` 导入共享配置和翻译接口；构建期校验及测试 helper 统一为 `validateTranslations` / `loadTranslations`。Astro 构建生成八个页面，strict OpenSpec 校验、旧标识扫描和 `git diff --check` 通过；本次未运行测试。
+# 2026-10-13 静态更新日志补充验收
+
+- `node --test scripts/*.test.js` 通过 12 项测试，包括分页私有 API、草稿过滤、字段白名单、无效数据、认证/网络失败、缺失指定 tag 和离线快照读取。
+- Astro 构建成功生成八个 HTML 页面。分别构建空快照和 `/private/tmp/cleanu-releases-preview.json` 测试快照；两种语言日志正文直接位于 HTML，测试 `<script>` 被转义为文字，未执行。
+- 使用 `SITE_URL=https://youngluo.github.io/cleanu-site/` 和 `REQUIRE_SITE_URL=true` 构建，检查八个页面的本地资源/链接、hreflang 和 base 路径全部有效。
+- 浏览器检查中文/英文、亮色/暗色、版本锚点与语言链接的锚点保留。320px 与 360px 视口无水平溢出，列表正确切换为单列。
+- 更新日志不再包含加载提示、私有 Releases 链接或独立日志脚本；共用浏览器脚本不请求 Release API 或使用会话缓存。首页保留已有下载行为。
+- 同步 CLI 缺少 token 时以非零状态退出，原快照不变。两仓库 workflow YAML、shell 语法、通知依赖与自动同步跳过官网版本发布的条件验证通过。
+- 普通本地构建使用已安装的 Astro CLI，并设置 `ASTRO_TELEMETRY_DISABLED=1`。本机 pnpm 的依赖预检尝试访问不可用镜像，故本轮用等价的 Node CLI 执行测试和构建，没有更改依赖。
+- 真实私有 Release 与线上自动部署尚未验证：GitHub CLI 未登录，两份 Actions secret 尚未配置。初始快照为空，测试数据不提交；步骤见两份 README。应用的待验证任务为 `add-update-check` 6.3。
+
+## 双语日志与最新 Pages 包（2026-10-13）
+
+- 官网 16 项测试、发布侧 Python 9 项测试通过；最新 DMG 每次干净重建恢复，新版本只保留新 DMG，历史双语日志继续生成。
+- 私有下载的 302 跳转请求不携带仓库 token；大小、hash、25 MiB、认证与生产版本替换/降级失败条件均有覆盖。
+- 八页根路径/子路径构建、本地资源和下载/appcast 同源核对通过；中英文正文独立且转义，320px 页面无水平溢出。
+- 自动同步不递增官网版本；所有 Pages 发布在恢复与部署门禁之后。
+- GitHub CLI 未登录，未配置 secrets、初始化远端 release-data 或执行真实发布；线上最新包与重建验证仍待完成。
+
+## 最终 Release/tag JSON 流程验收
+
+数据源已从官网 release-data 分支改为最新已发布 CleanU Release 对应 tag 的根目录 changelogs.json。GitHub Release 仅显示当前版本英文且只附 DMG；官网按同一 JSON 渲染双语全量历史。17 项 Node 测试、根路径及 /site/ 子路径各八页静态构建、转义与链接检查通过。应用侧 23 项 Python 测试和 Debug 构建通过。未触发真实 PR 合并、应用 Release 或 Pages 部署，等待凭据/权限配置后的端到端验收。此前 release-data 初始化记录为已替代方案的历史证据。
+
+## 发布脚本简化验收（2026-10-14）
+
+- 五个发布模块收敛为 scripts/releases.js 执行脚本和 src/data/releases.js 本地数据模块，合计 227 → 214 行；页面不再导入含网络和部署逻辑的模块。
+- 17 项 Node 与 23 项应用 Python 测试通过，工作流 YAML/shell、两仓库 OpenSpec strict 和 diff 检查通过。
+- 临时工程中实际执行新 sync/assets/check CLI，使用替身 API 和已有真实 Universal DMG；缺失 token 保留快照，损坏包保留原文件，修订过期和降级均失败。
+- 连续两次干净构建分别输出根路径与 /site/ 子路径的八页静态 HTML，并恢复同一份校验通过的最新 DMG；双语正文、站内链接、首页下载与公开 appcast 路径一致。
+- 应用 workflow 的 PR 文案、summary 和 gh tag 通知用替身命令实跑；此前的手动补发校验拒绝草稿和非法版本，该入口现已移除，手动刷新统一走官网 Publish。没有真实模型请求、GitHub 发布或 Cloudflare 部署。

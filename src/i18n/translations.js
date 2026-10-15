@@ -10,10 +10,6 @@ const translationsByLocale = {
 
 const locales = new Set(Object.keys(translationsByLocale));
 
-const runtimeNames = {
-  changelog: 'log',
-};
-
 export { pageRoute };
 
 export function translationsFor(locale) {
@@ -31,9 +27,7 @@ export function assetHref(path) {
   return createAssetHref(path, import.meta.env.BASE_URL);
 }
 
-export function runtimeTranslationsFor(page, translations) {
-  const runtimeName = runtimeNames[page];
+export function runtimeTranslationsFor(translations) {
   const runtime = { theme: translations.runtime.theme };
-  if (runtimeName) runtime[runtimeName] = translations.runtime[runtimeName];
   return JSON.stringify(runtime).replace(/</g, '\\u003c');
 }

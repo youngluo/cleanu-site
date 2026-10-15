@@ -5,3 +5,5 @@ dist/
 .pnpm-store/
 shots/
 video/
+
+.release-revision.json

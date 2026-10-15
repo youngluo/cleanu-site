@@ -267,6 +267,7 @@ h3 { font-size: 1.06rem; letter-spacing: -0.01em; }
   transition: color 0.16s ease, background-color 0.16s ease;
 }
 .nav__links a:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 5%, transparent); }
+.nav__links a[aria-current="location"] { color: var(--ink); background: color-mix(in srgb, var(--ink) 7%, transparent); }
 
 .nav__aside { display: flex; align-items: center; gap: var(--sp-3); margin-left: var(--sp-2); }
 

@@ -1,23 +1,39 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
+import { loadReleases } from '../../data/releases.js';
 import { translationsFor } from '../../i18n/translations.js';
 import './changelog.css';
 
 const { locale } = Astro.props;
 const translations = translationsFor(locale);
+const releases = await loadReleases();
+const latest = releases[0];
+const releaseId = (tag) => `release-${encodeURIComponent(tag)}`;
+const dateFormat = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 ---
 <SiteLayout page="changelog" locale={locale} translations={translations}>
 <main id="main">
   <section class="page" aria-labelledby="page-title">
-    <div class="shell">
-      <p class="eyebrow">CleanU</p>
+    <div class="shell log-page">
       <h1 id="page-title" class="page__title">{translations.common.changelog}</h1>
       <p class="lede">{translations.changelog.intro}</p>
-      <p class="page__status" data-log-status role="status">{translations.changelog.loading}</p>
-      <ol class="log" data-log></ol>
-      <p class="page__foot"><a href="https://github.com/youngluo/cleanu/releases">{translations.changelog.github}</a></p>
+      {releases.length ? (
+        <ol class="log">
+          {releases.map((release) => (
+            <li class="log__item" id={releaseId(`v${release.version}`)}>
+              <div class="log__meta">
+                <h2 class="log__ver"><a href={`#${encodeURIComponent(releaseId(`v${release.version}`))}`}>{`v${release.version}`}</a></h2>
+                <time class="log__date" datetime={release.published_at}>{dateFormat.format(new Date(release.published_at))}</time>
+                {release === latest && <span class="log__flag">{translations.changelog.latest}</span>}
+              </div>
+              <div class="log__content">
+                <ul class="log__notes">{release.notes[locale].map((note) => <li>{note}</li>)}</ul>
+              </div>
+            </li>
+          ))}
+        </ol>
+      ) : <p class="log__empty">{translations.changelog.empty}</p>}
     </div>
   </section>
 </main>
-<script src="./changelog.js"></script>
 </SiteLayout>

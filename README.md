@@ -38,4 +38,41 @@ Astro uses its default root-level `src/` and `public/` directories. Routes live 
 
 Local builds may omit `SITE_URL`, in which case SEO language alternates are omitted. To verify publication metadata, set `SITE_URL` to the real public HTTPS address, including its deployment subpath. The publish workflow reads the repository variable `SITE_URL` and sets `REQUIRE_SITE_URL=true` to reject missing or invalid configuration.
 
-Run `pnpm test` to check translation contracts, public URL validation and page/asset path mapping. Screenshots remain the actual Chinese UI; GitHub Release content stays in its original language. SEO alternates do not change relative navigation.
+Run `pnpm test` to check translation contracts, public URL validation and page/asset path mapping. Screenshots remain the actual Chinese UI; release notes have reviewed Chinese and English versions. SEO alternates do not change relative navigation.
+
+## Bilingual releases and Pages downloads
+
+The pipeline is `merge app release PR → test/version/DMG/tag/Release → notify site → read latest Release's tagged JSON and DMG → static Astro build → verify → Pages deploy`.
+
+The app's root changelogs.json holds the full bilingual history and the latest installer's name, size and SHA-256. The model generates only new notes; JSON is committed and tagged with the version and appcast. The GitHub Release body is English only and its sole attachment is the DMG. The site queries the latest published stable Release and reads JSON at that tag, never unshipped main data, a release-data branch or CI cache.
+
+Every deployment renders static bilingual history, then restores only the latest DMG after Astro finishes. Size, SHA-256 and the 25 MiB limit are verified before writing dist/downloads/VERSION/CleanU-VERSION.dmg and dist/updates/appcast.json. Home and universal/arm64/x86_64 feed entries share the public file. Previously published packages retain their original names. All notes remain, while obsolete download links are removed. Website-only rebuilds restore the same installer; failure preserves the previous live deployment.
+
+Configure:
+
+| Repository | Name | Scope or purpose |
+| --- | --- | --- |
+| CleanU | GEMINI_API_KEY | Gemini Free Tier incremental bilingual generation |
+| CleanU | SITE_DISPATCH_TOKEN | Contents write only on the website repo, for dispatch |
+| cleanu-site | CLEANU_RELEASES_TOKEN | Contents read only on the private app repo, for Release/tag JSON and DMG |
+| cleanu-site | CLOUDFLARE_API_TOKEN | Cloudflare Pages deployment |
+| cleanu-site | CLOUDFLARE_ACCOUNT_ID | Cloudflare account ID |
+| cleanu-site variable | SITE_URL | Public HTTPS origin and optional deployment subpath |
+
+Allow Actions to create PRs in the app repository. Never put credentials in source, PUBLIC_* variables or release data. The first full sync requires a new app release whose tag contains root changelogs.json; an older tag without it fails explicitly. App releases automatically start the website Publish workflow. For a manual refresh, run Publish in this repository; it reads the latest app release and runs the full build/deploy path, while also advancing the website's own version and creating its tag and GitHub Release. Automatic app events do not bump the website version.
+
+Deployments are serial and recheck the latest Release/tag catalog revision plus the live appcast immediately before upload. Stale data, downgrade and same-version replacement are rejected. Website code rollbacks follow the complete pipeline. Disable Cloudflare Git automatic builds or other paths bypassing restoration; avoid dashboard rollback to a deployment without the current package.
+
+Local commands (credentials come from the environment):
+
+```bash
+pnpm release:sync       # CLEANU_RELEASES_TOKEN reads latest Release's tagged JSON
+pnpm test
+pnpm build              # SITE_URL selects the public origin and deployment subpath
+pnpm release:assets  # Same token restores and verifies the latest DMG
+pnpm release:check   # Same token checks the published revision and live feed
+```
+
+Offline previews read the empty src/data/changelogs.json or an explicit CLEANU_RELEASES_FILE fixture without networking. pnpm build alone produces pages; production deployment requires synchronization, installer restoration and validation. Files over 25 MiB stop the pipeline without changing storage automatically.
+
+Release code has two modules: `src/data/releases.js` reads and validates the local snapshot and provides download paths for Astro; `scripts/releases.js` runs the sync, assets and check phases for private GitHub metadata, installers and deployment checks. The page data module contains no network requests.

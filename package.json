@@ -7,7 +7,10 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "test": "node --test scripts/*.test.js"
+    "release:sync": "node scripts/releases.js sync",
+    "test": "node --test scripts/*.test.js",
+    "release:assets": "node scripts/releases.js assets",
+    "release:check": "node scripts/releases.js check"
   },
   "devDependencies": {
     "astro": "7.3.8"

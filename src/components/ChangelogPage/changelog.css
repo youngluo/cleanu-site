@@ -1,46 +1,26 @@
-/* 更新日志内容与运行状态 */
-html:not(.has-js) [data-log-status] { display: none; }
-.page__status[data-state="error"] { color: var(--warn); }
-.log { display: grid; gap: var(--sp-4); margin-top: var(--sp-6); }
+.log-page { max-width: 960px; }
+.log { margin-top: var(--sp-7); }
 .log__item {
-  padding: var(--sp-6) var(--sp-6);
-  border: 1px solid var(--glass-brd);
-  border-radius: var(--radius);
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur)) saturate(160%);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
-  box-shadow: inset 0 1px 0 var(--glass-hi);
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: var(--sp-6);
+  padding-block: var(--sp-6);
+  border-top: 1px solid var(--line-2);
+  scroll-margin-top: 100px;
 }
-.log__head { display: flex; align-items: baseline; gap: var(--sp-3); flex-wrap: wrap; }
-.log__ver { font-size: 1.15rem; letter-spacing: -0.02em; }
-.log__date, .log__size { font-size: 0.82rem; color: var(--ink-3); font-variant-numeric: tabular-nums; }
-.log__flag {
-  padding: 1px var(--sp-2);
-  border: 1px solid var(--line-2);
-  border-radius: 999px;
-  font-size: 0.76rem;
-  color: var(--ink-2);
-}
-.log__name { margin-top: var(--sp-2); font-weight: 600; }
-/* 发布说明按纯文本保留换行，不当 HTML 插入 */
-.log__notes {
-  margin-top: var(--sp-4);
-  font-size: 0.94rem;
-  line-height: 1.8;
-  color: var(--ink-2);
-  white-space: pre-wrap;
-}
-.log__assets { display: grid; gap: var(--sp-2); margin-top: var(--sp-4); }
-.log__assets li { display: flex; align-items: baseline; gap: var(--sp-3); font-size: 0.88rem; }
-.log__assets a { color: var(--accent-ink); font-weight: 600; word-break: break-all; }
+.log__meta { display: flex; flex-direction: column; align-items: flex-start; gap: var(--sp-2); }
+.log__ver { font-size: 1.3rem; letter-spacing: -0.02em; overflow-wrap: anywhere; }
+.log__ver a { color: var(--ink); }
+.log__ver a:hover { color: var(--ink-2); }
+.log__date { font-size: 0.84rem; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.log__flag { font-size: 0.76rem; font-weight: 600; color: var(--ink-2); }
+.log__content { min-width: 0; }
+/* Astro escapes each localized note; retain intentional line breaks. */
+.log__notes { font-size: 0.94rem; line-height: 1.85; color: var(--ink-2); white-space: pre-wrap; overflow-wrap: anywhere; list-style: disc; padding-left: 1.2em; }
+.log__empty { margin-top: var(--sp-7); padding-block: var(--sp-6); border-top: 1px solid var(--line-2); color: var(--ink-2); }
 
-@media (prefers-reduced-transparency: reduce) {
-  .log__item {
-    background: var(--surface-solid);
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-}
-@supports not ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
-  .log__item { background: var(--surface-solid); }
+@media (max-width: 640px) {
+  .log__item { grid-template-columns: minmax(0, 1fr); gap: var(--sp-4); }
+  .log__meta { flex-direction: row; align-items: baseline; flex-wrap: wrap; gap: var(--sp-2) var(--sp-3); }
+  .log__ver { flex-basis: 100%; }
 }

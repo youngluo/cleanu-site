@@ -14,7 +14,7 @@ const alternates = Astro.site
       href: getAbsoluteLocaleUrl(alternateLocale, pageRoute(page)),
     }))
   : [];
-const runtimeTranslations = runtimeTranslationsFor(page, translations);
+const runtimeTranslations = runtimeTranslationsFor(translations);
 ---
 
 <!DOCTYPE html>
