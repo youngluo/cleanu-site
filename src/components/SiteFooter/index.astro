@@ -25,6 +25,7 @@ const { page, locale, translations } = Astro.props;
       <h3>{translations.legal}</h3>
       <ul>
         <li><a href={pageHref('privacy', locale)} aria-current={page === 'privacy' ? 'page' : undefined}>{translations.privacy}</a></li>
+        <li><a href={pageHref('terms', locale)} aria-current={page === 'terms' ? 'page' : undefined}>{translations.terms}</a></li>
       </ul>
     </nav>
   </div>

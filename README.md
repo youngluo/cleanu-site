@@ -22,3 +22,21 @@ pnpm test       # Run project checks
 pnpm build      # Generate dist/
 pnpm preview    # Preview the build locally
 ```
+
+## Purchase configuration
+
+Purchases default to closed. Downloads and existing customers' direct Dodo license checks do not depend on the switch. Public defaults live in `src/data/purchase-config.json`; nonempty environment variables override them. Keep `PURCHASE_ENABLED=false` until configuration, a compatible released app, and real purchase-to-activation acceptance are ready.
+
+| Variable | Value |
+| --- | --- |
+| PURCHASE_ENABLED | false by default; true to open purchases |
+| DODO_ENVIRONMENT | live for public purchases |
+| DODO_BUSINESS_ID / DODO_PRODUCT_ID | Real public IDs matching the app |
+| DODO_PAYMENT_LINK | The official product's HTTPS Payment Link |
+| LICENSE_MIN_APP_VERSION | Minimum released license-compatible app version |
+| PURCHASE_ACCEPTANCE_REFERENCE | Location of completed real purchase and activation evidence |
+| SITE_URL | Public HTTPS address, including any deployment base |
+
+Purchase support email is configured in the Dodo dashboard only; it is not stored in the site or app repositories. Merchant API keys belong only in trusted management connections, never the site, app, or repository. Obtain test checkout links from the Dodo dashboard or an actual API response; do not guess their host. Public purchases reject test mode.
+
+Publish and download-verify the compatible app before opening purchases through the full Publish workflow. Release sync, tests, Astro build, DMG restoration, static-page checks, and appcast verification remain required. Run `pnpm site:check` after building to check all twelve pages, local links, and return headers. Use the same workflow to close purchases while retaining downloads, activation guidance, and support. Closing purchases does not revoke licenses.

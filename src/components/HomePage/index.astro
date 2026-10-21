@@ -2,12 +2,15 @@
 import { loadReleases, downloadPath } from '../../data/releases.js';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import { assetHref, pageHref, translationsFor } from '../../i18n/translations.js';
+import { checkedPurchaseConfig, checkoutHref } from '../../data/purchase.js';
 import './home.css';
 
 const { locale } = Astro.props;
 const translations = translationsFor(locale);
 const latestRelease = (await loadReleases())[0];
 const downloadHref = latestRelease ? assetHref(downloadPath(latestRelease)) : pageHref('changelog', locale);
+const purchase = await checkedPurchaseConfig();
+const purchaseHref = purchase.enabled ? checkoutHref(purchase, process.env.SITE_URL, locale) : null;
 ---
 <SiteLayout page="index" locale={locale} translations={translations}>
 <main id="main">
@@ -131,12 +134,17 @@ const downloadHref = latestRelease ? assetHref(downloadPath(latestRelease)) : pa
           </p>
           <p class="pricing__note">{translations.index.pricingPayment}</p>
           <div class="pricing__actions">
-            <button class="btn btn--primary" type="button" disabled>{translations.index.pricingBuy}</button>
+            {purchaseHref
+              ? <a class="btn btn--primary" href={purchaseHref} rel="noreferrer">{translations.index.pricingBuy}</a>
+              : <button class="btn btn--primary" type="button" disabled>{translations.index.pricingClosed}</button>}
           </div>
+          <p class="pricing__note"><a href={pageHref('terms', locale)}>{translations.common.terms}</a></p>
+          <p class="pricing__note">{translations.index.pricingTax}</p>
         </div>
         <ul class="pricing__terms">
           <li>
             <h3>{translations.index.pricingTrial}</h3>
+            <p>{translations.index.pricingTrialBody}</p>
           </li>
           <li>
             <h3>{translations.index.pricingUpdates}</h3>

@@ -15,6 +15,13 @@ const translations = translationsFor(locale);
       <p class="lede">{translations.support.intro}</p>
       <div class="reading">
         <section class="reading__section">
+          <h2>{translations.support.purchaseTitle}</h2>
+          <p>{translations.support.purchaseBody}</p>
+          <p>{translations.support.purchaseSteps}</p>
+          <p>{translations.support.purchaseChannel}</p>
+          <p><a href={pageHref('terms', locale)}>{translations.common.terms}</a></p>
+        </section>
+        <section class="reading__section">
           <h2>{translations.support.issueTitle}</h2>
           <p>{translations.support.issueBody}</p>
           <p class="page__foot"><a href="https://github.com/youngluo/cleanu-site/issues">{translations.support.issueLink}</a></p>

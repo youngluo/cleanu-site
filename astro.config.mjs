@@ -1,7 +1,8 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { defineConfig } from 'astro/config';
 import { resolveSiteUrl, validateTranslations } from './scripts/localization.js';
+import { checkedPurchaseConfig, checkoutHeaders } from './src/data/purchase.js';
 
 const root = import.meta.dirname;
 const siteUrl = resolveSiteUrl(process.env.SITE_URL, process.env.REQUIRE_SITE_URL === 'true');
@@ -11,6 +12,7 @@ const translationsByLocale = Object.fromEntries(await Promise.all(locales.map(as
   return [locale, JSON.parse(await readFile(file, 'utf8'))];
 })));
 validateTranslations(translationsByLocale);
+await checkedPurchaseConfig();
 
 const base = siteUrl ? siteUrl.pathname.replace(/\/+$/, '') || '/' : '/';
 
@@ -27,4 +29,8 @@ export default defineConfig({
   devToolbar: { enabled: false },
   outDir: './dist',
   build: { format: 'directory' },
+  integrations: [{
+    name: 'purchase-response-headers',
+    hooks: { 'astro:build:done': async ({ dir }) => writeFile(new URL('_headers', dir), checkoutHeaders(base)) },
+  }],
 });

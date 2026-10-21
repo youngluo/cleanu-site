@@ -13,7 +13,7 @@ const translations = translationsFor(locale);
       <p class="eyebrow">CleanU</p>
       <h1 id="page-title" class="page__title">{translations.common.privacy}</h1>
       <p class="lede">{translations.privacy.intro}</p>
-      <p class="page__status"><time datetime="2026-10-11">{translations.privacy.updated}</time></p>
+      <p class="page__status"><time datetime="2026-10-20">{translations.privacy.updated}</time></p>
       <div class="reading">
         <section class="reading__section">
           <h2>{translations.privacy.scopeTitle}</h2>
@@ -30,9 +30,16 @@ const translations = translationsFor(locale);
           <p>{translations.privacy.websiteBody}</p>
         </section>
         <section class="reading__section">
+          <h2>{translations.privacy.licenseTitle}</h2>
+          <p>{translations.privacy.licenseBody}</p>
+          <p>{translations.privacy.keychainBody}</p>
+          <p>{translations.privacy.returnBody}</p>
+        </section>
+        <section class="reading__section">
           <h2>{translations.privacy.thirdPartyTitle}</h2>
           <p>{translations.privacy.thirdPartyBody}</p>
           <ul>
+            <li><a href="https://dodopayments.com/legal/privacy-policy" rel="noopener noreferrer">{translations.privacy.dodoPrivacy}</a></li>
             <li><a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener noreferrer">{translations.privacy.githubPrivacy}</a></li>
             <li><a href="https://www.cloudflare.com/privacypolicy/" rel="noopener noreferrer">{translations.privacy.cloudflarePrivacy}</a></li>
           </ul>

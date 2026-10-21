@@ -1,9 +1,11 @@
-export const pageNames = ['index', 'changelog', 'privacy', 'support'];
+export const pageNames = ['index', 'changelog', 'privacy', 'support', 'checkout', 'terms'];
 const pageRoutes = {
   index: '',
   changelog: 'changelog',
   privacy: 'privacy',
   support: 'support',
+  checkout: 'purchase/complete',
+  terms: 'purchase-terms',
 };
 
 export function pageRoute(page) {

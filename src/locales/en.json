@@ -16,7 +16,8 @@
     "privacy": "Privacy",
     "support": "Support",
     "helpFeedback": "Help & Feedback",
-    "legal": "Legal"
+    "legal": "Legal",
+    "terms": "Purchase Terms"
   },
   "index": {
     "title": "CleanU · Safe, transparent cleanup for macOS",
@@ -59,8 +60,8 @@
     "pricingTrial": "30-day free trial",
     "pricingUpdates": "Lifetime updates",
     "pricingUpdatesBody": "Future version updates are included in your purchase",
-    "pricingDevices": "Use on 3 devices",
-    "pricingDevicesBody": "One license covers up to 3 Macs",
+    "pricingDevices": "Two Active Macs",
+    "pricingDevicesBody": "Use your license on two Macs you own. Deactivate the old Mac before moving.",
     "faqStorage": "How is this different from System Settings → Storage?",
     "faqStorageBody": "System Settings shows storage by category. You can see broad areas of usage, but individual cleanup options are limited. CleanU lists eight sources—caches, temporary files, developer-tool caches, project artifacts, app leftovers, installers, archives and large files—with full paths and sizes. Items move to the Trash only after you select and confirm them.",
     "faqAccess": "Why does CleanU need Full Disk Access?",
@@ -69,7 +70,10 @@
     "faqDeletionBefore": "Cleanup happens only after you explicitly confirm items you have selected. Candidates are checked again, and mismatches are excluded. Files move to the Trash rather than being permanently deleted, so you can put them back. If you remove project artifacts such as ",
     "faqDeletionAfter": ", you will need to reinstall the project's dependencies before running it again.",
     "faqUpload": "Will it upload my files or data?",
-    "faqUploadBody": "Scanning, reviewing and cleanup are local file operations on your Mac. Every row corresponds to a real local path, and Time Machine snapshots are read locally too. Cleaned files go to your Mac's Trash; snapshots are the exception and are thinned using the system's mechanism."
+    "faqUploadBody": "Scanning, reviewing and cleanup are local file operations on your Mac. Every row corresponds to a real local path, and Time Machine snapshots are read locally too. Cleaned files go to your Mac's Trash; snapshots are the exception and are thinned using the system's mechanism.",
+    "pricingClosed": "Purchases Coming Soon",
+    "pricingTax": "Taxes, settlement currency, and the final total are shown at Dodo checkout.",
+    "pricingTrialBody": "Full scanning and cleanup for 30 days, without an account. Both require a purchased, activated license after the trial."
   },
   "changelog": {
     "title": "Changelog · CleanU",
@@ -81,7 +85,7 @@
   "privacy": {
     "title": "Privacy Policy · CleanU",
     "description": "Learn how the CleanU macOS app and website handle local data, update requests and website browsing data.",
-    "updated": "Last updated: October 13, 2026",
+    "updated": "Last updated: October 20, 2026",
     "intro": "This policy applies to the CleanU macOS app and the CleanU website. Scanning and cleanup run locally on your Mac; scan results and cleanup history are not uploaded to a server.",
     "scopeTitle": "Information the app processes",
     "scopeBody": "During a scan, CleanU reads directories, file paths and file attributes on your Mac to identify candidates and calculate their sizes. Scanning, review and cleanup happen locally; the app does not upload file contents, scan results or cleanup history. CleanU does not require an account and does not include in-app advertising or analytics SDKs.",
@@ -90,21 +94,26 @@
     "locationBefore": "App data is stored at ",
     "locationAfter": ". To remove it, quit CleanU, choose “Go → Go to Folder…” in Finder, enter this path and delete the CleanU folder.",
     "networkTitle": "Network requests and website data",
-    "updateBody": "The app requests the public version manifest from the website hosted on Cloudflare Pages only when you manually check for updates. The request does not include scan results, file paths, cleanup history or a device identifier. The hosting service may receive connection information such as your IP address and request headers. Download buttons open the website’s installer or download page.",
+    "updateBody": "When you check for updates, the app requests the public version manifest from the website hosted on Cloudflare Pages. The update request contains no scan results, file paths, cleanup history, or device identifiers. Hosting services may receive IP addresses and request headers. Downloads open the website package or download page.",
     "websiteBody": "The website is hosted on Cloudflare Pages. Download links and bilingual release notes are generated at build time; your browser does not request the GitHub Release API. Browser local storage keeps your theme choice, and you can clear this website’s browser data. The website does not include advertising or third-party analytics scripts. The hosting service may process ordinary access logs and connection information under its own policies.",
     "thirdPartyTitle": "Third-party services",
-    "thirdPartyBody": "When you use GitHub or Cloudflare services, their privacy policies govern their handling of data:",
+    "thirdPartyBody": "Data processed by Dodo, GitHub, and Cloudflare is subject to their privacy policies:",
     "githubPrivacy": "GitHub Privacy Statement",
     "cloudflarePrivacy": "Cloudflare Privacy Policy",
     "contactTitle": "Contact and feedback",
     "contactBody": "For product help or questions about this policy, visit the support page. GitHub Issues are public; do not post personal information, full file paths, sensitive screenshots or unchecked logs.",
     "changesTitle": "Policy changes",
-    "changesBody": "If the app's data practices change, we will update the date and information on this page."
+    "changesBody": "If the app's data practices change, we will update the date and information on this page.",
+    "licenseTitle": "Purchase, Licensing, and Keychain",
+    "licenseBody": "Dodo handles hosted checkout, purchase email addresses, payment information, and license emails. During activation, periodic verification, or deactivation, the app sends Dodo the license key and installation instance ID. Activation also sends a random installation identifier, without computer names, usernames, hardware serial numbers, file paths, scan results, or cleanup history.",
+    "keychainBody": "Trial start, installation identifier, license key, instance, check times, and pending operations are stored in the local Keychain without cloud sync. A normal reinstall or deleting Application Support does not also remove Keychain records. Deleting local data does not replace deactivation; only confirmed server deactivation frees a slot.",
+    "returnBody": "Dodo may append order, email, or license query parameters to the purchase return URL. The page keeps only an allowlisted status hint, clears the query and fragment early, and does not display or store the raw parameters or load third-party analytics or resources. This cannot remove initial request logs already received by Dodo or the host.",
+    "dodoPrivacy": "Dodo Privacy Policy"
   },
   "support": {
     "title": "Support · CleanU",
     "description": "Get help with CleanU, report a problem or read the release history.",
-    "intro": "Need help or have a feature suggestion? Contact the maintainers through CleanU's GitHub Issues.",
+    "intro": "Use GitHub Issues for app questions and feature suggestions. For purchases and licensing, use the support option in your Dodo purchase email.",
     "issueTitle": "Report a problem",
     "issueBody": "Please include the CleanU version, macOS version, steps to reproduce, expected result and actual result when possible. This helps us investigate.",
     "issueLink": "Open CleanU GitHub Issues",
@@ -113,7 +122,11 @@
     "updatesTitle": "Downloads and updates",
     "updatesBody": "Visit the home page to download the universal version for Apple Silicon and Intel, or read the release history.",
     "downloadLink": "Go to downloads",
-    "changelogLink": "Read the changelog"
+    "changelogLink": "Read the changelog",
+    "purchaseTitle": "Purchase and License Support",
+    "purchaseBody": "For a missing email after a charge, duplicate charge, full slots, or a lost Mac, use the support option in your Dodo purchase email. Share only your purchase email, necessary order details, and a description of the issue. Never post keys, email addresses, or payment details in public Issues.",
+    "purchaseChannel": "For an existing order, use the support option in your Dodo purchase email. If the email is missing, check spam first. Do not post private details in public Issues.",
+    "purchaseSteps": "Check spam for missing email. Free a slot by deactivating the old Mac. For a lost device or uncertain activation, use the support option in your Dodo purchase email and include your purchase email and a description of the issue. Do not repeatedly purchase if charged."
   },
   "runtime": {
     "theme": {
@@ -122,5 +135,45 @@
       "dark": "dark",
       "label": "Theme: {current}, click to switch to {next}"
     }
+  },
+  "checkout": {
+    "title": "Purchase & Activation · CleanU",
+    "description": "Find your purchase email and activate your license in CleanU.",
+    "heading": "Next, Activate in the App",
+    "neutral": "Check your purchase inbox for the Dodo email and follow the steps below. This page cannot confirm that your order completed.",
+    "succeeded": "The payment service returned a success hint. Use your Dodo purchase email and the app activation result; this page has not independently verified the order.",
+    "processing": "The payment service reports processing. Wait for the purchase email. Do not pay again if you have been charged.",
+    "failed": "The payment service reports an incomplete payment. If charged, use the support option in your Dodo purchase email before paying again.",
+    "cancelled": "The payment service reports cancellation. Return to pricing if you have not paid; use the support option in your Dodo purchase email first if charged.",
+    "unknown": "The return information cannot establish order status. Check your inbox and charge history before paying again.",
+    "stepsTitle": "Get and Activate Your License",
+    "stepEmail": "Open the email address used at checkout and find the Dodo purchase email. Also check spam.",
+    "stepApp": "Install the latest license-compatible CleanU and open Manage License from its menu bar context menu.",
+    "stepActivate": "Copy the complete license key into the app and activate this Mac online. Activation does not start scanning or cleanup.",
+    "authority": "Web messages, order parameters, and links do not grant app access.",
+    "helpTitle": "Missing Email or Moving Macs",
+    "helpBody": "For a missing email after a charge, duplicate charge, full slots, or a lost Mac, use the support option in your Dodo purchase email. Share only your purchase email, necessary order details, and a description of the issue. Never post keys, email addresses, or payment details in public Issues.",
+    "purchaseChannel": "For an existing order, use the support option in your Dodo purchase email. If the email is missing, check spam first. Do not post private details in public Issues.",
+    "download": "Download CleanU",
+    "returnPricing": "Return to Pricing"
+  },
+  "terms": {
+    "title": "Purchase Terms · CleanU",
+    "description": "Trial, personal license, offline verification, and refund terms for official CleanU builds.",
+    "intro": "These terms apply to license-compatible official CleanU builds. Try the app and confirm it meets your needs on your Mac before purchasing.",
+    "trialTitle": "30-Day Full Trial",
+    "trialBody": "The continuous 30-day trial starts when a license-compatible version first saves its trial record. No account is needed. Scanning and cleanup are fully available during the trial, and both lock afterward until purchase and activation. A normal reinstall or language change does not reset it.",
+    "licenseTitle": "$9 One-Time Purchase with Lifetime Updates",
+    "licenseBody": "Purchase provides a personal license with no preset expiration and includes future updates, without a recurring subscription. Taxes, settlement currency, and the final total appear at Dodo checkout. Continued validity depends on active installations, verification, and any revocation required by law or platform rules.",
+    "devicesTitle": "Two Macs for One Purchaser",
+    "devicesBody": "One personal license permits at most two concurrent installation instances and may not be resold or shared between people. Deactivate an old Mac before moving. Other OS users, virtual machines, or reinstalling after losing local records may create another instance. The limit does not verify identity. Contact private support for a lost device.",
+    "connectionTitle": "Internet Connection Requirements",
+    "connectionBody": "Internet is required for first activation and periodic license verification. You can use CleanU offline for up to seven days after the last successful check. After that, connect and verify to resume scanning and cleanup. Deactivation or revocation after a successful paid activation does not automatically restore the trial.",
+    "refundTitle": "Try Before Purchasing",
+    "refundBody": "A full trial is available, so discretionary refunds for changing your mind or not using the software are not offered. Exceptions required by applicable law or the payment platform remain available. Use the support option in your Dodo purchase email for duplicate charges, non-delivery, or other order problems.",
+    "supportTitle": "Email Delivery and Private Support",
+    "supportBody": "Dodo handles payment and license email delivery. A browser return status is not order verification or successful activation. Keep your purchase email and use its support option for order issues. Never publish keys or card details; scan results, file contents, and hardware serial numbers are not needed.",
+    "sourceTitle": "Official Builds and Source License",
+    "sourceBody": "This purchase policy applies to official builds. Source use remains governed by the repository LICENSE. Buying a license does not change the source license or retroactively change previously released versions."
   }
 }

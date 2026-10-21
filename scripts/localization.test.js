@@ -45,8 +45,8 @@ test('public site URL validation preserves deployment paths', () => {
 });
 
 test('page ids map to Astro file-based routes', () => {
-  assert.deepEqual(pageNames, ['index', 'changelog', 'privacy', 'support']);
-  assert.deepEqual(pageNames.map(pageRoute), ['', 'changelog', 'privacy', 'support']);
+  assert.deepEqual(pageNames, ['index', 'changelog', 'privacy', 'support', 'checkout', 'terms']);
+  assert.deepEqual(pageNames.map(pageRoute), ['', 'changelog', 'privacy', 'support', 'purchase/complete', 'purchase-terms']);
   assert.throws(() => pageRoute('missing'), /Unknown site page/);
 });
 

@@ -9,6 +9,7 @@
     "preview": "astro preview",
     "release:sync": "node scripts/releases.js sync",
     "test": "node --test scripts/*.test.js",
+    "site:check": "node scripts/check-site.js",
     "release:assets": "node scripts/releases.js assets",
     "release:check": "node scripts/releases.js check"
   },

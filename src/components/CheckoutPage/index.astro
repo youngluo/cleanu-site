@@ -1,0 +1,38 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { translationsFor, pageHref } from '../../i18n/translations.js';
+import './checkout.css';
+
+const { locale } = Astro.props;
+const translations = translationsFor(locale);
+const copy = translations.checkout;
+---
+<SiteLayout page="checkout" locale={locale} translations={translations}>
+  <main id="main">
+    <section class="page" aria-labelledby="page-title">
+      <div class="shell">
+        <p class="eyebrow">CleanU</p>
+        <h1 id="page-title" class="page__title">{copy.heading}</h1>
+        <div role="status" aria-live="polite" class="checkout-status">
+          <p data-checkout-message="neutral">{copy.neutral}</p>
+          {['succeeded', 'processing', 'failed', 'cancelled', 'unknown'].map((state) => <p data-checkout-message={state}>{copy[state]}</p>)}
+        </div>
+        <div class="reading">
+          <section class="reading__section">
+            <h2>{copy.stepsTitle}</h2>
+            <ol><li>{copy.stepEmail}</li><li>{copy.stepApp}</li><li>{copy.stepActivate}</li></ol>
+            <p>{copy.authority}</p>
+          </section>
+          <section class="reading__section">
+            <h2>{copy.helpTitle}</h2>
+            <p>{copy.helpBody}</p>
+            <p>{copy.purchaseChannel}</p>
+            <p><a href={pageHref('support', locale)}>{translations.common.support}</a></p>
+          </section>
+          <p><a href={`${pageHref('index', locale)}#download`}>{copy.download}</a></p>
+          <p><a href={pageHref('terms', locale)}>{translations.common.terms}</a> · <a href={`${pageHref('index', locale)}#pricing`}>{copy.returnPricing}</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+</SiteLayout>

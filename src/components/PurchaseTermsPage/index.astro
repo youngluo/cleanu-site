@@ -1,0 +1,24 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { translationsFor, pageHref } from '../../i18n/translations.js';
+const { locale } = Astro.props;
+const translations = translationsFor(locale);
+const copy = translations.terms;
+---
+<SiteLayout page="terms" locale={locale} translations={translations}>
+  <main id="main">
+    <section class="page" aria-labelledby="page-title">
+      <div class="shell">
+        <p class="eyebrow">CleanU</p>
+        <h1 id="page-title" class="page__title">{translations.common.terms}</h1>
+        <p class="lede">{copy.intro}</p>
+        <div class="reading">
+          {['trial', 'license', 'devices', 'connection', 'refund', 'support', 'source'].map((section) => <section class="reading__section">
+            <h2>{copy[`${section}Title`]}</h2><p>{copy[`${section}Body`]}</p>
+          </section>)}
+          <p><a href={pageHref('support', locale)}>{translations.common.support}</a> · <a href={`${pageHref('index', locale)}#pricing`}>{translations.common.pricing}</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+</SiteLayout>
