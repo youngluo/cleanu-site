@@ -57,12 +57,8 @@ jobs:
           SITE_URL: ${{ vars.SITE_URL }}
           REQUIRE_SITE_URL: 'true'
           PURCHASE_ENABLED: ${{ vars.PURCHASE_ENABLED }}
-          DODO_ENVIRONMENT: ${{ vars.DODO_ENVIRONMENT }}
-          DODO_BUSINESS_ID: ${{ vars.DODO_BUSINESS_ID }}
           DODO_PRODUCT_ID: ${{ vars.DODO_PRODUCT_ID }}
           DODO_PAYMENT_LINK: ${{ vars.DODO_PAYMENT_LINK }}
-          LICENSE_MIN_APP_VERSION: ${{ vars.LICENSE_MIN_APP_VERSION }}
-          PURCHASE_ACCEPTANCE_REFERENCE: ${{ vars.PURCHASE_ACCEPTANCE_REFERENCE }}
         run: pnpm build
 
       - name: Restore and verify the latest DMG

@@ -1,5 +1,6 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
+import PurchaseSupportLinks from '../PurchaseSupportLinks/index.astro';
 import { translationsFor, pageHref } from '../../i18n/translations.js';
 const { locale } = Astro.props;
 const translations = translationsFor(locale);
@@ -16,6 +17,7 @@ const copy = translations.terms;
           {['trial', 'license', 'devices', 'connection', 'refund', 'support', 'source'].map((section) => <section class="reading__section">
             <h2>{copy[`${section}Title`]}</h2><p>{copy[`${section}Body`]}</p>
           </section>)}
+          <PurchaseSupportLinks copy={translations.support} />
           <p><a href={pageHref('support', locale)}>{translations.common.support}</a> · <a href={`${pageHref('index', locale)}#pricing`}>{translations.common.pricing}</a></p>
         </div>
       </div>

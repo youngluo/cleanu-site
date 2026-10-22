@@ -1,8 +1,4 @@
 {
-  "environment": "test",
-  "businessID": "bus_0NpV8PI9496Qb26Bqsa06",
-  "productID": "pdt_0Nq80GcubxvdvSSD9Yh3S",
-  "paymentLink": "https://test.checkout.dodopayments.com/buy/pdt_0Nq80GcubxvdvSSD9Yh3S",
-  "minimumAppVersion": "",
-  "acceptanceReference": ""
+  "productID": "",
+  "paymentLink": ""
 }

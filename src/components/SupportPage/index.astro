@@ -1,5 +1,6 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
+import PurchaseSupportLinks from '../PurchaseSupportLinks/index.astro';
 import { translationsFor, pageHref } from '../../i18n/translations.js';
 import './support.css';
 
@@ -19,6 +20,7 @@ const translations = translationsFor(locale);
           <p>{translations.support.purchaseBody}</p>
           <p>{translations.support.purchaseSteps}</p>
           <p>{translations.support.purchaseChannel}</p>
+          <PurchaseSupportLinks copy={translations.support} />
           <p><a href={pageHref('terms', locale)}>{translations.common.terms}</a></p>
         </section>
         <section class="reading__section">

@@ -24,13 +24,13 @@ app-licensing 的行为由相邻 clean-mac 仓库同名 change 定义。该方�
 
 ### 1. 配置驱动的静态 Payment Link
 
-增加一个小型构建期购买配置模块，供页面与现有构建校验共同使用，不新建通用支付平台封装。公开配置包括环境、商品/商户标识、Dodo 原始 Payment Link、购买开放开关及支持授权的最低 App 版本。购买支持邮箱只在 Dodo 后台设置，不进入网站、App 或仓库；浏览器不接触商户 API key。
+增加一个小型构建期购买配置模块，供页面与现有构建校验共同使用，不新建通用支付平台封装。官网固定生产环境，公开配置包括正式商品标识、Dodo 原始 Payment Link 和购买开放开关。商户 ID 既不用于静态购买链接，也无法在无管理接口的构建中核对商品归属，因此移除这一必填项；App 仍按激活响应核对商户与商品。购买支持邮箱只在 Dodo 后台设置，不进入网站、App 或仓库；浏览器不接触商户 API key。
 
-正式链接采用官方 https://checkout.dodopayments.com/buy/{product_id} 契约，固定 quantity=1，使用 URL API 生成 redirect_url。2026-10-20 从 Dodo API 取得真实测试 Payment Link，核对测试主机为 https://test.checkout.dodopayments.com。链接生成按环境匹配固定主机，并核对商品、路径、站点 origin 与子路径，拒绝用户名密码、任意跳转目的地和占位配置。
+正式链接采用官方 https://checkout.dodopayments.com/buy/{product_id} 契约，固定 quantity=1，使用 URL API 生成 redirect_url。此前测试链路的结果见 tasks.md；官网代码只接受生产结账主机。链接生成使用固定生产主机，并核对商品、路径、站点 origin 与子路径，拒绝用户名密码、任意跳转目的地和占位配置。
 
-PURCHASE_ENABLED 默认关闭。关闭时允许发布现有下载站点，显示本地化的未开放状态；开启时任何必需配置缺失即构建失败。最低版本检查只防止错配旧版下载，不能替代真实激活验收。沿用 $9 显示，不在浏览器维护另一份实际收费金额；税费与结算币种以 Dodo 结账展示为准，上线前核对含税/未税措辞。
+PURCHASE_ENABLED 默认关闭。关闭时允许发布现有下载站点，显示本地化的未开放状态；开启时任何必需配置缺失即构建失败。沿用 $9 显示，不在浏览器维护另一份实际收费金额；税费与结算币种以 Dodo 结账展示为准，上线前核对含税/未税措辞。
 
-实现以 src/data/purchase-config.json 保存已核对的真实测试标识与 Payment Link，src/data/purchase.js 校验并接受非空环境变量覆盖。正式公开开关仅允许 live，测试链接生成能力仅用于独立测试，不能以 test 环境开放公开购买。PURCHASE_ACCEPTANCE_REFERENCE 要求维护者提供实际验收记录位置，其中需确认 Dodo 后台支持入口已配置；构建不读取邮箱。字符串与版本校验不能证明记录内容或真实链路已通过。脚本测试的 fixture 与实际测试资源分别维护，不写入假生产值。
+src/data/purchase-config.json 只保存一套正式公开配置；尚未提供的正式标识保持空值，src/data/purchase.js 校验并接受非空环境变量覆盖。不保留环境字段、测试商品默认值或测试链接生成分支。缺少正式配置时购买保持关闭，开启则构建失败。App 兼容性、后台支持入口和真实购买到激活的链路由维护者在上线验收中确认，结果记录在仓库文档；移除最低授权版本与验收记录位置变量及其必填检查。购买模块仅负责商品与结账链接校验，不再读取发布数据。脚本测试的 fixture 与实际测试资源分别维护，不写入假生产值。
 
 开发验收使用受信任管理 MCP 创建一次性测试 Checkout Session，接收维护者授权测试邮件的地址，并回到本机预览页；这不进入网站产物或运行时架构。测试订单已成功，自动许可证权益和两封邮件交付状态已核对。Dodo 默认品牌支持邮箱的 API 更新返回 403，需通过商户后台手动配置。网站仅指引用户使用 Dodo 购买邮件中的支持入口。
 
@@ -77,7 +77,7 @@ Dodo 会把支付信息追加到 redirect_url。回跳页使用尽早执行的�
 
 公开配置仅增加到现有构建验证与 Publish 输入。继续执行发布同步、测试、Astro 构建、DMG 恢复、appcast 校验和 Pages 部署；支付页面不启用另一个 Cloudflare 自动构建或精简发布入口。
 
-构建在 PURCHASE_ENABLED=true 时检查当前下载版本不低于配置的授权兼容版本，并要求维护者已有测试链路验收记录；不能仅修改版本号就声称 App 可激活。应用自动通知与官网手动 Publish 使用相同配置检查，关闭新购买时不移除已售用户需要的说明。
+构建在 PURCHASE_ENABLED=true 时检查正式商品、生产结账地址和公开回跳站点。维护者先完成兼容 App 的发布、下载和真实购买链路验收，再开启购买；验收结果保留在仓库文档。应用自动通知与官网手动 Publish 使用相同配置检查，关闭新购买时不移除已售用户需要的说明。
 
 ## Risks / Trade-offs
 
@@ -93,7 +93,7 @@ Dodo 会把支付信息追加到 redirect_url。回跳页使用尽早执行的�
 1. 先实现页面、公开配置校验和关闭购买状态；用示例配置验证静态构建，但不把示例当生产商品。
 2. 与 App 使用同一 Dodo 测试商品，核对自动邮件、数量与实例上限，测试回跳未知/成功/处理中/失败/取消及敏感查询参数处理。
 3. 发布并下载支持授权的 App，验收完整试用、两设备激活、第三实例拒绝、取消与异常恢复、七天期限及明确失效。
-4. 维护者在 Dodo 后台配置支持邮箱，并补齐正式商户/商品/Payment Link、公开站点地址、兼容版本、税费与条款，记录后台设置验收，执行完整 Publish 后开放新购买。
+4. 维护者在 Dodo 后台配置支持邮箱，并补齐正式商品/Payment Link、公开站点地址、税费与条款，确认可下载 App 支持激活并记录验收，执行完整 Publish 后开放新购买。
 5. 发生支付问题时通过同一流程关闭购买，保留条款与支持页，不撤销已售许可证或回滚到不支持激活的旧 App。
 
 ## References
@@ -104,3 +104,11 @@ Dodo 会把支付信息追加到 redirect_url。回跳页使用尽早执行的�
 - [自动许可证与激活上限](https://docs.dodopayments.com/features/license-keys)
 - [设备实例管理鉴权](https://docs.dodopayments.com/api-reference/licenses/get-license-key-instances)
 - App 配套文档为相邻 clean-mac 仓库 openspec/changes/integrate-dodo-payments/design.md。
+
+## 上线 review 调整
+
+支持指引此前将未收到邮件的用户再次引向邮件入口，形成无法继续的路径。支持、回跳和条款共用 PurchaseSupportLinks，直接打开 Dodo 官方客户门户 https://customer.dodopayments.com/ 与官方联系页 https://dodopayments.com/contact。无法收到登录邮件、邮箱填错或门户找不到订单时转向联系页，不以先拿到订单邮件为前提；本站不保存邮箱、表单内容或许可证。
+
+官网固定使用生产 Dodo 结账；删除 DODO_ENVIRONMENT、测试主机分支及测试商品默认值，保留一套 purchase-config.json、公开变量覆盖与原 Publish 命令。环境命令调整仅针对 macOS App。
+
+条款统一为点击开始试用并保存成功才计时。Dodo 后台支持邮箱仍由维护者配置，2026-10-22 只读确认当前 Test Mode 默认品牌尚未配置，未改动账户。官方支持页与客户门户入口来自 Dodo 官网，非本站查单或恢复授权功能。
