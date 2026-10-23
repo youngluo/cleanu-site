@@ -6,6 +6,6 @@ html[data-checkout-status="processing"] [data-checkout-message="processing"],
 html[data-checkout-status="failed"] [data-checkout-message="failed"],
 html[data-checkout-status="cancelled"] [data-checkout-message="cancelled"],
 html[data-checkout-status="unknown"] [data-checkout-message="unknown"] { display: block; }
-.checkout-status { margin: 1.5rem 0 2.5rem; max-width: 42rem; }
+.checkout-status { margin: 1.5rem 0 2.5rem; }
 .reading ol { padding-inline-start: 1.5rem; }
 .reading ol li { margin-block: 0.8rem; }

@@ -5,7 +5,7 @@
   <p>English&nbsp;&nbsp;|&nbsp;&nbsp;<a href="README-zh_CN.md">简体中文</a></p>
 </div>
 
-CleanU is a safe, transparent macOS menu bar cleanup app for macOS 13+, supporting Apple Silicon and Intel Macs.
+CleanU is a safe, transparent macOS menu bar cleanup app for macOS 15+, supporting Apple Silicon and Intel Macs.
 
 - Scan caches, temporary files, developer-tool caches, project artifacts, app leftovers, installers, archives, and large files.
 - Review results by cache cleanup, project cleanup, app leftovers, and storage analysis, with full paths and actual sizes.

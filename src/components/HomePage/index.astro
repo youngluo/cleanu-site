@@ -25,9 +25,12 @@ const purchaseHref = purchase.enabled ? checkoutHref(purchase, process.env.SITE_
         </div>
         <p class="hero__desc">{translations.index.intro}</p>
         <div class="hero__actions">
-          <a class="btn btn--primary" href={downloadHref} data-download>{translations.index.download}</a>
+          {purchaseHref
+            ? <a class="btn btn--primary" href={purchaseHref} rel="noreferrer">{translations.index.buy}</a>
+            : <button class="btn btn--primary" type="button" disabled title={translations.index.pricingClosed}>{translations.index.buy}</button>}
+          <a class="btn btn--ghost" href={downloadHref} data-download>{translations.index.download}</a>
         </div>
-        <p class="hero__meta"><span>macOS 13+</span><span aria-hidden="true">·</span><span>{translations.index.lifetimeUpdates}</span></p>
+        <p class="hero__meta"><span>{translations.index.pricingPrice}</span><span aria-hidden="true">·</span><span>{translations.index.pricingBuyout}</span><span aria-hidden="true">·</span><span>{translations.index.systemRequirement}</span><span aria-hidden="true">·</span><span>{translations.index.lifetimeUpdates}</span></p>
       </div>
 
     </div>
@@ -138,8 +141,6 @@ const purchaseHref = purchase.enabled ? checkoutHref(purchase, process.env.SITE_
               ? <a class="btn btn--primary" href={purchaseHref} rel="noreferrer">{translations.index.pricingBuy}</a>
               : <button class="btn btn--primary" type="button" disabled>{translations.index.pricingClosed}</button>}
           </div>
-          <p class="pricing__note"><a href={pageHref('terms', locale)}>{translations.common.terms}</a></p>
-          <p class="pricing__note">{translations.index.pricingTax}</p>
         </div>
         <ul class="pricing__terms">
           <li>
@@ -147,12 +148,12 @@ const purchaseHref = purchase.enabled ? checkoutHref(purchase, process.env.SITE_
             <p>{translations.index.pricingTrialBody}</p>
           </li>
           <li>
-            <h3>{translations.index.pricingUpdates}</h3>
-            <p>{translations.index.pricingUpdatesBody}</p>
-          </li>
-          <li>
             <h3>{translations.index.pricingDevices}</h3>
             <p>{translations.index.pricingDevicesBody}</p>
+          </li>
+          <li>
+            <h3>{translations.index.pricingUpdates}</h3>
+            <p>{translations.index.pricingUpdatesBody}</p>
           </li>
         </ul>
       </div>

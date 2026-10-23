@@ -5,7 +5,7 @@
   <p>简体中文&nbsp;&nbsp;|&nbsp;&nbsp;<a href="README.md">English</a></p>
 </div>
 
-CleanU 是一款安全、透明的 macOS 菜单栏清理工具，支持 macOS 13+、Apple Silicon 与 Intel。
+CleanU 是一款安全、透明的 macOS 菜单栏清理工具，支持 macOS 15+、Apple Silicon 与 Intel。
 
 - 扫描缓存、临时文件、开发工具缓存、项目产物、应用残留、安装包、压缩包和大文件。
 - 按缓存清理、项目清理、应用残留和空间分析分组，展示完整路径和实际体积。

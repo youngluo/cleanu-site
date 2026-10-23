@@ -14,7 +14,7 @@ const dateFormat = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'lo
 <SiteLayout page="changelog" locale={locale} translations={translations}>
 <main id="main">
   <section class="page" aria-labelledby="page-title">
-    <div class="shell log-page">
+    <div class="shell">
       <h1 id="page-title" class="page__title">{translations.common.changelog}</h1>
       <p class="lede">{translations.changelog.intro}</p>
       {releases.length ? (
