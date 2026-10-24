@@ -28,7 +28,7 @@ export async function loadPurchaseConfig(environment = process.env) {
 export function validatePurchaseConfig(config, { siteUrl } = {}) {
   if (!config.enabled) return config;
   if (!realIdentifier(config.productID) || !config.productID.startsWith('pdt_')) {
-    throw new Error('Public purchases require a real Dodo product ID');
+    throw new Error('Public purchases require a real Dodo Payments product ID');
   }
   checkoutHref(config, siteUrl, 'zh-CN');
   checkoutHref(config, siteUrl, 'en');
@@ -38,15 +38,15 @@ export function validatePurchaseConfig(config, { siteUrl } = {}) {
 export function checkoutHref(config, siteValue, locale) {
   if (!['zh-CN', 'en'].includes(locale)) throw new Error('Unsupported checkout locale');
   const site = resolveSiteUrl(String(siteValue || ''), true);
-  if (!realIdentifier(config.productID)) throw new Error('A verified Dodo Payment Link is required');
+  if (!realIdentifier(config.productID)) throw new Error('A verified Dodo Payments link is required');
   let link;
-  try { link = new URL(config.paymentLink); } catch { throw new Error('Invalid Dodo Payment Link'); }
+  try { link = new URL(config.paymentLink); } catch { throw new Error('Invalid Dodo Payments link'); }
   if (link.origin !== checkoutOrigin || link.username || link.password || link.hash
-    || link.pathname.replace(/\/$/, '') !== `/buy/${config.productID}`) throw new Error('Dodo Payment Link host or product does not match');
+    || link.pathname.replace(/\/$/, '') !== `/buy/${config.productID}`) throw new Error('Dodo Payments link host or product does not match');
   const callbacks = ['purchase/complete/', 'en/purchase/complete/'].map((path) => new URL(path, site).href);
   for (const [key, value] of link.searchParams) {
     if ((key === 'quantity' && value === '1') || (key === 'redirect_url' && callbacks.includes(value))) continue;
-    throw new Error('Dodo Payment Link contains unexpected query parameters');
+    throw new Error('Dodo Payments link contains unexpected query parameters');
   }
   link.search = '';
   link.searchParams.set('quantity', '1');

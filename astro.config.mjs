@@ -24,11 +24,11 @@ export default defineConfig({
     locales,
     routing: { prefixDefaultLocale: false },
   },
-  trailingSlash: 'always',
+  trailingSlash: 'never',
   output: 'static',
   devToolbar: { enabled: false },
   outDir: './dist',
-  build: { format: 'directory' },
+  build: { format: 'file' },
   integrations: [{
     name: 'purchase-response-headers',
     hooks: { 'astro:build:done': async ({ dir }) => writeFile(new URL('_headers', dir), checkoutHeaders(base)) },

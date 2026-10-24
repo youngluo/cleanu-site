@@ -1,6 +1,6 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
-import { translationsFor } from '../../i18n/translations.js';
+import { pageHref, translationsFor } from '../../i18n/translations.js';
 
 const { locale } = Astro.props;
 const translations = translationsFor(locale);
@@ -9,43 +9,38 @@ const translations = translationsFor(locale);
 <main id="main">
   <section class="page" aria-labelledby="page-title">
     <div class="shell">
-      <p class="eyebrow">CleanU</p>
       <h1 id="page-title" class="page__title">{translations.common.privacy}</h1>
       <p class="lede">{translations.privacy.intro}</p>
-      <p class="page__status"><time datetime="2026-10-20">{translations.privacy.updated}</time></p>
+      <p class="page__status"><time datetime="2026-10-23">{translations.privacy.updated}</time></p>
       <div class="reading">
         <section class="reading__section">
           <h2>{translations.privacy.scopeTitle}</h2>
           <p>{translations.privacy.scopeBody}</p>
         </section>
         <section class="reading__section">
-          <h2>{translations.privacy.storedTitle}</h2>
-          <p>{translations.privacy.storedBody}</p>
-          <p>{translations.privacy.locationBefore}<code>~/Library/Application Support/CleanU</code>{translations.privacy.locationAfter}</p>
+          <h2>{translations.privacy.licenseTitle}</h2>
+          <p>{translations.privacy.licenseBody}</p>
+        </section>
+        <section class="reading__section">
+          <h2>{translations.privacy.keychainTitle}</h2>
+          <p>{translations.privacy.keychainBody}</p>
         </section>
         <section class="reading__section">
           <h2>{translations.privacy.networkTitle}</h2>
-          <p>{translations.privacy.updateBody}</p>
-          <p>{translations.privacy.websiteBody}</p>
-        </section>
-        <section class="reading__section">
-          <h2>{translations.privacy.licenseTitle}</h2>
-          <p>{translations.privacy.licenseBody}</p>
-          <p>{translations.privacy.keychainBody}</p>
-          <p>{translations.privacy.returnBody}</p>
+          <p>{translations.privacy.networkBody}</p>
         </section>
         <section class="reading__section">
           <h2>{translations.privacy.thirdPartyTitle}</h2>
           <p>{translations.privacy.thirdPartyBody}</p>
           <ul>
             <li><a href="https://dodopayments.com/legal/privacy-policy" rel="noopener noreferrer">{translations.privacy.dodoPrivacy}</a></li>
-            <li><a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener noreferrer">{translations.privacy.githubPrivacy}</a></li>
             <li><a href="https://www.cloudflare.com/privacypolicy/" rel="noopener noreferrer">{translations.privacy.cloudflarePrivacy}</a></li>
+            <li><a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener noreferrer">{translations.privacy.githubPrivacy}</a></li>
           </ul>
         </section>
         <section class="reading__section">
           <h2>{translations.privacy.contactTitle}</h2>
-          <p>{translations.privacy.contactBody}</p>
+          <p>{translations.privacy.contactBodyBefore}<a href={pageHref('support', locale)}>{translations.privacy.contactLink}</a>{translations.privacy.contactBodyAfter}</p>
         </section>
         <section class="reading__section">
           <h2>{translations.privacy.changesTitle}</h2>

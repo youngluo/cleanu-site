@@ -26,8 +26,8 @@ const purchaseHref = purchase.enabled ? checkoutHref(purchase, process.env.SITE_
         <p class="hero__desc">{translations.index.intro}</p>
         <div class="hero__actions">
           {purchaseHref
-            ? <a class="btn btn--primary" href={purchaseHref} rel="noreferrer">{translations.index.buy}</a>
-            : <button class="btn btn--primary" type="button" disabled title={translations.index.pricingClosed}>{translations.index.buy}</button>}
+            ? <a class="btn btn--primary" href={purchaseHref} rel="noreferrer">{translations.index.pricingBuy}</a>
+            : <button class="btn btn--primary" type="button" disabled title={translations.index.pricingClosed}>{translations.index.pricingClosed}</button>}
           <a class="btn btn--ghost" href={downloadHref} data-download>{translations.index.download}</a>
         </div>
         <p class="hero__meta"><span>{translations.index.pricingPrice}</span><span aria-hidden="true">·</span><span>{translations.index.pricingBuyout}</span><span aria-hidden="true">·</span><span>{translations.index.systemRequirement}</span><span aria-hidden="true">·</span><span>{translations.index.lifetimeUpdates}</span></p>

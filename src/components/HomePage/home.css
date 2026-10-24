@@ -79,6 +79,7 @@
   flex-wrap: wrap;
   gap: var(--sp-3);
   margin-top: var(--sp-3);
+  padding-inline: 4px;
   font-size: 0.75rem;
   color: var(--ink-3);
 }

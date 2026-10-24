@@ -348,7 +348,7 @@ h3 { font-size: 1.06rem; letter-spacing: -0.01em; }
   font-size: inherit;
   line-height: inherit;
 }
-.page__status { margin-top: var(--sp-6); font-size: 0.86rem; color: var(--ink-3); }
+.page__status { margin-top: var(--sp-6); font-size: 12px; color: var(--ink-3); }
 .page__foot { margin-top: var(--sp-7); }
 .page__foot a {
   color: var(--accent-ink);

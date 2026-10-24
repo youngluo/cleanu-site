@@ -1,7 +1,16 @@
 ---
-const { copy } = Astro.props;
+const { copy, inline = false } = Astro.props;
 ---
-<p>
-  <a href="https://customer.dodopayments.com/" rel="noopener noreferrer">{copy.portalLink}</a>
-  · <a href="https://dodopayments.com/contact" rel="noopener noreferrer">{copy.contactLink}</a>
-</p>
+{inline ? (
+  <>
+    <a href="https://customer.dodopayments.com/" rel="noopener noreferrer">{copy.portalLink}</a>
+    <span aria-hidden="true"> · </span>
+    <a href="https://dodopayments.com/contact" rel="noopener noreferrer">{copy.contactLink}</a>
+  </>
+) : (
+  <p>
+    <a href="https://customer.dodopayments.com/" rel="noopener noreferrer">{copy.portalLink}</a>
+    <br />
+    <a href="https://dodopayments.com/contact" rel="noopener noreferrer">{copy.contactLink}</a>
+  </p>
+)}
