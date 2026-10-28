@@ -9,7 +9,7 @@ CleanU is a safe, transparent macOS menu bar cleanup app for macOS 15+, supporti
 
 - Scan caches, temporary files, developer-tool caches, project artifacts, app leftovers, installers, archives, and large files.
 - Review results by cache cleanup, project cleanup, app leftovers, and storage analysis, with full paths and actual sizes.
-- Scans are read-only. Cleanup requires selection and confirmation, then revalidates each item. Files move to the Trash; Time Machine snapshots use the system's thinning process. Everything runs with the current user's permissions.
+- Scans are read-only. Cleanup requires selection and confirmation, then revalidates each item. Files move to the Trash. Everything runs with the current user's permissions.
 
 ## Local development
 
