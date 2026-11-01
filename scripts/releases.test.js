@@ -157,8 +157,10 @@ test('production guard rejects downgrade and same-version replacement, allows un
   await checkProductionRelease(candidate, options(candidate));
   await checkProductionRelease(candidate, options({ ...candidate, version: '0.1.0' }));
   await checkProductionRelease(candidate, { siteUrl: 'https://example.com/', fetchImpl: async () => new Response('', { status: 404 }) });
+  await checkProductionRelease(candidate, { siteUrl: 'https://example.com/', fetchImpl: async () => new Response('<!DOCTYPE html><html></html>', { status: 200, headers: { 'content-type': 'text/html; charset=utf-8' } }) });
   await assert.rejects(checkProductionRelease(candidate, options({ ...candidate, version: '0.3.0' })), /downgrade/);
   await assert.rejects(checkProductionRelease(candidate, options({ ...candidate, assets: { universal: { ...candidate.assets.universal, sha256: 'b'.repeat(64) } } })), /replace/);
   await assert.rejects(checkProductionRelease(candidate, options({ version: 'invalid' })), /Invalid/);
   await assert.rejects(checkProductionRelease(candidate, { siteUrl: 'https://example.com/', fetchImpl: async () => new Response('', { status: 500 }) }), /HTTP 500/);
+  await assert.rejects(checkProductionRelease(candidate, { siteUrl: 'https://example.com/', fetchImpl: async () => new Response('not json', { status: 200, headers: { 'content-type': 'application/json' } }) }), /Invalid/);
 });

@@ -109,7 +109,14 @@ export async function checkProductionRelease(candidate, { siteUrl, fetchImpl = f
   const response = await fetchImpl(url, { cache: 'no-store', signal: AbortSignal.timeout(15000) });
   if (response.status === 404) return; // First deployment has no public appcast.
   if (!response.ok) throw new Error(`Cannot verify production appcast (HTTP ${response.status})`);
-  const current = await response.json();
+  // The static host serves its HTML fallback, not 404, for a missing appcast before the first release deploy.
+  if ((response.headers.get('content-type') || '').includes('text/html')) return;
+  let current;
+  try {
+    current = await response.json();
+  } catch {
+    throw new Error('Invalid production appcast');
+  }
   if (typeof current.version !== 'string' || !/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/.test(current.version)) {
     throw new Error('Invalid production appcast');
   }
