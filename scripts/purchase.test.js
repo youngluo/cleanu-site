@@ -10,13 +10,13 @@ const config = {
 };
 const context = { siteUrl: 'https://cleanu.ls63.cc/' };
 
-test('routine checks stay out of pricing copy while purchase terms disclose the offline limit', async () => {
+test('routine checks stay out of pricing copy while purchase terms disclose online verification', async () => {
   for (const locale of ['zh-CN', 'en']) {
     const copy = JSON.parse(await readFile(new URL(`../src/locales/${locale}.json`, import.meta.url), 'utf8'));
     assert.doesNotMatch(JSON.stringify(copy.index), /七天|seven days|每日|daily|24 hours/i);
     assert.doesNotMatch(JSON.stringify(copy.privacy), /七天|seven days|每日|daily|24 hours/i);
-    assert.match(copy.terms.connectionBody, /七天|seven days/i);
-    assert.doesNotMatch(copy.terms.connectionBody, /每日|daily|24/);
+    assert.match(copy.terms.licenseBody, /联网验证|online verification/i);
+    assert.doesNotMatch(copy.terms.licenseBody, /每日|daily|24/);
   }
 });
 
@@ -33,15 +33,18 @@ test('missing-email guidance has official entry points and trial copy matches ex
   assert.match(support, /https:\/\/customer\.dodopayments\.com\//);
   assert.match(support, /https:\/\/dodopayments\.com\/contact/);
   assert.doesNotMatch(support, /mailto:|license_key|email=/);
-  for (const page of ['SupportPage', 'CheckoutPage', 'PurchaseTermsPage']) {
-    const source = await readFile(new URL(`../src/components/${page}/index.astro`, import.meta.url), 'utf8');
-    assert.match(source, /<PurchaseSupportLinks/);
-  }
+  const checkout = await readFile(new URL('../src/components/CheckoutPage/index.astro', import.meta.url), 'utf8');
+  assert.match(checkout, /<PurchaseSupportLinks/);
+  const supportPage = await readFile(new URL('../src/components/SupportPage/index.astro', import.meta.url), 'utf8');
+  assert.match(supportPage, /https:\/\/customer\.dodopayments\.com\//);
+  assert.match(supportPage, /translations\.support\.officialEmail/);
+  const termsPage = await readFile(new URL('../src/components/PurchaseTermsPage/index.astro', import.meta.url), 'utf8');
+  assert.match(termsPage, /pageHref\('support'/);
   for (const locale of ['zh-CN', 'en']) {
     const copy = JSON.parse(await readFile(new URL(`../src/locales/${locale}.json`, import.meta.url), 'utf8'));
-    assert.match(copy.terms.trialBody, /点击|click/);
+    assert.match(copy.terms.trialBody, /点击|click/i);
     assert.doesNotMatch(copy.terms.trialBody, /首次运行|first saves/);
-    assert.match(copy.support.purchaseBody, /无法登录|cannot sign in/);
+    assert.match(copy.support.purchaseBodyAfterPortal, /无法登录|cannot sign in/);
     assert.ok(copy.support.contactLink && copy.support.portalLink);
   }
 });
@@ -54,13 +57,17 @@ test('opening requires a matching live product and checkout link', () => {
   ]) assert.throws(() => validatePurchaseConfig({ ...config, ...changes }, context));
 });
 
-test('purchase support is hosted by Dodo rather than embedded in the site', async () => {
+test('checkout support is hosted by Dodo and the official email stays on the support page', async () => {
   const loaded = await loadPurchaseConfig({});
   assert.equal(Object.keys(loaded).some((key) => /support|email/i.test(key)), false);
-  for (const path of ['../src/components/CheckoutPage/index.astro', '../src/components/SupportPage/index.astro']) {
-    const source = await readFile(new URL(path, import.meta.url), 'utf8');
-    assert.doesNotMatch(source, /mailto:/);
+  const checkout = await readFile(new URL('../src/components/CheckoutPage/index.astro', import.meta.url), 'utf8');
+  assert.doesNotMatch(checkout, /mailto:/);
+  for (const locale of ['zh-CN', 'en']) {
+    const copy = JSON.parse(await readFile(new URL(`../src/locales/${locale}.json`, import.meta.url), 'utf8'));
+    assert.match(copy.support.officialEmail, /^[^@\s]+@[^@\s]+\.[^@\s]+$/);
   }
+  const supportPage = await readFile(new URL('../src/components/SupportPage/index.astro', import.meta.url), 'utf8');
+  assert.match(supportPage, /translations\.support\.officialEmail/);
   const workflow = await readFile(new URL('../.github/workflows/publish.yml', import.meta.url), 'utf8');
   assert.doesNotMatch(workflow, /PURCHASE_SUPPORT_EMAIL/);
 });
